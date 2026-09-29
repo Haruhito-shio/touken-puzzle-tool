@@ -1,0 +1,75 @@
+/**
+ * theme.css 刀剣乱舞ぱずぎり材料规划工具
+ * 仅存放设计Token、全局基础样式，无组件class
+ * UI规范V1：Pastel高明度低饱和｜日系柔和｜禁止厚重阴影/新拟态
+ */
+:root {
+  /* === 颜色系统 Pastel马卡龙低饱和 === */
+  --bg: #f8f2e9;                /* 页面背景：浅奶油米色 */
+  --card: #fffbf5;              /* 卡片底色 规范指定 */
+  --line: #e4d8c6;              /* 分割边框 */
+
+  --ink: #524a42;               /* 正文文字，不使用#000纯黑 */
+  --ink-strong: #3e3832;        /* 标题文字 */
+  --ink-soft: #948672;         /* 辅助说明小字 */
+
+  --primary: #d47480;           /* 主色：柔和豆沙粉 */
+  --primary-soft: #f9e6e8;      /* 主色浅背景 */
+  --primary-text: #b0535f;      /* 主色文字 */
+
+  --good: #82a87b;              /* 拥有/完成 绿色 */
+  --good-soft: #e4efe0;
+  --good-text: #587c51;
+
+  --warn: #d89b48;              /* 缺口/警告 琥珀色，不用刺眼红色警报 */
+  --warn-soft: #f9eed8;
+  --warn-text: #ad792a;
+
+  /* === 阴影：只允许极轻外阴影，禁止厚重、内阴影、新拟态 === */
+  --shadow-soft: 0 2px 10px rgba(85, 65, 45, 0.08);
+  --shadow-hover: 0 4px 16px rgba(85, 65, 45, 0.12);
+  --shadow-dropdown: 0 6px 20px rgba(70, 50, 30, 0.14);
+
+  /* === 圆角系统 规范卡片20‑28px === */
+  --radius-xl: 24px;    /* 大卡片 */
+  --radius-lg: 20px;
+  --radius-md: 14px;    /* 按钮、抽屉 */
+  --radius-sm: 12px;    /* 输入框、小卡片、chip */
+  --radius-xs: 10px;
+
+  /* === 间距 === */
+  --gap-xs: 6px;
+  --gap-sm: 8px;
+  --gap-md: 10px;
+  --gap-lg: 12px;
+  --gap-xl: 14px;
+
+  /* === 动画过渡 === */
+  --transition-fast: 0.18s ease;
+  --transition-norm: 0.24s ease;
+  --transition-slow: 0.35s ease-out;
+
+  /* === 字体 === */
+  --font-stack: "寒蝉半圆体", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+}
+
+/* ========= 全局基础元素样式（只放html body 通用reset，不放组件） ========= */
+*{
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-stack);
+  font-weight: normal;
+  line-height: 1.6;
+  padding-bottom: 72px;
+}
