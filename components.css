@@ -135,13 +135,13 @@
 }
 
 .num{
-  width:74px;
+  width:56px;
   text-align:center;
 }
 select.input{
   width:auto;
-  min-width:80px;
-  padding:9px 8px;
+  min-width:52px;
+  padding:8px 4px;
   text-align:center;
   cursor:pointer;
 }
@@ -265,14 +265,14 @@ header .credit{
 
 /* -------- 本丸运势行 f-line -------- */
 .f-line{
-  display:flex;
+  display:grid;
+  grid-template-columns:auto auto auto 1fr;
   align-items:center;
-  gap: var(--gap-md);
+  gap:6px 10px;
   padding:10px 12px;
   border:1px solid var(--line);
   border-radius: var(--radius-sm);
   margin:8px 0;
-  flex-wrap:wrap;
   background:#fffcf8;
 }
 .f-line .f-pct{
@@ -331,7 +331,7 @@ header .credit{
 .plan-name{
   font-weight:500;
   color: var(--ink-strong);
-  min-width:88px;
+  flex:none;
 }
 
 /* -------- 缺口材料卡片 mat-card -------- */
@@ -650,6 +650,32 @@ footer{
   .home-grid{ grid-template-columns:1fr 1fr; }
   .result-grid{ grid-template-columns:repeat(2,1fr); }
   .bag-items{ grid-template-columns:1fr 1fr; }
+  /* PC 端突破计划行对齐 */
+  .plan-name{
+    width:96px;
+    flex:none;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .rare-placeholder{
+    display:inline-block;
+    width:60px;
+    flex:none;
+  }
+  .plan-row > .icon-btn[data-del]{
+    width:32px;
+    padding:4px 0;
+    text-align:center;
+    flex:none;
+    margin-left:auto;
+  }
+  select.input{
+    min-width:60px;
+    max-width:60px;
+    padding:9px 4px;
+  }
 }
 /* ===== 「当前等级上限」帮助图标 + 实时反馈 ===== */
 .help-icon{
@@ -737,4 +763,55 @@ footer{
   color: var(--primary-text);
   border-color: var(--primary);
   font-weight:600;
+}
+/* ===== 突破计划行：手机端分两行 ===== */
+@media (max-width:599px){
+  .plan-row{
+    flex-wrap:wrap;
+    align-items:flex-start;
+    position:relative;
+  }
+
+  /* 复选框 + 名字 + 稀有度：第一行 */
+  .plan-row .check,
+  .plan-row .plan-name{
+    flex:none;
+  }
+  .plan-row .plan-name{
+    flex:0 1 auto;
+    min-width:0;
+    width:auto;      /* 手机端不固定宽 */
+  }
+  .rare-placeholder{
+    display:none;    /* 手机端不显示占位 */
+  }
+
+  /* 等级框组：强制换行，独占第二行 */
+  .plan-row .row.grow{
+    flex-basis:100%;
+    order:10;
+    padding-left:28px;      /* 跟复选框对齐的缩进 */
+  }
+
+  /* 删除按钮：右上角绝对定位 */
+  .plan-row > .icon-btn[data-del]{
+    position:absolute;
+    right:6px;
+    top:50%;
+    transform:translateY(-50%);
+    padding:4px 8px;
+    font-size:12px;
+  }
+
+  /* 稀有度下拉：放在第一行，紧跟名字 */
+  .plan-row select[data-rare]{
+    flex:none;
+  }
+
+  /* 反馈：独占第三行 */
+  .plan-row .cap-feedback{
+    flex-basis:100%;
+    order:11;
+    padding-left:28px;
+  }
 }
