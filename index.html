@@ -873,7 +873,7 @@ function renderPlans(){
       ? '<select class="input" data-rare="1" data-sword="'+esc(p.sword)+'">'+
         '<option value="普"'+(p.rarity!=="彩"?" selected":"")+'>普</option>'+
         '<option value="彩"'+(p.rarity==="彩"?" selected":"")+'>彩</option></select>'
-      : '';
+      : '<span class="rare-placeholder"></span>';
     d.innerHTML =
   '<input type="checkbox" class="check" '+(isSel?"checked":"")+' data-sword="'+esc(p.sword)+'">'+
   '<span class="plan-name">'+esc(p.sword)+'</span>'+rareSel+
