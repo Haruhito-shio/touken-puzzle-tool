@@ -1,7 +1,7 @@
 # 刀剣乱舞ぱずぎり材料规划工具
 
 **touken-puzzle · Material Planner**
-##📝 更新日志：[CHANGELOG.md](./CHANGELOG.md)##
+📝 更新日志：[CHANGELOG.md](./CHANGELOG.md)
 
 一个给刀消审神者用的**突破材料规划小工具**。选好要练的刀、填上等级，它就帮你算出：一共要哪些材料、背包里还缺多少、缺的材料去哪些关卡刷。
 
