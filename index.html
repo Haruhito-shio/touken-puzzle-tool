@@ -889,6 +889,7 @@ function renderSummaryFromLast(){
   if(!lastCalc){ empty.style.display="block"; body.style.display="none"; return; }
   empty.style.display="none"; body.style.display="block";
   var list=lastCalc.shortage;
+  list = list.slice().sort(function(a,b){ return b.shortage - a.shortage; });
   var tNeed=0,tHave=0,tGap=0;
   list.forEach(function(it){ tNeed+=it.need; tHave+=Math.min(it.inventory,it.need); tGap+=it.shortage; });
   $("sNeed").textContent=tNeed; $("sHave").textContent=tHave; $("sGap").textContent=tGap;
