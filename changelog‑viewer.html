@@ -3,76 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>更新日志 - touken‑puzzle‑tool</title>
-  <script src="https://cdn.jsdelivr.net/npm/marked@14.1.2/marked.min.js"></script>
+  <title>更新日志 | touken-puzzle-tool</title>
+  <link rel="stylesheet" href="./theme.css">
+  <link rel="stylesheet" href="./components.css">
+  <!-- 引入markdown渲染库，直接加载仓库内CHANGELOG.md -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
-    * {margin:0;padding:0;box-sizing:border-box;}
-    body {
-      background:#ffffff;
-      color:#2c333a;
-      font-family:system-ui,"Noto Sans SC",-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;
-      line-height:1.75;
-      padding:40px 20px 80px;
-      transition: background 0.3s, color 0.3s;
-    }
-    .container {
-      max-width:720px;
-      margin:0 auto;
-    }
-    @media(prefers-color-scheme:dark){
-      body{background:#15181c;color:#e6edf3;}
-    }
-    h1,h2,h3,h4{margin:1.2em 0 0.6em;font-weight:600;}
-    p{margin-bottom:1em;}
-    ul,ol{padding-left:24px;margin-bottom:1em;}
-    hr{border:0;border-top:1px solid #d1d9e0;margin:2em 0;}
-    @media(prefers-color-scheme:dark){
-      hr{border-color:#30363d;}
-    }
-    code{
-      font-family:Consolas,monospace;
-      padding:2px 6px;
-      border-radius:4px;
-      background:#f1f3f5;
-    }
-    @media(prefers-color-scheme:dark){
-      code{background:#272b33;}
-    }
-    pre{
-      padding:16px;border-radius:8px;overflow-x:auto;margin:1em 0;
-      background:#f4f6f8;
-    }
-    @media(prefers-color-scheme:dark){
-      pre{background:#21252b;}
-    }
-    pre code{background:transparent;padding:0;}
-    a{color:#2172d8;text-decoration:none;}
-    a:hover{text-decoration:underline;}
-    @media(prefers-color-scheme:dark){
-      a{color:#58a6ff;}
-    }
-    .loading{
-      text-align:center;padding:60px 0;color:#888;
-    }
+    /* 精简页面样式，清爽留白，去掉多余组件 */
+    body { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    .header { display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;border-bottom:1px solid #ccc;padding-bottom:1rem; }
+    #content { line-height:1.7; }
+    /* 适配暗色主题，复用你的theme.css变量 */
   </style>
 </head>
 <body>
-<div class="container">
-  <div id="main" class="loading">加载更新日志……</div>
-</div>
+  <div class="header">
+    <h1>更新日志</h1>
+    <a href="./index.html">← 返回工具主页</a>
+  </div>
+  <div id="content"></div>
 
-<script>
-(async()=>{
-  try{
-    const res=await fetch("./CHANGELOG.md");
-    if(!res.ok) throw new Error("文件读取失败");
-    const md=await res.text();
-    document.querySelector("#main").innerHTML=marked.parse(md);
-  }catch(err){
-    document.querySelector("#main").innerText="日志加载失败，请稍后重试。";
-    console.error(err);
-  }
-})();
-</script>
+  <script>
+    // 读取仓库内 CHANGELOG.md，渲染到页面
+    fetch("./CHANGELOG.md")
+      .then(res => res.text())
+      .then(md => {
+        document.getElementById('content').innerHTML = marked.parse(md);
+      })
+  </script>
 </body>
 </html>
