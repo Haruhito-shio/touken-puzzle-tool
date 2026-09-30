@@ -807,6 +807,12 @@ $("bagBtn").addEventListener("click",openBag);
 
 /* ふでのすけ 被点 → 撒小爪印 */
 $("bagBtn").addEventListener("click", function(e){
+  /* 果冻按压 */
+  var self = this;
+  self.classList.remove("is-jelly");
+  void self.offsetWidth;          /* 强制重排，重启动画 */
+  self.classList.add("is-jelly");
+  setTimeout(function(){ self.classList.remove("is-jelly"); }, 600);
   var rect = e.currentTarget.getBoundingClientRect();
   var cx = rect.left + rect.width / 2;
   var cy = rect.top + rect.height / 2;
