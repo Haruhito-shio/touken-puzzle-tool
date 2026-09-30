@@ -1,14 +1,14 @@
 /*
  * 刀剑乱舞材料规划工具 —— 公共游戏数据（由 convert-pazugiri.js 自动生成）
- * 来源：刀剣乱舞ぱずぎり统计ver0.29.29.xlsx · 生成时间：2026-09-29
+ * 来源：刀剣乱舞ぱずぎり统计ver0.2，9.30.xlsx · 生成时间：2026-09-30
  * 材料显示规则：中日文一致只显示一个（水）；不一致显示 日文|中文（丸太|木材）
  * 小判是游戏货币：不进材料缺口，单独记录在 coinCosts / 材料.coin
  */
 
 window.GAME_DATA = {
-  "version": "0.29.29",
-  "generatedAt": "2026-09-29",
-  "source": "刀剣乱舞ぱずぎり统计ver0.29.29.xlsx",
+  "version": "0.2.9.30",
+  "generatedAt": "2026-09-30",
+  "source": "刀剣乱舞ぱずぎり统计ver0.2，9.30.xlsx",
   "characters": [
     "太郎太刀",
     "次郎太刀",
@@ -356,7 +356,8 @@ window.GAME_DATA = {
     "臼与杵": {
       "ja": "臼と杵",
       "zh": "臼与杵",
-      "type": "crafted"
+      "type": "crafted",
+      "coin": 50
     },
     "书写道具": {
       "ja": "書き物道具",
@@ -400,10 +401,11 @@ window.GAME_DATA = {
       "type": "crafted",
       "coin": 150
     },
-    "味噌": {
+    "味增": {
       "ja": "味噌",
-      "zh": "味噌",
-      "type": "crafted"
+      "zh": "味增",
+      "type": "crafted",
+      "coin": 50
     },
     "胁差的心得": {
       "ja": "脇差の心得",
@@ -415,7 +417,7 @@ window.GAME_DATA = {
       "ja": "あんぱん",
       "zh": "面包",
       "type": "crafted",
-      "coin": 150
+      "coin": 10
     },
     "黄色颜料": {
       "ja": "黄色颜料",
@@ -461,7 +463,14 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "黄色颜料": 1,
+        "茶碗": 2,
+        "围棋": 2,
+        "味增汤": 2,
+        "锄头": 2,
+        "大太刀的心得": 1
+      }
     },
     {
       "sword": "太郎太刀",
@@ -571,14 +580,22 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 10,
       "toStage": 20,
-      "needs": {}
+      "needs": {
+        "叶子": 2,
+        "大豆": 2
+      }
     },
     {
       "sword": "萤丸",
       "rarity": "普",
       "fromStage": 20,
       "toStage": 30,
-      "needs": {}
+      "needs": {
+        "花蜜": 2,
+        "树枝": 2,
+        "蓬松的毛": 2,
+        "大米": 1
+      }
     },
     {
       "sword": "萤丸",
@@ -686,7 +703,14 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "红色颜料": 1,
+        "茶碗": 2,
+        "围棋": 2,
+        "双色牡丹饼": 2,
+        "锄头": 2,
+        "太刀的心得": 1
+      }
     },
     {
       "sword": "一期一振",
@@ -806,7 +830,14 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "蓝色颜料": 1,
+        "茶碗": 2,
+        "围棋": 2,
+        "面包": 2,
+        "算盘": 2,
+        "太刀的心得": 1
+      }
     },
     {
       "sword": "鹤丸国永",
@@ -871,7 +902,14 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "红色颜料": 1,
+        "双六": 2,
+        "花札": 2,
+        "味增汤": 2,
+        "锄头": 2,
+        "太刀的心得": 1
+      }
     },
     {
       "sword": "江雪左文字",
@@ -926,14 +964,24 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "红色颜料": 1,
+        "书写道具": 2,
+        "围棋": 2,
+        "味增汤": 2,
+        "锄头": 2,
+        "太刀的心得": 1
+      }
     },
     {
       "sword": "歌仙兼定",
       "rarity": "普",
       "fromStage": 10,
       "toStage": 20,
-      "needs": {}
+      "needs": {
+        "水": 2,
+        "木材": 2
+      }
     },
     {
       "sword": "歌仙兼定",
@@ -952,14 +1000,24 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "红色颜料": 1,
+        "茶碗": 4,
+        "花札": 2,
+        "团子": 2,
+        "算盘": 2,
+        "打刀的心得": 1
+      }
     },
     {
       "sword": "歌仙兼定",
       "rarity": "彩",
       "fromStage": 10,
       "toStage": 20,
-      "needs": {}
+      "needs": {
+        "蛋": 1,
+        "叶子": 1
+      }
     },
     {
       "sword": "歌仙兼定",
@@ -1095,7 +1153,10 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 10,
       "toStage": 20,
-      "needs": {}
+      "needs": {
+        "水": 2,
+        "木材": 2
+      }
     },
     {
       "sword": "大和守安定",
@@ -1114,7 +1175,14 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "黄色颜料": 1,
+        "书写道具": 2,
+        "围棋": 2,
+        "天妇罗": 2,
+        "锄头": 2,
+        "打刀的心得": 1
+      }
     },
     {
       "sword": "和泉守兼定",
@@ -1128,7 +1196,12 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 20,
       "toStage": 30,
-      "needs": {}
+      "needs": {
+        "纸": 2,
+        "大豆": 2,
+        "水": 2,
+        "花": 4
+      }
     },
     {
       "sword": "和泉守兼定",
@@ -1190,7 +1263,12 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 20,
       "toStage": 30,
-      "needs": {}
+      "needs": {
+        "纸": 2,
+        "叶子": 2,
+        "水": 2,
+        "花": 4
+      }
     },
     {
       "sword": "山姥切国广",
@@ -1259,7 +1337,14 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "蓝色颜料": 1,
+        "茶碗": 2,
+        "围棋": 2,
+        "双色牡丹饼": 2,
+        "锄头": 2,
+        "打刀的心得": 1
+      }
     },
     {
       "sword": "蜂须贺虎彻",
@@ -1379,7 +1464,12 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 20,
       "toStage": 30,
-      "needs": {}
+      "needs": {
+        "臼与杵": 2,
+        "树枝": 2,
+        "大豆": 2,
+        "打火石": 2
+      }
     },
     {
       "sword": "鲶尾藤四郎",
@@ -1429,7 +1519,10 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 10,
       "toStage": 20,
-      "needs": {}
+      "needs": {
+        "水": 2,
+        "蓬松的毛": 2
+      }
     },
     {
       "sword": "堀川国广",
@@ -1462,7 +1555,10 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 10,
       "toStage": 20,
-      "needs": {}
+      "needs": {
+        "叶子": 2,
+        "大豆": 2
+      }
     },
     {
       "sword": "乱藤四郎",
@@ -1500,7 +1596,7 @@ window.GAME_DATA = {
       "toStage": 30,
       "needs": {
         "纸": 2,
-        "双六": 4,
+        "骰子": 4,
         "水": 4,
         "花": 2
       }
@@ -1546,7 +1642,14 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "黄色颜料": 1,
+        "书写道具": 2,
+        "围棋": 2,
+        "团子": 2,
+        "锄头": 2,
+        "短刀的心得": 1
+      }
     },
     {
       "sword": "爱染国俊",
@@ -1661,7 +1764,14 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "黄色颜料": 1,
+        "双六": 2,
+        "花札": 2,
+        "天妇罗": 2,
+        "锄头": 2,
+        "短刀的心得": 1
+      }
     },
     {
       "sword": "前田藤四郎",
@@ -1704,7 +1814,10 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 10,
       "toStage": 20,
-      "needs": {}
+      "needs": {
+        "水": 2,
+        "蓬松的毛": 2
+      }
     },
     {
       "sword": "秋田藤四郎",
@@ -1812,7 +1925,12 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 20,
       "toStage": 30,
-      "needs": {}
+      "needs": {
+        "纸": 2,
+        "大豆": 4,
+        "水": 4,
+        "打火石": 2
+      }
     },
     {
       "sword": "御手杵",
@@ -1857,7 +1975,10 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 10,
       "toStage": 20,
-      "needs": {}
+      "needs": {
+        "水": 2,
+        "木材": 2
+      }
     },
     {
       "sword": "岩融",
@@ -2115,7 +2236,7 @@ window.GAME_DATA = {
     {
       "product": "大太刀的心得",
       "ingredient": "虎皮",
-      "quantity": 4
+      "quantity": 2
     },
     {
       "product": "臼与杵",
@@ -2219,7 +2340,7 @@ window.GAME_DATA = {
     },
     {
       "product": "味增汤",
-      "ingredient": "味噌",
+      "ingredient": "味增",
       "quantity": 2
     },
     {
@@ -2253,17 +2374,17 @@ window.GAME_DATA = {
       "quantity": 12
     },
     {
-      "product": "味噌",
+      "product": "味增",
       "ingredient": "大米",
       "quantity": 1
     },
     {
-      "product": "味噌",
+      "product": "味增",
       "ingredient": "大豆",
       "quantity": 1
     },
     {
-      "product": "味噌",
+      "product": "味增",
       "ingredient": "盐",
       "quantity": 1
     },
@@ -2319,6 +2440,7 @@ window.GAME_DATA = {
     "纸": 50,
     "笔": 50,
     "大太刀的心得": 150,
+    "臼与杵": 50,
     "书写道具": 150,
     "薙刀的心得": 150,
     "天妇罗": 50,
@@ -2326,8 +2448,9 @@ window.GAME_DATA = {
     "双六": 150,
     "味增汤": 150,
     "短刀的心得": 150,
+    "味增": 50,
     "胁差的心得": 150,
-    "面包": 150
+    "面包": 10
   },
   "stages": [
     {
@@ -2650,3 +2773,4 @@ window.GAME_DATA = {
     }
   ]
 };
+//（注：内容由AI生成）
