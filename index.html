@@ -178,7 +178,9 @@ footer{text-align:center;color:var(--ink-soft);font-size:11px;padding:8px 0 4px;
     <div class="en">TOUKEN-PUZZLE MATERIAL PLANNER</div>
     <div class="credit">作者：Haruhito-shio ｜ 小红书：年下阴角激推 ｜ 数据更新日期：<span id="dataDate">9.29</span></div>
   </div>
-  <button class="icon-btn" id="bagBtn">🎒 背包</button>
+  <button class="avatar-btn" id="bagBtn" aria-label="背包">
+  <img src="https://i.111666.best/image/LmIgbPk9J5Lc1VWGheliYQ.png" alt="背包">
+  </button>
 </header>
 
 <main class="wrap">
@@ -188,7 +190,7 @@ footer{text-align:center;color:var(--ink-soft);font-size:11px;padding:8px 0 4px;
     <div class="home-grid">
       <div class="entry-card" data-go="plans"><div class="ec-title">编辑突破计划</div><div class="ec-desc">添加刀剑、设等级、算材料缺口</div></div>
       <div class="entry-card" data-go="source"><div class="ec-title">材料来源查询</div><div class="ec-desc">自由选择材料，看哪些关卡掉落</div></div>
-      <div class="entry-card" data-go="synthesis"><div class="ec-title">合成查询</div><div class="ec-desc">看半成品如何拆成基础材料</div></div>
+      <div class="entry-card" data-go="synthesis"><div class="ec-title">合成查询</div><div class="ec-desc">看合成物如何拆成基础材料</div></div>
       <div class="entry-card" data-go="inventory"><div class="ec-title">完整背包</div><div class="ec-desc">一次性批量修改全部材料库存</div></div>
     </div>
 
@@ -224,20 +226,29 @@ footer{text-align:center;color:var(--ink-soft);font-size:11px;padding:8px 0 4px;
     <div class="card guide">
       <div class="sec-title">使用说明 <span class="sub">// 三分钟上手</span></div>
       <h3>1. 背包怎么改？</h3>
-      <ul><li>任意页面右上角「🎒 背包」，滑出抽屉，改完即存；刷一关拿材料就点它改数字，不用来回跳页。想批量整理，用首页「完整背包」。</li></ul>
+      <ul><li>任意页面右上角按钮，滑出抽屉，改完即存；刷一关拿材料就点它改数字，不用来回跳页。合成物（碗 / 茶碗 / 围棋等）也可以填，工具会自动折算成基础材料参与缺口计算。想批量整理，用首页「完整背包」。</li></ul>
       <h3>2. 怎么算缺口？</h3>
       <ul><li>「编辑突破计划」里加刀、填等级，点「全部计划」或「用勾选角色计算」，缺口就在本页下方显示。</li></ul>
       <h3>3. 缺口去哪刷？</h3>
       <ul><li>缺口面板下方点「查看缺口来源」，自动跳到材料来源页并带上缺口材料；也可以自己搜材料手动选。关卡上的 x/n 只表示“覆盖几种材料”，不代表掉率。</li></ul>
-      <h3>4. 突破怎么算？</h3>
+      <h3>4. 已有/需求/缺口怎么理解？</h3>
+      <ul>
+      <li><b>需求</b>：突破计划里所有材料展开到基础材料后的总量。</li>
+      <li><b>已有</b>：背包里所有材料（含合成物）折算成基础材料后的总量，<b>最多按需求计入</b>——比如需求 10 个粘土、你有 12 个，只算 10 个已有。</li>
+      <li><b>缺口</b> = 需求 − 已有（不足 0 按 0 算）。</li>
+      </ul>
+      <h3>5. 突破怎么算？</h3>
       <ul><li>只算「起点 ≥ 当前等级上限 且 终点 ≤ 目标等级」的段。例：上限 5 目标 35 算 10→20、20→30、30→35 三段；上限正好停在 30 时，30→35 这一段也会算。</li>
       <li>「当前等级上限」请填游戏里显示的<b>等级上限</b>（不是面板等级）。例：练到 10 做了突破、上限变 20，就填 20；还没突破过就填当前等级。</li>
-      <li>目前5 把刀有普/彩两套（太郎太刀・三日月宗近・一期一振・歌仙兼定・乱藤四郎），选到时会让你选稀有度，普/彩需求不同。</li></ul>
+      <li>目前 5 把刀有普/彩两套（太郎太刀・三日月宗近・一期一振・歌仙兼定・乱藤四郎），选到时会让你选稀有度，普/彩需求不同。</li></ul>
+      <h3>6. 合成查询怎么用？</h3>
+      <ul><li>「合成」页选合成物（茶碗 / 围棋 / 花札等），可以看它拆成哪些基础材料、各要几个、合成要花多少小判。合成物用加粗标出，点它可以看它自己的基础材料。数量可以改，结果实时更新。</li></ul>
+      <h3>7. 更新日志在哪看？</h3>
+      <ul><li>页面底部「更新日志」可以点开，看每个版本改了什么。</li></ul>
       <h3>🙏 致谢</h3>
       <ul><li>本工具的数据来自多位同事共同维护的在线表格（刀剣乱舞ぱずぎり统计）。每一个材料数量、每一条关卡掉落，都是大家一点一点整理、核对出来的成果，工具只是把它们搬到了更好查的地方。感谢每一位记录和更新数据的伙伴！</li></ul>
       <h3>📝 备注</h3>
-      <ul><li>欢迎各位同事使用！用着哪里不顺手、算出来的数字对不上，都请随时告诉我～</li>
-      <li>美化正在准备中……话说，真的需要美化吗？（不需要）</li>
+      <ul><li>欢迎各位同事使用！用着哪里不顺手、算出来的数字对不上，都请在xhs告诉我～</li>
       <li>数据更新的话是个问题本人是懒鬼咋办啊，，有啥好法子吗可恶啊！</li></ul>
       <p class="muted small">材料显示：中日文一致只显示一个（水），不一致显示 日文|中文（丸太|木材）；小判是货币，不占背包、不计缺口。背包、计划只存在本机浏览器里。</p>
     </div>
@@ -292,6 +303,7 @@ footer{text-align:center;color:var(--ink-soft);font-size:11px;padding:8px 0 4px;
           <div class="bar-label"><span>整体进度</span><span id="sPct">0%</span></div>
           <div class="bar" id="sBarWrap"><i id="sBar" style="width:0%"></i></div>
           <div class="coin-note" id="sCoinNote"></div>
+                  <div id="sExtraTips" style="display:none;"></div>
         </div>
         <div class="row" style="justify-content:space-between;align-items:center;margin-top:14px;">
          <div class="sec-title" style="margin:0;">缺口材料</div>
@@ -332,8 +344,8 @@ footer{text-align:center;color:var(--ink-soft);font-size:11px;padding:8px 0 4px;
   <!-- ===== 合成查询页 ===== -->
   <section id="view-synthesis" class="view">
     <div class="card">
-      <div class="sec-title">合成查询 <span class="sub">// 半成品如何拆解</span></div>
-      <div class="muted small" style="margin-bottom:6px;">下拉里只列<b>半成品</b>（能合成的材料），<b>可多选</b>；看它们拆成哪些基础材料、各要几个、合成要花多少小判。</div>
+      <div class="sec-title">合成查询 <span class="sub">// 合成物如何拆解</span></div>
+      <div class="muted small" style="margin-bottom:6px;">下拉里只列<b>合成物</b>（能合成的材料），<b>可多选</b>；看它们拆成哪些基础材料、各要几个、合成要花多少小判。</div>
       <div class="s-wrap">
         <input id="synSearch" class="input" placeholder="点这里展开材料列表，或输入过滤后点选（可多选）" autocomplete="off">
         <div id="synSuggest" class="suggest"></div>
@@ -347,12 +359,14 @@ footer{text-align:center;color:var(--ink-soft);font-size:11px;padding:8px 0 4px;
   <section id="view-inventory" class="view">
     <div class="card">
       <div class="sec-title">完整背包 <span class="sub">// 批量修改库存</span></div>
-      <div class="muted small" style="margin-bottom:8px;">只列基础材料。改完即存，所有页面缺口自动更新。</div>
+      <div class="muted small" style="margin-bottom:8px;">列出所有材料（含合成物）。改完即存，所有页面缺口自动更新。</div>
       <div id="invFull" class="bag-items" style="padding:0;"></div>
     </div>
   </section>
 
-  <footer>数据保存在本机浏览器 · 离线可用 · 仅供个人规划参考</footer>
+  <footer>
+    数据保存在本机浏览器 · <a href="#" id="changelogLink" class="footer-link">更新日志</a> · 离线可用 · 仅供个人规划参考
+  </footer>
 </main>
 
 <!-- ===== 背包抽屉 ===== -->
@@ -363,7 +377,7 @@ footer{text-align:center;color:var(--ink-soft);font-size:11px;padding:8px 0 4px;
     <button class="icon-btn" id="bagClose">✕ 关闭</button>
   </div>
   <div class="bag-items" id="invDrawer"></div>
-  <div class="muted small" style="text-align:center;padding:4px 0 10px;">改完即存 · 缺口自动更新</div>
+  <div class="muted small" style="text-align:center;padding:4px 0 10px;">填现有数量 · 合成物优先抵扣 · 改完即存</div>
 </aside>
 
 <!-- ===== 底部导航 ===== -->
@@ -375,6 +389,23 @@ footer{text-align:center;color:var(--ink-soft);font-size:11px;padding:8px 0 4px;
 </nav>
 
 <div id="toast"></div>
+<!-- ===== 更新日志弹窗 ===== -->
+<div id="clMask" class="cl-mask">
+  <div class="cl-panel">
+    <div class="cl-head">
+      <span class="cl-title">更新日志</span>
+      <button class="cl-close" id="clClose">✕</button>
+    </div>
+    <div class="cl-body" id="clBody">
+      <!-- 内容由 JS 填充 -->
+    </div>
+    <div class="cl-foot">
+      <a href="https://github.com/Haruhito-shio/touken-puzzle-tool/blob/main/CHANGELOG.md"
+         target="_blank" rel="noopener"
+         class="footer-link">查看完整历史 →</a>
+    </div>
+  </div>
+</div>
 
 <script src="game-data.js"></script>
 <script>
@@ -404,6 +435,7 @@ var srcSelected = [];
 var currentView = "home";
 var selectedSword = null;
 var synSelected = [];
+var synQty = {};
 
 function $(id){ return document.getElementById(id); }
 function loadJSON(k,d){ try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;} }
@@ -529,11 +561,14 @@ function showCapHelp(ev, target){
   pop.style.top  = (r.bottom + window.scrollY + 6) + "px";
 }
 
-/* 点击别处 → 关闭所有胶囊 */
+/* 点击别处 → 关闭所有胶囊（突破计划行的 ？ 和合成查询的合成物胶囊都关） */
 document.addEventListener("click", function(e){
-  if(e.target.closest(".cap-pop")) return;         // 点在胶囊内不关
-  if(e.target.closest(".help-icon")) return;        // 点在"？"上由它自己处理
+  if(e.target.closest(".cap-pop")) return;
+  if(e.target.closest(".help-icon")) return;
+  if(e.target.closest(".ing-pop")) return;
+  if(e.target.closest(".mat-chip.semi")) return;
   document.querySelectorAll(".cap-pop").forEach(function(p){ p.remove(); });
+  document.querySelectorAll(".ing-pop").forEach(function(p){ p.remove(); });
 });
 
 /* ================================================================
@@ -555,7 +590,7 @@ function expandMaterial(name,qty,result,path){
   var next=path.concat([name]);
   keys.forEach(function(ing){ expandMaterial(ing,qty*inputs[ing],result,next); });
 }
-/* 小判：合成某材料 qty 个所需的小判（含中间半成品的合成费）；基础材料为 0 */
+/* 小判：合成某材料 qty 个所需的小判（含中间合成物的合成费）；基础材料为 0 */
 function coinOf(name,qty,path){
   var inputs=craftingInputs(name), keys=Object.keys(inputs);
   if(keys.length===0) return 0;
@@ -595,6 +630,91 @@ function computeShortage(baseTotal){
     list.push({mat:mat,need:need,inventory:inv,shortage:Math.max(0,gap)});
   });
   return list;
+}
+
+/* ================================================================
+   核心计算：需求展开 + 库存折算
+   - 总需求：顶层需求全部展开到基础材料（不考虑库存）
+   - 已有：所有库存折算到基础材料（合成物按配方展开）
+   - 缺口 = max(0, 需求 - 已有)
+   ================================================================ */
+function computeAll(chars, inv){
+  /* 1. 顶层需求 */
+  var topNeeds = {};
+  chars.forEach(function(p){
+    selectBreakthroughs(p.sword, p.rarity||"普", p.currentLevel, p.targetLevel).forEach(function(st){
+      Object.keys(st.needs).forEach(function(mat){
+        topNeeds[mat] = (topNeeds[mat] || 0) + st.needs[mat];
+      });
+    });
+  });
+
+  /* 2. 总需求：全部展开到基础材料 */
+  var totalNeedBase = {};
+  var coin = 0;
+  var warnings = [];
+  function expandNeed(mat, qty, path){
+    if(path.indexOf(mat) >= 0){
+      throw new Error("检测到合成配方循环：" + path.concat([mat]).join(" → "));
+    }
+    var m = materials[mat];
+    var inputs = craftingInputs(mat);
+    var keys = Object.keys(inputs);
+    if(!m || m.type !== "crafted" || keys.length === 0){
+      if(m && m.type === "crafted" && keys.length === 0 && warnings.indexOf(mat) < 0){
+        warnings.push(mat);
+      }
+      totalNeedBase[mat] = (totalNeedBase[mat] || 0) + qty;
+      return;
+    }
+    coin += qty * ((m && m.coin) || 0);
+    var next = path.concat([mat]);
+    keys.forEach(function(ing){
+      expandNeed(ing, qty * inputs[ing], next);
+    });
+  }
+  Object.keys(topNeeds).forEach(function(mat){
+    expandNeed(mat, topNeeds[mat], []);
+  });
+
+  /* 3. 已有：所有库存折算到基础材料 */
+  var totalHaveBase = {};
+  var semiUsed = {};
+  function expandHave(mat, qty, path){
+    if(path.indexOf(mat) >= 0) return;   // 循环保护：直接忽略
+    var m = materials[mat];
+    var inputs = craftingInputs(mat);
+    var keys = Object.keys(inputs);
+    if(!m || m.type !== "crafted" || keys.length === 0){
+      totalHaveBase[mat] = (totalHaveBase[mat] || 0) + qty;
+      return;
+    }
+    var next = path.concat([mat]);
+    keys.forEach(function(ing){
+      expandHave(ing, qty * inputs[ing], next);
+    });
+  }
+  Object.keys(inv).forEach(function(mat){
+    var qty = inv[mat];
+    if(!qty || qty <= 0) return;
+    var m = materials[mat];
+    if(m && m.type === "crafted") semiUsed[mat] = qty;
+    expandHave(mat, qty, []);
+  });
+
+  /* 4. 对比 */
+  var list = [];
+  var allBase = {};
+  Object.keys(totalNeedBase).forEach(function(k){ allBase[k] = 1; });
+  Object.keys(totalHaveBase).forEach(function(k){ allBase[k] = 1; });
+  Object.keys(allBase).forEach(function(mat){
+    var need = totalNeedBase[mat] || 0;
+    var have = Math.min(totalHaveBase[mat] || 0, need);   // 已有最多计入需求
+    var gap = Math.max(0, need - have);
+    list.push({ mat: mat, need: need, inventory: have, shortage: gap });
+  });
+
+  return { list: list, coin: coin, warnings: warnings, semiUsed: semiUsed };
 }
 function findStagesForMaterials(targetMats){
   var res=[];
@@ -659,16 +779,55 @@ document.querySelectorAll(".entry-card").forEach(function(c){
    ================================================================ */
 function renderInvList(id){
   var box=$(id); box.innerHTML="";
-  var bases=Object.keys(materials).filter(function(n){return materials[n].type==="base";});
-  bases.forEach(function(name){
-    var d=document.createElement("div"); d.className="bag-item";
-    d.innerHTML='<span>'+esc(mm(name))+'</span><input type="number" class="input num" min="0" data-inv="'+esc(name)+'" value="'+(inventory[name]||0)+'">';
+  /* 所有材料（基础 + 合成物），按中文名字典序 */
+    var all = Object.keys(materials).sort(function(a,b){
+    var ma = materials[a], mb = materials[b];
+    var ta = (ma && ma.type) || "base";
+    var tb = (mb && mb.type) || "base";
+    /* 基础在前，合成物在后 */
+    if(ta !== tb) return ta === "base" ? -1 : 1;
+    /* 同类型内按中文名拼音 */
+    return a.localeCompare(b, "zh");
+  });
+  all.forEach(function(name){
+    var m = materials[name];
+    var isSemi = m && m.type === "crafted";
+    var d = document.createElement("div");
+    d.className = "bag-item" + (isSemi ? " bag-item-semi" : "");
+    d.innerHTML = '<span>' + esc(mm(name))
+                + (isSemi ? ' <span class="bag-semi-tag">合成物</span>' : '')
+                + '</span>'
+                + '<input type="number" class="input num" min="0" data-inv="' + esc(name) + '" value="' + (inventory[name] || 0) + '">';
     box.appendChild(d);
   });
 }
 function openBag(){ renderInvList("invDrawer"); $("bagMask").style.display="block"; $("bagDrawer").style.display="flex"; }
 function closeBag(){ $("bagMask").style.display="none"; $("bagDrawer").style.display="none"; }
 $("bagBtn").addEventListener("click",openBag);
+
+/* ふでのすけ 被点 → 撒小爪印 */
+$("bagBtn").addEventListener("click", function(e){
+  var rect = e.currentTarget.getBoundingClientRect();
+  var cx = rect.left + rect.width / 2;
+  var cy = rect.top + rect.height / 2;
+  var paws = ["🐾", "🌸", "✨"];
+  var count = 4;
+  for(var i = 0; i < count; i++){
+    var el = document.createElement("span");
+    el.className = "paw";
+    el.textContent = paws[Math.floor(Math.random() * paws.length)];
+    el.style.left = cx + "px";
+    el.style.top  = cy + "px";
+    var angle = (Math.PI * 2 * i / count) + Math.random() * 0.6 - 0.3;
+    var dist  = 40 + Math.random() * 30;
+    el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+    el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
+    el.style.setProperty("--rot", (Math.random() * 90 - 45) + "deg");
+    el.style.fontSize = (12 + Math.random() * 8) + "px";
+    document.body.appendChild(el);
+    setTimeout(function(){ el.remove(); }, 900);
+  }
+});
 $("bagClose").addEventListener("click",closeBag);
 $("bagMask").addEventListener("click",closeBag);
 function onInvChange(e){
@@ -677,7 +836,18 @@ function onInvChange(e){
   inventory[name]=(isNaN(v)||v<0)?0:v;
   saveJSON("touken_inventory",inventory);
   toast("已存背包："+mm(name)+" × "+inventory[name]);
-  if(lastCalc){ lastCalc.shortage=computeShortage(lastCalc.baseTotal); renderSummaryFromLast(); }
+  /* 已算过 → 用新库存重算 */
+  if(lastCalc && lastCalc.chars){
+    try{
+      var r = computeAll(lastCalc.chars, inventory);
+      lastCalc.coin = r.coin;
+      lastCalc.shortage = r.list;
+      lastCalc.mats = r.list.filter(function(x){return x.shortage>0;}).map(function(x){return x.mat;});
+      lastCalc.semiUsed = r.semiUsed;
+      lastCalc.warnings = r.warnings;
+      renderSummaryFromLast();
+    }catch(err){ /* 忽略 */ }
+  }
 }
 $("invDrawer").addEventListener("change",onInvChange);
 $("invFull").addEventListener("change",onInvChange);
@@ -913,7 +1083,28 @@ function renderSummaryFromLast(){
   var pct=tNeed>0?Math.round(tHave/tNeed*100):100;
   $("sPct").textContent=pct+"%"; $("sBar").style.width=pct+"%";
   $("sBarWrap").className="bar"+(tGap>0?" warn":"");
-  $("sCoinNote").textContent="所需小判总数：约 "+(lastCalc.coin||0)+"（合成半成品所需，游戏货币，不计入缺口）";
+  $("sCoinNote").textContent="所需小判总数：约 "+(lastCalc.coin||0)+"（合成合成物所需）";
+    /* 合成物抵扣 / 无配方警告 提示 */
+  var extraTips = [];
+  if(lastCalc.semiUsed && Object.keys(lastCalc.semiUsed).length > 0){
+    var usedText = Object.keys(lastCalc.semiUsed).map(function(k){
+      return mm(k) + " × " + lastCalc.semiUsed[k];
+    }).join("、");
+    extraTips.push("已折算库存合成物：" + usedText);
+  }
+  if(lastCalc.warnings && lastCalc.warnings.length > 0){
+    var warnText = lastCalc.warnings.map(function(k){ return mm(k); }).join("、");
+    extraTips.push("以下合成物无配方，已当作基础材料处理：" + warnText);
+  }
+  var extraBox = $("sExtraTips");
+  if(extraBox){
+    if(extraTips.length > 0){
+      extraBox.innerHTML = extraTips.map(function(t){ return '<div class="tip">' + esc(t) + '</div>'; }).join("");
+      extraBox.style.display = "block";
+    } else {
+      extraBox.style.display = "none";
+    }
+  }
   var gl=$("gapList"); gl.innerHTML="";
   var hasGap=false;
   list.forEach(function(it){
@@ -936,10 +1127,15 @@ function renderSummaryFromLast(){
 /* 计算：只在本页算缺口并渲染，不跳转 */
 function runCalc(chars,label){
   try{
-    var baseTotal=computePlans(chars);
-    var shortage=computeShortage(baseTotal);
-    var coin=coinForPlans(chars);
-    lastCalc={baseTotal:baseTotal,coin:coin,shortage:shortage,mats:shortage.filter(function(x){return x.shortage>0;}).map(function(x){return x.mat;})};
+    var r = computeAll(chars, inventory);
+    lastCalc = {
+      chars: chars,
+      coin: r.coin,
+      shortage: r.list,
+      mats: r.list.filter(function(x){return x.shortage>0;}).map(function(x){return x.mat;}),
+      semiUsed: r.semiUsed,
+      warnings: r.warnings
+    };
     renderSummaryFromLast();
     toast(label);
   }catch(err){ toast(err.message); console.error(err); }
@@ -1092,55 +1288,168 @@ function renderSynTags(){
     box.appendChild(d);
   });
 }
-function chipsHTML(total){
-  var h='';
-  Object.keys(total).forEach(function(b){ h+='<span class="chip need">'+esc(mm(b))+' × '+total[b]+'</span> '; });
-  return h;
+
+/* 把材料拆到基础材料（返回 {基础材料名: 数量}） */
+function expandToBase(name, qty, path){
+  var inputs = craftingInputs(name);
+  var keys = Object.keys(inputs);
+  var result = {};
+  if(keys.length === 0){
+    result[name] = qty;
+    return result;
+  }
+  if(path.indexOf(name) >= 0){
+    throw new Error("检测到合成配方循环：" + path.concat([name]).join(" → "));
+  }
+  var next = path.concat([name]);
+  keys.forEach(function(ing){
+    var sub = expandToBase(ing, qty * inputs[ing], next);
+    Object.keys(sub).forEach(function(k){
+      result[k] = (result[k] || 0) + sub[k];
+    });
+  });
+  return result;
 }
+
+/* 生成"直接配料"行；如果配料里没有合成物，返回空串（不显示这一行） */
+function ingredientsHTML(name, qty){
+  var inputs = craftingInputs(name);
+  var keys = Object.keys(inputs);
+  var hasSemi = keys.some(function(k){
+    return materials[k] && materials[k].type === "crafted";
+  });
+  if(!hasSemi) return "";
+  var html = "";
+  keys.forEach(function(k){
+    var q = inputs[k] * qty;
+    var isSemi = materials[k] && materials[k].type === "crafted";
+    if(isSemi){
+      html += '<span class="mat-chip semi" data-semi="' + esc(k) + '" data-qty="' + q + '">'
+            + esc(mm(k)) + ' × ' + q + '</span>';
+    } else {
+      html += '<span class="mat-chip">' + esc(mm(k)) + ' × ' + q + '</span>';
+    }
+  });
+  return html;
+}
+
+function showIngredientPop(chip, semiName, qty){
+  var old = document.querySelector(".ing-pop[data-for='" + semiName + "']");
+  if(old){ old.remove(); return; }
+  document.querySelectorAll(".ing-pop").forEach(function(p){ p.remove(); });
+
+  var base;
+  try{
+    base = expandToBase(semiName, qty, []);
+  }catch(e){
+    base = {};
+  }
+  var text = Object.keys(base).map(function(k){
+    return mm(k) + " × " + base[k];
+  }).join("　");
+  if(!text) text = "（无配方）";
+
+  var pop = document.createElement("div");
+  pop.className = "ing-pop";
+  pop.setAttribute("data-for", semiName);
+  pop.textContent = text;
+  document.body.appendChild(pop);
+
+  /* 用 chip 本身的 rect 定位（不是容器） */
+  var r = chip.getBoundingClientRect();
+  var popW = pop.offsetWidth;
+  var left = r.left + window.scrollX;
+  /* 防止超出右边界 */
+  var maxLeft = window.scrollX + document.documentElement.clientWidth - popW - 8;
+  if(left > maxLeft) left = maxLeft;
+  pop.style.left = left + "px";
+  pop.style.top  = (r.bottom + window.scrollY + 6) + "px";
+}
+
 function renderSynResult(){
-  var box=$("synResult");
+  var box = $("synResult");
   renderSynTags();
-  if(synSelected.length===0){ box.innerHTML='<div class="empty"><div class="big">先选材料</div>从上方下拉里点选一个或多个材料，看它们怎么拆解</div>'; return; }
-  var html="", grand={}, grandCoin=0;
+  if(synSelected.length === 0){
+    box.innerHTML = '<div class="empty"><div class="big">先选材料</div>从上方下拉里点选一个或多个材料，看它们怎么拆解</div>';
+    return;
+  }
+  var html = "", grand = {}, grandCoin = 0;
   try{
     synSelected.forEach(function(name){
-      var total={};
-      expandMaterial(name,1,total,[]);
-      var tree=treeHTML(name,1,[]);
-      var coin=coinOf(name,1,[]);
-      Object.keys(total).forEach(function(b){ grand[b]=(grand[b]||0)+total[b]; });
-      grandCoin+=coin;
-      html+='<div class="mat-card" style="margin-top:12px;"><div class="sec-title" style="font-size:14px;">『'+esc(mm(name))+'』 合成拆解</div>'+
-        '<div class="tree">'+tree+'</div>'+
-        '<div class="muted small" style="margin:8px 0 4px;">合成 1 个需要的基础材料合计：</div>'+
-        '<div>'+chipsHTML(total)+'</div>'+
-        (coin>0?'<div class="tip" style="margin-top:10px;">💴 合成 1 个（含中间半成品）共需 <b>小判 × '+coin+'</b>（游戏货币，不占材料库存，不计入缺口）</div>':'')+
-        '</div>';
+      var qty = synQty[name] || 1;
+      var ing = ingredientsHTML(name, qty);
+      var base = expandToBase(name, qty, []);
+      var coin = coinOf(name, qty, []);
+      Object.keys(base).forEach(function(k){ grand[k] = (grand[k] || 0) + base[k]; });
+      grandCoin += coin;
+
+      var baseChips = Object.keys(base).map(function(k){
+        return '<span class="mat-chip">' + esc(mm(k)) + ' × ' + base[k] + '</span>';
+      }).join("");
+
+      html += '<div class="syn-card">'
+        +   '<div class="syn-card-head">'
+        +     '<span class="syn-title">' + esc(mm(name)) + '</span>'
+        +     '<input type="number" class="input num" min="1" value="' + qty + '" data-syn-qty="' + esc(name) + '">'
+        +     '<span class="muted small">个</span>'
+        +   '</div>'
+        +   (ing ? '<div class="syn-ingredients"><div class="syn-sub-title">直接配料</div>' + ing + '</div>' : '')
+        +   '<div class="syn-base">'
+        +     '<div class="syn-sub-title">合成 ' + qty + ' 个需要的基础材料</div>'
+        +     '<div>' + baseChips + '</div>'
+        +     (coin > 0 ? '<div class="tip" style="margin-top:8px;">💴 合成 ' + qty + ' 个（含中间合成物）共需 小判 × ' + coin + '</div>' : '')
+        +   '</div>'
+        + '</div>';
     });
-  }catch(err){ box.innerHTML='<div class="empty" style="color:#b45a66;">'+esc(err.message)+'</div>'; return; }
-  if(synSelected.length>1){
-    html+='<div class="mat-card" style="margin-top:12px;background:var(--primary-soft);"><div class="sec-title" style="font-size:14px;">合计（各合成 1 个）</div>'+
-      '<div>'+chipsHTML(grand)+'</div>'+
-      (grandCoin>0?'<div class="muted small" style="margin-top:8px;">小判合计：'+grandCoin+'</div>':'')+'</div>';
+  }catch(err){
+    box.innerHTML = '<div class="empty" style="color:#b45a66;">' + esc(err.message) + '</div>';
+    return;
   }
-  box.innerHTML=html;
+  if(synSelected.length > 1){
+    var grandChips = Object.keys(grand).map(function(k){
+      return '<span class="mat-chip">' + esc(mm(k)) + ' × ' + grand[k] + '</span>';
+    }).join("");
+    var itemList = synSelected.map(function(n){
+      var q = synQty[n] || 1;
+      return q + ' 个 ' + mm(n);
+    }).join('、');
+    html += '<div class="syn-card syn-card-total">'
+      + '<div class="syn-card-head"><span class="syn-title">合计</span></div>'
+      + '<div class="syn-sub-title"> ' + itemList + '所需：</div>'
+      + '<div>' + grandChips + '</div>'
+      + (grandCoin > 0 ? '<div class="muted small" style="margin-top:6px;">小判合计：' + grandCoin + '</div>' : '')
+      + '</div>';
+  }
+  box.innerHTML = html;
 }
-$("synTags").addEventListener("click",function(e){
-  var rm=e.target.getAttribute("data-rm-syn");
-  if(rm){ synSelected=synSelected.filter(function(s){return s!==rm;}); renderSynResult(); }
+
+$("synTags").addEventListener("click", function(e){
+  var rm = e.target.getAttribute("data-rm-syn");
+  if(rm){
+    synSelected = synSelected.filter(function(s){ return s !== rm; });
+    delete synQty[rm];
+    renderSynResult();
+  }
 });
-function treeHTML(product,qty,path){
-  var inputs=craftingInputs(product);
-  if(Object.keys(inputs).length===0){
-    return '<div class="node">'+esc(mm(product))+' × '+qty+'（基础材料）</div>';
-  }
-  if(path.indexOf(product)>=0) return '<div class="node" style="color:#b45a66;">已检测循环</div>';
-  var h='<div class="node"><b>'+esc(mm(product))+'</b> × '+qty+'</div>';
-  Object.keys(inputs).forEach(function(ing){
-    h+=treeHTML(ing,qty*inputs[ing],path.concat([product]));
-  });
-  return h;
-}
+
+/* 点合成物 → 弹胶囊 */
+$("synResult").addEventListener("click", function(e){
+  var chip = e.target.closest(".mat-chip.semi");
+  if(!chip) return;
+  var semiName = chip.getAttribute("data-semi");
+  var q = parseInt(chip.getAttribute("data-qty"), 10) || 1;
+  showIngredientPop(chip, semiName, q);   /* ← 传 chip，不是 e */
+});
+
+/* 改数量 → 重算 */
+$("synResult").addEventListener("change", function(e){
+  var name = e.target.getAttribute("data-syn-qty");
+  if(!name) return;
+  var v = parseInt(e.target.value, 10);
+  if(isNaN(v) || v < 1) v = 1;
+  synQty[name] = v;
+  renderSynResult();
+});
 
 /* ================================================================
    通用下拉候选：点输入框展开/收起，输入过滤，网格多列，点选回调
@@ -1237,6 +1546,127 @@ document.addEventListener("click",function(e){
 /* 按 ESC：关闭所有下拉 */
 document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeAllSuggest(); });
 
+/* ================================================================
+   更新日志弹窗
+   ================================================================ */
+var CHANGELOG_DATA = [
+  {
+    ver: "v2.2.0",
+    date: "2026-10-01",
+    items: {
+      "新增": [
+        "合成查询页优化：显示直接配料和基础材料合计，合成物可点击看拆解，支持调数量，多选有合计。",
+        "背包支持合成物：合成物库存自动折算成基础材料，参与缺口计算。",
+        "页脚新增「更新日志」入口，点开可看各版本改动。",
+        "首页使用说明新增「已有 / 需求 / 缺口」说明。"
+      ],
+      "优化": [
+        "右上角背包入口改为ふでのすけ圆形头像按钮，带果冻回弹、呼吸、悬停抖动。",
+        "点击头像按钮会撒出小爪印 / 花 / 星。",
+        "全站「半成品」统一改为「合成物」。"
+      ],
+      "修复": [
+        "修复旧算法下「已有」忽略合成物库存的问题。",
+        "修复合成查询弹窗定位错位、根节点重复的问题。",
+        "修正完整背包页说明文字重复。"
+      ]
+    }
+  },
+  {
+    ver: "v2.1.0",
+    date: "2026-09-29",
+    items: {
+      "新增": [
+        "缺口材料列表支持排序切换（缺口↓ / 完成度↑）。",
+        "突破计划中缺少材料数据的段会显示提示，输入时实时更新。"
+      ],
+      "优化": [
+        "手机端突破计划行改为两行布局，稀有度紧贴角色名。",
+        "PC 端所有行的等级输入框对齐。",
+        "本丸运势手机端分行显示，文字换行对齐。",
+        "背包支持合成物（碗 / 茶碗 / 围棋等）库存，会自动折算成基础材料参与缺口计算。",
+        "合成查询页显示直接配料与基础材料合计，点半成品可看其基础材料。",
+        "右上角背包入口改为ふでのすけ头像按钮（可点，会撒小爪印）。"
+      ],
+      "修复": [
+        "修复手机端突破计划行中，稀有度与删除按钮位置错乱的问题。",
+        "修复本丸运势手机端文字换行错位问题。",
+        "修复缺口材料列表默认顺序不稳定的问题。"
+      ]
+    }
+  },
+  {
+    ver: "v2.0.0",
+    date: "2026-09-29",
+    items: {
+      "修复": [
+        "突破段筛选规则修正为「起点 ≥ 当前等级上限 且 终点 ≤ 目标等级」。",
+        "修复当前等级正好停在节点时，下一段被漏算的问题。"
+      ],
+      "优化": [
+        "「当前等级」改为「当前等级上限」：请填游戏里显示的等级上限，不是面板等级。"
+      ],
+      "新增": [
+        "突破计划中加入「？」帮助提示（点开看说明，再点或点空白收起）。"
+      ]
+    }
+  },
+  {
+    ver: "v1",
+    date: "",
+    items: {
+      "初始版本": [
+        "支持添加刀剑、设等级、计算突破材料缺口。",
+        "材料来源查询、合成查询。",
+        "支持导出 / 导入本机备份。",
+        "数据保存在本机浏览器，离线可用。"
+      ]
+    }
+  }
+];
+
+function renderChangelog(){
+  var box = $("clBody");
+  if(!box) return;
+  var html = "";
+  CHANGELOG_DATA.forEach(function(v){
+    html += '<div class="cl-ver">';
+    html += '<h3>' + esc(v.ver) + (v.date ? '<span class="cl-ver-meta">· ' + esc(v.date) + '</span>' : '') + '</h3>';
+    Object.keys(v.items).forEach(function(cat){
+      html += '<h4>' + esc(cat) + '</h4>';
+      html += '<ul>';
+      v.items[cat].forEach(function(t){
+        html += '<li>' + esc(t) + '</li>';
+      });
+      html += '</ul>';
+    });
+    html += '</div>';
+  });
+  box.innerHTML = html;
+}
+
+function openChangelog(){
+  renderChangelog();
+  var mask = $("clMask");
+  if(mask) mask.classList.add("on");
+}
+function closeChangelog(){
+  var mask = $("clMask");
+  if(mask) mask.classList.remove("on");
+}
+
+$("changelogLink").addEventListener("click", function(e){
+  e.preventDefault();
+  openChangelog();
+});
+$("clClose").addEventListener("click", closeChangelog);
+$("clMask").addEventListener("click", function(e){
+  /* 点遮罩（非面板）才关 */
+  if(e.target === $("clMask")) closeChangelog();
+});
+document.addEventListener("keydown", function(e){
+  if(e.key === "Escape") closeChangelog();
+});
 /* ================================================================
    启动
    ================================================================ */
