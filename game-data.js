@@ -1,14 +1,14 @@
 /*
  * 刀剑乱舞材料规划工具 —— 公共游戏数据（由 convert-pazugiri.js 自动生成）
- * 来源：刀剣乱舞ぱずぎり统计ver0.2，9.30.xlsx · 生成时间：2026-09-30
+ * 来源：刀剣乱舞ぱずぎり统计ver0.2-20261001.xlsx · 生成时间：2026-10-01
  * 材料显示规则：中日文一致只显示一个（水）；不一致显示 日文|中文（丸太|木材）
  * 小判是游戏货币：不进材料缺口，单独记录在 coinCosts / 材料.coin
  */
 
 window.GAME_DATA = {
   "version": "0.2.9.30",
-  "generatedAt": "2026-09-30",
-  "source": "刀剣乱舞ぱずぎり统计ver0.2，9.30.xlsx",
+  "generatedAt": "2026-10-01",
+  "source": "刀剣乱舞ぱずぎり统计ver0.2-20261001.xlsx",
   "characters": [
     "太郎太刀",
     "次郎太刀",
@@ -523,7 +523,12 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 20,
       "toStage": 30,
-      "needs": {}
+      "needs": {
+        "纸": 2,
+        "蓬松的毛": 2,
+        "水": 2,
+        "花": 2
+      }
     },
     {
       "sword": "次郎太刀",
@@ -602,7 +607,14 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "蓝色颜料": 1,
+        "双六": 2,
+        "围棋": 2,
+        "味增汤": 2,
+        "算盘": 2,
+        "大太刀的心得": 1
+      }
     },
     {
       "sword": "三日月宗近",
@@ -801,7 +813,14 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "黄色颜料": 1,
+        "茶碗": 2,
+        "围棋": 2,
+        "双色牡丹饼": 2,
+        "锄头": 2,
+        "太刀的心得": 1
+      }
     },
     {
       "sword": "莺丸",
@@ -926,7 +945,12 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 20,
       "toStage": 30,
-      "needs": {}
+      "needs": {
+        "花蜜": 2,
+        "木材": 2,
+        "大豆": 2,
+        "打火石": 2
+      }
     },
     {
       "sword": "江雪左文字",
@@ -957,7 +981,12 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 20,
       "toStage": 30,
-      "needs": {}
+      "needs": {
+        "花蜜": 2,
+        "麦": 2,
+        "木材": 2,
+        "树枝": 2
+      }
     },
     {
       "sword": "山伏国广",
@@ -1132,7 +1161,12 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 20,
       "toStage": 30,
-      "needs": {}
+      "needs": {
+        "纸": 2,
+        "大豆": 2,
+        "水": 4,
+        "打火石": 2
+      }
     },
     {
       "sword": "加州清光",
@@ -1189,7 +1223,10 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 10,
       "toStage": 20,
-      "needs": {}
+      "needs": {
+        "叶子": 2,
+        "麦": 2
+      }
     },
     {
       "sword": "和泉守兼定",
@@ -1232,7 +1269,12 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 20,
       "toStage": 30,
-      "needs": {}
+      "needs": {
+        "花蜜": 2,
+        "花": 2,
+        "蓬松的毛": 2,
+        "打火石": 2
+      }
     },
     {
       "sword": "陆奥守吉行",
@@ -1299,7 +1341,12 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 20,
       "toStage": 30,
-      "needs": {}
+      "needs": {
+        "花蜜": 2,
+        "木材": 2,
+        "水": 4,
+        "花": 2
+      }
     },
     {
       "sword": "大俱利伽罗",
@@ -1361,7 +1408,12 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 20,
       "toStage": 30,
-      "needs": {}
+      "needs": {
+        "纸": 2,
+        "大豆": 2,
+        "水": 2,
+        "花": 2
+      }
     },
     {
       "sword": "蜂须贺虎彻",
@@ -1577,7 +1629,14 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "黄色颜料": 1,
+        "双六": 2,
+        "花札": 2,
+        "面包": 2,
+        "算盘": 2,
+        "短刀的心得": 1
+      }
     },
     {
       "sword": "乱藤四郎",
@@ -1673,7 +1732,14 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "黄色颜料": 1,
+        "双六": 2,
+        "花札": 2,
+        "味增汤": 2,
+        "锄头": 2,
+        "短刀的心得": 1
+      }
     },
     {
       "sword": "今剑",
@@ -1738,14 +1804,24 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "蓝色颜料": 1,
+        "书写道具": 2,
+        "围棋": 2,
+        "味增汤": 2,
+        "算盘": 2,
+        "短刀的心得": 1
+      }
     },
     {
       "sword": "厚藤四郎",
       "rarity": "普",
       "fromStage": 10,
       "toStage": 20,
-      "needs": {}
+      "needs": {
+        "蓬松的毛": 2,
+        "麦": 2
+      }
     },
     {
       "sword": "厚藤四郎",
@@ -1836,7 +1912,14 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "蓝色颜料": 1,
+        "双六": 2,
+        "花札": 2,
+        "面包": 2,
+        "算盘": 2,
+        "短刀的心得": 1
+      }
     },
     {
       "sword": "五虎退",
@@ -1937,7 +2020,14 @@ window.GAME_DATA = {
       "rarity": "普",
       "fromStage": 30,
       "toStage": 35,
-      "needs": {}
+      "needs": {
+        "蓝色颜料": 1,
+        "双六": 2,
+        "围棋": 2,
+        "味增汤": 2,
+        "锄头": 2,
+        "枪的心得": 1
+      }
     },
     {
       "sword": "蜻蛉切",
@@ -2773,4 +2863,3 @@ window.GAME_DATA = {
     }
   ]
 };
-//（注：内容由AI生成）
