@@ -1,0 +1,4 @@
+# 本地备份的旧 game-data.js，不上传 GitHub
+data tool/backup/
+*.bak
+node_modules/

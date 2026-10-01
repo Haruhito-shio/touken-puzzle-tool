@@ -1179,15 +1179,16 @@ footer{
 }
 /* ===== 点击果冻（手机 / 桌面都生效） ===== */
 .avatar-btn.is-jelly{
-  animation: jelly-click 0.55s cubic-bezier(.34, 1.56, .64, 1) !important;
+  animation: jello-horizontal 0.9s both !important;
 }
-@keyframes jelly-click{
-  0%   { transform: scale(1, 1); }
-  20%  { transform: scale(0.78, 1.18); }
-  42%  { transform: scale(1.14, 0.88); }
-  65%  { transform: scale(0.94, 1.06); }
-  82%  { transform: scale(1.04, 0.98); }
-  100% { transform: scale(1, 1); }
+@keyframes jello-horizontal{
+  0%   { transform: scale3d(1, 1, 1); }
+  30%  { transform: scale3d(1.25, 0.75, 1); }
+  40%  { transform: scale3d(0.75, 1.25, 1); }
+  50%  { transform: scale3d(1.15, 0.85, 1); }
+  65%  { transform: scale3d(0.95, 1.05, 1); }
+  75%  { transform: scale3d(1.05, 0.95, 1); }
+  100% { transform: scale3d(1, 1, 1); }
 }
 
 /* 手机端：触摸按下时也别被呼吸动画抢 */
@@ -1196,4 +1197,35 @@ footer{
     animation: none;
     transform: scale(0.85, 1.15);
   }
+}
+/* ===== 狐之助吐槽 ===== */
+.f-fox{
+  margin-top: 10px;
+  padding: 8px 14px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-style: italic;
+  text-align: center;
+  border-top: 1px dashed var(--line);
+  line-height: 1.7;
+}
+
+/* ===== 隐藏事件（特别） ===== */
+.f-event-hidden{
+  background: #f3e8e0;
+  border-left: 3px solid var(--primary);
+  padding: 14px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--ink-strong);
+}
+.f-event-hidden .f-event-title{
+  font-size: 12px;
+  color: #b45a66;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.f-event-hidden .f-event-text{
+  white-space: pre-wrap;
 }
