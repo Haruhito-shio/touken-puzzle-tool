@@ -69,16 +69,17 @@
     <div class="card guide">
       <div class="sec-title">使用说明 <span class="sub">// 三分钟上手</span></div>
       <h3>1. 背包怎么改？</h3>
-      <ul><li>任意页面右上角按钮，滑出抽屉，改完即存；刷一关拿材料就点它改数字，不用来回跳页。合成物（碗 / 茶碗 / 围棋等）也可以填，工具会自动折算成基础材料参与缺口计算。想批量整理，用首页「完整背包」。</li></ul>
+      <ul><li>任意页面右上角按钮，滑出抽屉，改完即存；刷一关拿材料就点它改数字，不用来回跳页。合成物（碗 / 茶碗 / 围棋等）也可以填——需求里有同名合成物时优先用它抵掉，不会拆成基础材料去抵别的缺口。想批量整理，用首页「完整背包」。</li></ul>
       <h3>2. 怎么算缺口？</h3>
       <ul><li>「编辑突破计划」里加刀、填等级，点「全部计划」或「用勾选角色计算」，缺口就在本页下方显示。</li></ul>
       <h3>3. 缺口去哪刷？</h3>
       <ul><li>缺口面板下方点「查看缺口来源」，自动跳到材料来源页并带上缺口材料；也可以自己搜材料手动选。关卡上的 x/n 只表示“覆盖几种材料”，不代表掉率。</li></ul>
       <h3>4. 已有/需求/缺口怎么理解？</h3>
       <ul>
-      <li><b>需求</b>：突破计划里所有材料展开到基础材料后的总量。</li>
-      <li><b>已有</b>：背包里所有材料（含合成物）折算成基础材料后的总量，<b>最多按需求计入</b>——比如需求 10 个粘土、你有 12 个，只算 10 个已有。</li>
+      <li><b>需求</b>：突破计划里所有材料逐层展开后的总量，<b>合成物优先用同名库存抵掉</b>，不够的才展开成基础材料。</li>
+      <li><b>已有</b>：能抵掉的那部分基础材料库存——同名合成物直接抵同名需求；基础材料库存抵基础材料需求，<b>最多按需求计入</b>（需求 10 个粘土、你有 12 个，只算 10 个已有）。合成物不会“拆成”基础材料去抵别的基础材料缺口。</li>
       <li><b>缺口</b> = 需求 − 已有（不足 0 按 0 算）。</li>
+      <li><b>小判</b>：只算<b>实际需要合成的量</b>，库存能抵的不用花小判。</li>
       </ul>
       <h3>5. 突破怎么算？</h3>
       <ul><li>只算「起点 ≥ 当前等级上限 且 终点 ≤ 目标等级」的段。例：上限 5 目标 35 算 10→20、20→30、30→35 三段；上限正好停在 30 时，30→35 这一段也会算。</li>
@@ -92,7 +93,6 @@
       <ul><li>本工具的数据来自多位同事共同维护的在线表格（刀剣乱舞ぱずぎり统计）。每一个材料数量、每一条关卡掉落，都是大家一点一点整理、核对出来的成果，工具只是把它们搬到了更好查的地方。感谢每一位记录和更新数据的伙伴！</li></ul>
       <h3>📝 备注</h3>
       <ul><li>欢迎各位同事使用！用着哪里不顺手、算出来的数字对不上，都请在xhs告诉我～</li>
-      <li>数据更新的话是个问题本人是懒鬼咋办啊，，有啥好法子吗可恶啊！</li></ul>
       <p class="muted small">材料显示：中日文一致只显示一个（水），不一致显示 日文|中文（丸太|木材）；小判是货币，不占背包、不计缺口。背包、计划只存在本机浏览器里。</p>
     </div>
   </section>
@@ -486,10 +486,14 @@ function computeShortage(baseTotal){
 }
 
 /* ================================================================
-   核心计算：需求展开 + 库存折算
-   - 总需求：顶层需求全部展开到基础材料（不考虑库存）
-   - 已有：所有库存折算到基础材料（合成物按配方展开）
-   - 缺口 = max(0, 需求 - 已有)
+   核心计算：方案A —— 合成物库存只抵同名需求，不够的才展开
+   - 顶层需求 → 逐层展开：
+       合成物 X × n：先查库存 inv[X]，用掉 use = min(n, inv[X])；
+         剩 n-use 个才需要合成 → 累加小判 (n-use)×X.coin → 递归展开它的配料
+         若 n-use <= 0 → 不展开、不花小判（库存够）
+       基础材料 → 累加进"基础材料需求池"
+   - 基础材料库存抵基础材料需求 → 缺口（已有最多按需求计入）
+   - 小判只算"实际需要合成的量"：库存能抵的，不用花小判
    ================================================================ */
 function computeAll(chars, inv){
   /* 1. 顶层需求 */
@@ -502,10 +506,18 @@ function computeAll(chars, inv){
     });
   });
 
-  /* 2. 总需求：全部展开到基础材料 */
-  var totalNeedBase = {};
-  var coin = 0;
+  /* 2. 需求逐层展开（合成物先抵同名库存） */
+  var needBase = {};     // 基础材料需求池
+  var coin = 0;          // 只算实际需要合成的量
   var warnings = [];
+  var semiUsed = {};     // 已用掉库存合成物 {mat: 个数}
+
+  // 库存工作副本：展开过程中会消耗同名合成物库存
+  var invPool = {};
+  Object.keys(inv).forEach(function(k){
+    if(inv[k] > 0) invPool[k] = inv[k];
+  });
+
   function expandNeed(mat, qty, path){
     if(path.indexOf(mat) >= 0){
       throw new Error("检测到合成配方循环：" + path.concat([mat]).join(" → "));
@@ -513,56 +525,41 @@ function computeAll(chars, inv){
     var m = materials[mat];
     var inputs = craftingInputs(mat);
     var keys = Object.keys(inputs);
+
+    /* 基础材料 / 无配方的合成物：直接进需求池 */
     if(!m || m.type !== "crafted" || keys.length === 0){
       if(m && m.type === "crafted" && keys.length === 0 && warnings.indexOf(mat) < 0){
         warnings.push(mat);
       }
-      totalNeedBase[mat] = (totalNeedBase[mat] || 0) + qty;
+      needBase[mat] = (needBase[mat] || 0) + qty;
       return;
     }
-    coin += qty * ((m && m.coin) || 0);
+
+    /* 合成物：先抵同名库存，不够的才展开 */
+    var have = invPool[mat] || 0;
+    var use = Math.min(qty, have);
+    if(use > 0){
+      invPool[mat] = have - use;
+      semiUsed[mat] = (semiUsed[mat] || 0) + use;
+    }
+    var remain = qty - use;
+    if(remain <= 0) return;   // 库存够，不展开、不花小判
+    coin += remain * ((m && m.coin) || 0);
     var next = path.concat([mat]);
     keys.forEach(function(ing){
-      expandNeed(ing, qty * inputs[ing], next);
+      expandNeed(ing, remain * inputs[ing], next);
     });
   }
   Object.keys(topNeeds).forEach(function(mat){
     expandNeed(mat, topNeeds[mat], []);
   });
 
-  /* 3. 已有：所有库存折算到基础材料 */
-  var totalHaveBase = {};
-  var semiUsed = {};
-  function expandHave(mat, qty, path){
-    if(path.indexOf(mat) >= 0) return;   // 循环保护：直接忽略
-    var m = materials[mat];
-    var inputs = craftingInputs(mat);
-    var keys = Object.keys(inputs);
-    if(!m || m.type !== "crafted" || keys.length === 0){
-      totalHaveBase[mat] = (totalHaveBase[mat] || 0) + qty;
-      return;
-    }
-    var next = path.concat([mat]);
-    keys.forEach(function(ing){
-      expandHave(ing, qty * inputs[ing], next);
-    });
-  }
-  Object.keys(inv).forEach(function(mat){
-    var qty = inv[mat];
-    if(!qty || qty <= 0) return;
-    var m = materials[mat];
-    if(m && m.type === "crafted") semiUsed[mat] = qty;
-    expandHave(mat, qty, []);
-  });
-
-  /* 4. 对比 */
+  /* 3. 基础材料库存抵基础材料需求 */
   var list = [];
-  var allBase = {};
-  Object.keys(totalNeedBase).forEach(function(k){ allBase[k] = 1; });
-  Object.keys(totalHaveBase).forEach(function(k){ allBase[k] = 1; });
-  Object.keys(allBase).forEach(function(mat){
-    var need = totalNeedBase[mat] || 0;
-    var have = Math.min(totalHaveBase[mat] || 0, need);   // 已有最多计入需求
+  Object.keys(needBase).forEach(function(mat){
+    var need = needBase[mat];
+    var haveInv = invPool[mat] || 0;       // 基础材料库存未被消耗
+    var have = Math.min(haveInv, need);    // 已有最多按需求计入
     var gap = Math.max(0, need - have);
     list.push({ mat: mat, need: need, inventory: have, shortage: gap });
   });
@@ -1790,7 +1787,7 @@ function renderSummaryFromLast(){
     var usedText = Object.keys(lastCalc.semiUsed).map(function(k){
       return mm(k) + " × " + lastCalc.semiUsed[k];
     }).join("、");
-    extraTips.push("已折算库存合成物：" + usedText);
+    extraTips.push("已用掉库存合成物：" + usedText);
   }
   if(lastCalc.warnings && lastCalc.warnings.length > 0){
     var warnText = lastCalc.warnings.map(function(k){ return mm(k); }).join("、");
