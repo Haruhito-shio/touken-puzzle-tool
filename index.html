@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#bcd2e5">
 <title>刀剣乱舞ぱずぎり材料规划工具</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 3h14v3H5zM12 6v4l5 8-3 3-5-6-4 6-3-3 6-8V6z' fill='%23d97f8b'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%238fa6e0' fill-opacity='.85'%3E%3Cellipse cx='12' cy='6.2' rx='4.2' ry='5'/%3E%3Cellipse cx='12' cy='17.8' rx='4.2' ry='5' fill='%23efb3c6'/%3E%3Cellipse cx='6.2' cy='12' rx='5' ry='4.2' fill='%23bba9e6'/%3E%3Cellipse cx='17.8' cy='12' rx='5' ry='4.2'/%3E%3C/g%3E%3Ccircle cx='12' cy='12' r='2' fill='%23f4d98a'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fontsapi.zeoseven.com/243/main/result.css">
 <noscript><link rel="stylesheet" href="https://fontsapi.zeoseven.com/243/main/result.css" /></noscript>
 
@@ -14,17 +15,39 @@
 </head>
 <body>
 
+<!-- ===== 背景装饰层（纯装饰；紫阳花 / 花火 / 涟漪 / 花瓣由视觉脚本生成，样式在 theme.css 的 .wc-bg） ===== -->
+<div class="wc-bg" aria-hidden="true">
+  <div class="wc-wash"></div>
+  <div class="wc-layer wc-ghost" id="wcGhost"></div>
+  <div class="wc-layer wc-fwlive" id="wcFw"></div>
+  <div class="wc-layer wc-rain" id="wcRain"></div>
+  <div class="wc-layer wc-hyd" id="wcHyd"></div>
+  <div class="wc-layer wc-drift" id="wcDrift"></div>
+  <svg class="wc-defs" id="wcDefs" aria-hidden="true"></svg>
+</div>
+<div class="side-chimes" id="sideChimes" aria-hidden="true"></div>
+<div class="fx-layer" id="fxLayer" aria-hidden="true"></div>
+
 <!-- ===== 头部（右上角背包按钮，任意页面可开抽屉） ===== -->
 <header>
-  <div>
-    <h1>刀消材料规划工具v2.2.1</h1>
-    <div class="en">TOUKEN-PUZZLE MATERIAL PLANNER</div>
-    <div class="credit">作者：Haruhito-shio ｜ 小红书：年下阴角激推 ｜ 数据更新日期：<span id="dataDate">—</span></div>
+  <div class="hd-sky"><div class="hd-paper"></div></div>
+  <div class="hd-inner">
+    <div class="hd-title">
+      <div class="hd-h1row">
+        <h1>刀消材料规划工具v2.3.0</h1>
+        <button class="tod-btn" id="todBtn" type="button" aria-label="切换昼夜色调"></button>
+      </div>
+      <div class="en">TOUKEN-PUZZLE MATERIAL PLANNER</div>
+      <div class="credit">作者：Haruhito-shio ｜ 小红书：年下阴角激推 ｜ 数据更新日期：<span id="dataDate">—</span></div>
+    </div>
+    <div class="hd-chimes" id="hdChimes" aria-hidden="true"></div>
   </div>
+</header>
+<div class="bag-hang" id="bagHang">
   <button class="avatar-btn" id="bagBtn" aria-label="背包">
   <img src="https://i.111666.best/image/LmIgbPk9J5Lc1VWGheliYQ.png" alt="背包">
   </button>
-</header>
+</div>
 
 <main class="wrap">
 
@@ -59,11 +82,11 @@
     <div class="card">
       <div class="sec-title">数据备份 <span class="sub">// 本机数据不丢失</span></div>
       <div class="row" style="gap:10px;">
-        <button class="btn btn-primary btn-mini grow" id="btnExport">📤 导出备份</button>
-        <button class="btn btn-soft btn-mini grow" id="btnImport">📥 导入备份</button>
+        <button class="btn btn-primary btn-mini grow" id="btnExport"><span class="mk mk-up" aria-hidden="true"></span>导出备份</button>
+        <button class="btn btn-soft btn-mini grow" id="btnImport"><span class="mk mk-down" aria-hidden="true"></span>导入备份</button>
         <input type="file" id="importFile" accept=".json,application/json" hidden>
       </div>
-      <div class="muted small" style="margin-top:8px;">导出会下载一个备份文件；换设备或清浏览器后，导入即可恢复计划和背包。💡备份只保存你的突破计划与背包库存，游戏公共数据（角色/材料/关卡等）不会被备份、也不会被覆盖。</div>
+      <div class="muted small" style="margin-top:8px;">导出会下载一个备份文件；换设备或清浏览器后，导入即可恢复计划和背包。<span class="mk mk-star" aria-hidden="true"></span>备份只保存你的突破计划与背包库存，游戏公共数据（角色/材料/关卡等）不会被备份、也不会被覆盖。</div>
     </div>
 
     <div class="card guide">
@@ -84,14 +107,13 @@
       <h3>5. 突破怎么算？</h3>
       <ul><li>只算「起点 ≥ 当前等级上限 且 终点 ≤ 目标等级」的段。例：上限 5 目标 35 算 10→20、20→30、30→35 三段；上限正好停在 30 时，30→35 这一段也会算。</li>
       <li>「当前等级上限」请填游戏里显示的<b>等级上限</b>（不是面板等级）。例：练到 10 做了突破、上限变 20，就填 20；还没突破过就填当前等级。</li>
-      <li>目前 5 把刀有普/彩两套（太郎太刀・三日月宗近・一期一振・歌仙兼定・乱藤四郎），选到时会让你选稀有度，普/彩需求不同。</li></ul>
       <h3>6. 合成查询怎么用？</h3>
       <ul><li>「合成」页选合成物（茶碗 / 围棋 / 花札等），可以看它拆成哪些基础材料、各要几个、合成要花多少小判。合成物用加粗标出，点它可以看它自己的基础材料。数量可以改，结果实时更新。</li></ul>
       <h3>7. 更新日志在哪看？</h3>
       <ul><li>页面底部「更新日志」可以点开，看每个版本改了什么。</li></ul>
-      <h3>🙏 致谢</h3>
+      <h3><span class="mk mk-heart" aria-hidden="true"></span>致谢</h3>
       <ul><li>本工具的数据来自多位同事共同维护的在线表格（刀剣乱舞ぱずぎり统计）。每一个材料数量、每一条关卡掉落，都是大家一点一点整理、核对出来的成果，工具只是把它们搬到了更好查的地方。感谢每一位记录和更新数据的伙伴！</li></ul>
-      <h3>📝 备注</h3>
+      <h3><span class="mk mk-memo" aria-hidden="true"></span>备注</h3>
       <ul><li>欢迎各位同事使用！用着哪里不顺手、算出来的数字对不上，都请在xhs告诉我～</li>
       <p class="muted small">材料显示：中日文一致只显示一个（水），不一致显示 日文|中文（丸太|木材）；小判是货币，不占背包、不计缺口。背包、计划只存在本机浏览器里。</p>
     </div>
@@ -105,20 +127,21 @@
         <input id="swordSearch" class="input" placeholder="点这里展开刀剑列表，或输入过滤后点选" autocomplete="off">
         <div id="swordSuggest" class="suggest"></div>
       </div>
+      <div class="var-row" id="varRow" style="display:none;">
+        <div class="small var-title" id="rareLabel">稀有度 / 异名</div>
+        <div class="var-chips" id="varChips" role="radiogroup" aria-label="稀有度与异名"></div>
+        <input type="hidden" id="raritySel" value="">
+      </div>
       <div class="row" style="margin-top:10px;">
         <label class="small">当前等级上限</label>
         <input id="curLevel" type="number" class="input num" min="1" value="1">
         <span class="muted">→</span>
         <label class="small">目标 Lv</label>
         <input id="tarLevel" type="number" class="input num" min="1" value="30">
-        <label class="small" id="rareLabel" style="display:none;">稀有度</label>
-        <select id="raritySel" class="input" style="display:none;">
-          <option value="普">普</option><option value="彩">彩</option>
-        </select>
         <button class="btn btn-primary btn-mini" id="btnAdd">加入计划</button>
       </div>
       <div class="tip" style="margin-top:8px;">「当前等级上限」怎么填？填游戏里显示的<b>等级上限</b>（不是面板等级）。例：练到 10 级做了突破、上限变 20，就填 <b>20</b>；还没突破过就填当前等级。</div>
-      <div class="muted small" style="margin-top:6px;">只有 5 把刀有「彩」形态（太郎太刀・三日月宗近・一期一振・歌仙兼定・乱藤四郎），选到它们时会自动出现稀有度选择；普/彩的材料需求不同。</div>
+      <div class="muted small" style="margin-top:6px;">选择角色后会自动出现稀有度选择；普/彩的材料需求不同。此外稀有度留空时默认为「普」。</div>
     </div>
 
     <div class="card">
@@ -303,11 +326,97 @@ function mm(name){
   var m=materials[name]; if(!m) return name;
   return (m.ja && m.ja!==m.zh) ? m.ja+"|"+m.zh : (m.zh||name);
 }
-/* 这把刀是否有普/彩两套突破数据 */
-function hasVariants(sword){
-  var set={};
-  breakthroughs.forEach(function(b){ if(b.sword===sword) set[b.rarity]=1; });
-  return Object.keys(set).length>1;
+/* ================================================================
+   形态（稀有度 + 异名）
+   数据里 rarity 仍是「普 / 彩」；同一稀有度有多套时，用可选字段 form（异名，如「勇気百寸」）区分。
+   旧数据 / 旧计划没有 form → 默认对应该稀有度排在最前的那一套，所以不受影响。
+   ================================================================ */
+var RARITY_ORDER={"普":0,"彩":1};
+function variantKey(r,f){ return f ? r+"·"+f : r; }
+function variantLabel(r,f){ return f ? r+" · "+f : r; }
+function parseVariantKey(k){
+  k=String(k||"普"); var i=k.indexOf("·");
+  return i<0 ? {rarity:k,form:""} : {rarity:k.slice(0,i),form:k.slice(i+1)};
+}
+/* 这把刀所有的形态（按 普→彩，同稀有度保持数据顺序） */
+function variantsOf(sword){
+  var seen={}, list=[];
+  breakthroughs.forEach(function(b){
+    if(b.sword!==sword) return;
+    var f=b.form||"", k=variantKey(b.rarity,f);
+    if(seen[k]) return; seen[k]=1;
+    list.push({rarity:b.rarity, form:f, key:k, label:variantLabel(b.rarity,f)});
+  });
+  list.sort(function(a,b){
+    var ra=RARITY_ORDER[a.rarity], rb=RARITY_ORDER[b.rarity];
+    return (ra==null?9:ra)-(rb==null?9:rb);
+  });
+  return list;
+}
+/* 这把刀是否有多套突破数据（普/彩，或同稀有度多个异名） */
+function hasVariants(sword){ return variantsOf(sword).length>1; }
+/* 标签组（Chips）：一个形态一个标签，点选即选中；隐藏域 #raritySel 存当前选中的 key */
+function variantChipsHTML(vs,curKey){
+  return vs.map(function(v){
+    var on=(v.key===curKey);
+    return '<button type="button" class="var-chip'+(on?" on":"")+'" role="radio" aria-checked="'+on+'" data-vkey="'+esc(v.key)+'" data-r="'+esc(v.rarity)+'">'+esc(v.label)+'</button>';
+  }).join("");
+}
+/* 添加区的「形态与异名」：只有这把刀有多套时才出现；已在计划里的刀默认选中它当前的那套 */
+function setVarUI(show, sword){
+  var row=$("varRow"), hid=$("raritySel"), box=$("varChips");
+  if(!row||!hid||!box) return;
+  if(show && sword){
+    var vs=variantsOf(sword), plan=plans.find(function(p){ return p.sword===sword; });
+    var curKey=plan ? variantKey(plan.rarity||"普", resolveForm(sword,plan.rarity||"普",plan.form)) : (vs[0]&&vs[0].key);
+    hid.value=curKey||"";
+    box.innerHTML=variantChipsHTML(vs,curKey);
+  }
+  row.style.display=show ? "block" : "none";
+}
+$("varChips").addEventListener("click",function(e){
+  var b=e.target.closest(".var-chip"); if(!b) return;
+  $("raritySel").value=b.getAttribute("data-vkey");
+  $("varChips").querySelectorAll(".var-chip").forEach(function(c){
+    var on=(c===b); c.classList.toggle("on",on); c.setAttribute("aria-checked",on);
+  });
+});
+/* 切换某把刀的形态（计划卡徽章弹出面板里选） */
+function applyVariant(sword,key){
+  var plan=plans.find(function(p){return p.sword===sword;});
+  if(!plan) return;
+  var pv=parseVariantKey(key);
+  plan.rarity=pv.rarity; if(pv.form) plan.form=pv.form; else delete plan.form;
+  saveJSON("touken_plans",plans);
+  toast("已切换 "+sword+" → "+variantLabel(pv.rarity,pv.form)+"（需求不同）");
+  renderPlans(); renderHome();
+}
+function closeVarPop(){ document.querySelectorAll(".var-pop").forEach(function(n){ n.remove(); }); }
+function openVarPop(btn,sword){
+  closeVarPop();
+  var plan=plans.find(function(p){return p.sword===sword;});
+  if(!plan) return;
+  var vs=variantsOf(sword), curKey=variantKey(plan.rarity||"普", resolveForm(sword,plan.rarity||"普",plan.form));
+  var pop=document.createElement("div"); pop.className="var-pop";
+  pop.innerHTML='<div class="var-pop-title">选择「'+esc(sword)+'」的形态</div><div class="var-chips" role="radiogroup">'+variantChipsHTML(vs,curKey)+'</div>';
+  document.body.appendChild(pop);
+  var r=btn.getBoundingClientRect(), sx=window.pageXOffset, sy=window.pageYOffset;
+  var left=Math.max(12, Math.min(r.left+sx, sx+document.documentElement.clientWidth-pop.offsetWidth-12));
+  pop.style.left=left+"px"; pop.style.top=(r.bottom+sy+8)+"px";
+  pop.addEventListener("click",function(e){
+    var c=e.target.closest(".var-chip"); if(!c) return;
+    closeVarPop(); applyVariant(sword,c.getAttribute("data-vkey"));
+  });
+}
+document.addEventListener("click",function(e){
+  if(!e.target.closest(".var-pop") && !e.target.closest("[data-var-edit]")) closeVarPop();
+});
+/* 计划里没记 form（旧计划）或 form 已不存在 → 落到该稀有度的第一套 */
+function resolveForm(sword,rarity,form){
+  var vs=variantsOf(sword).filter(function(v){ return v.rarity===rarity; });
+  if(!vs.length) return form||"";
+  if(form && vs.some(function(v){ return v.form===form; })) return form;
+  return vs[0].form;
 }
 
 /* ================================================================
@@ -315,9 +424,10 @@ function hasVariants(sword){
    ================================================================ */
 
 /* 分析：根据上限值，找该刀的所有突破段，判断哪些已完成 */
-function analyzeCap(sword, rarity, cap){
+function analyzeCap(sword, rarity, cap, form){
+  var rf = resolveForm(sword, rarity, form);
   var steps = breakthroughs.filter(function(b){
-    return b.sword===sword && b.rarity===rarity;
+    return b.sword===sword && b.rarity===rarity && (b.form||"")===rf;
   }).sort(function(a,b){ return a.fromStage-b.fromStage; });
   if(steps.length===0) return null;
   var done = steps.filter(function(s){ return s.toStage<=cap; });
@@ -326,25 +436,26 @@ function analyzeCap(sword, rarity, cap){
 }
 
 /* 找出 cap 到 tar 范围内，needs 为空的突破段（只针对该刀） */
-function findEmptyStages(sword, rarity, cap, tar){
+function findEmptyStages(sword, rarity, cap, tar, form){
+  var rf = resolveForm(sword, rarity, form);
   return breakthroughs.filter(function(b){
-    return b.sword===sword && b.rarity===rarity
+    return b.sword===sword && b.rarity===rarity && (b.form||"")===rf
         && b.fromStage>=cap && b.toStage<=tar
         && (!b.needs || Object.keys(b.needs).length===0);
   }).sort(function(a,b){ return a.fromStage-b.fromStage; });
 }
 
 /* 生成"数据缺失"提示；没有缺数据 → 返回空字符串 */
-function capFeedbackText(sword, rarity, cap, tar){
-  var empty = findEmptyStages(sword, rarity, cap, tar);
+function capFeedbackText(sword, rarity, cap, tar, form){
+  var empty = findEmptyStages(sword, rarity, cap, tar, form);
   if(empty.length===0) return "";
   var list = empty.map(function(s){ return s.fromStage+"→"+s.toStage; }).join("、");
   return "数据缺失：" + list;
 }
 
 /* 判断是否需要"警告"（用户可能填了面板等级而非上限） */
-function capFeedbackWarn(sword, rarity, cap){
-  var a = analyzeCap(sword, rarity, cap);
+function capFeedbackWarn(sword, rarity, cap, form){
+  var a = analyzeCap(sword, rarity, cap, form);
   if(!a || !a.next) return false;
   return a.next.fromStage < cap && cap < a.next.toStage;
 }
@@ -356,7 +467,7 @@ function updatePlanRowFeedback(){
     var sword = box.getAttribute("data-cap-feedback");
     var plan = plans.find(function(p){ return p.sword===sword; });
     if(!plan){ box.style.display="none"; return; }
-    var txt = capFeedbackText(plan.sword, plan.rarity||"普", plan.currentLevel, plan.targetLevel);
+    var txt = capFeedbackText(plan.sword, plan.rarity||"普", plan.currentLevel, plan.targetLevel, plan.form);
     if(!txt){ box.style.display="none"; return; }
     box.className = "cap-feedback warn";
     box.innerHTML = '<span class="fb-warn">⚠</span> ' + esc(txt);
@@ -376,7 +487,7 @@ function updateRowFeedbackLive(sword){
   var cur = curEl ? parseInt(curEl.value,10) : plan.currentLevel;
   var tar = tarEl ? parseInt(tarEl.value,10) : plan.targetLevel;
   if(isNaN(cur) || isNaN(tar)){ box.style.display="none"; return; }
-  var txt = capFeedbackText(sword, plan.rarity||"普", cur, tar);
+  var txt = capFeedbackText(sword, plan.rarity||"普", cur, tar, plan.form);
   if(!txt){ box.style.display="none"; return; }
   box.className = "cap-feedback warn";
   box.innerHTML = '<span class="fb-warn">⚠</span> ' + esc(txt);
@@ -428,9 +539,10 @@ document.addEventListener("click", function(e){
    核心计算
    ================================================================ */
 /* 突破筛选：只算「起点>=当前 且 终点<=目标」的段；带刀剑+稀有度（普/彩数据不同） */
-function selectBreakthroughs(sword,rarity,cur,tar){
+function selectBreakthroughs(sword,rarity,cur,tar,form){
+  var rf=resolveForm(sword,rarity,form);
   return breakthroughs.filter(function(s){
-    return s.sword===sword && s.rarity===rarity && s.fromStage>=cur && s.toStage<=tar;
+    return s.sword===sword && s.rarity===rarity && (s.form||"")===rf && s.fromStage>=cur && s.toStage<=tar;
   });
 }
 function craftingInputs(product){
@@ -455,7 +567,7 @@ function coinOf(name,qty,path){
 function coinForPlans(chars){
   var total=0;
   chars.forEach(function(p){
-    selectBreakthroughs(p.sword,p.rarity||"普",p.currentLevel,p.targetLevel).forEach(function(st){
+    selectBreakthroughs(p.sword,p.rarity||"普",p.currentLevel,p.targetLevel,p.form).forEach(function(st){
       Object.keys(st.needs).forEach(function(mat){ total+=coinOf(mat,st.needs[mat],[]); });
     });
   });
@@ -464,7 +576,7 @@ function coinForPlans(chars){
 function computePlans(chars){
   var baseTotal={};
   chars.forEach(function(p){
-    var steps=selectBreakthroughs(p.sword,p.rarity||"普",p.currentLevel,p.targetLevel);
+    var steps=selectBreakthroughs(p.sword,p.rarity||"普",p.currentLevel,p.targetLevel,p.form);
     var charTotal={};
     steps.forEach(function(st){
       Object.keys(st.needs).forEach(function(mat){
@@ -499,7 +611,7 @@ function computeAll(chars, inv){
   /* 1. 顶层需求 */
   var topNeeds = {};
   chars.forEach(function(p){
-    selectBreakthroughs(p.sword, p.rarity||"普", p.currentLevel, p.targetLevel).forEach(function(st){
+    selectBreakthroughs(p.sword, p.rarity||"普", p.currentLevel, p.targetLevel, p.form).forEach(function(st){
       Object.keys(st.needs).forEach(function(mat){
         topNeeds[mat] = (topNeeds[mat] || 0) + st.needs[mat];
       });
@@ -585,7 +697,7 @@ function findStagesForMaterials(targetMats){
 function stageStats(){
   var total=0, done=0;
   plans.forEach(function(p){
-    var steps=selectBreakthroughs(p.sword,p.rarity||"普",0,p.targetLevel);   // 整条计划涉及的全部段
+    var steps=selectBreakthroughs(p.sword,p.rarity||"普",0,p.targetLevel,p.form);   // 整条计划涉及的全部段
     var d=steps.filter(function(s){ return s.toStage<=p.currentLevel; }).length;
     total+=steps.length; done+=d;
   });
@@ -1696,6 +1808,7 @@ function importData(file){
       }).map(function(p){
         /* 旧备份没有稀有度字段，默认补「普」 */
         if(!p.rarity) p.rarity="普";
+        if(typeof p.form!=="string" || !p.form) delete p.form;
         return p;
       });
       var inv={};
@@ -1735,22 +1848,27 @@ function renderPlans(){
   plans.forEach(function(p){
     var isSel=(checked===null)||(checked.indexOf(p.sword)>=0);
     var d=document.createElement("div"); d.className="plan-row";
-    var rareSel=hasVariants(p.sword)
-      ? '<select class="input" data-rare="1" data-sword="'+esc(p.sword)+'">'+
-        '<option value="普"'+(p.rarity!=="彩"?" selected":"")+'>普</option>'+
-        '<option value="彩"'+(p.rarity==="彩"?" selected":"")+'>彩</option></select>'
-      : '<span class="rare-placeholder"></span>';
+    var vs=variantsOf(p.sword), rr=p.rarity||"普", rf=resolveForm(p.sword,rr,p.form), badge="";
+    if(vs.length>1){
+      badge='<button type="button" class="var-badge" data-r="'+esc(rr)+'" data-var-edit="'+esc(p.sword)+'" aria-label="切换形态">'+esc(variantLabel(rr,rf))+'</button>';
+    } else if(rf || rr!=="普"){
+      badge='<span class="var-badge" data-r="'+esc(rr)+'">'+esc(variantLabel(rr,rf))+'</span>';
+    }
     d.innerHTML =
   '<input type="checkbox" class="check" '+(isSel?"checked":"")+' data-sword="'+esc(p.sword)+'">'+
-  '<span class="plan-name">'+esc(p.sword)+'</span>'+rareSel+
-  '<div class="row grow" style="flex-wrap:wrap;">'+
-    '<input type="number" class="input num" min="1" data-f="cur" data-sword="'+esc(p.sword)+'" value="'+p.currentLevel+'">'+
-    '<span class="help-icon" onclick="showCapHelp(event, \'row-'+esc(p.sword)+'\')">？</span>'+
-    '<span class="muted">→</span>'+
-    '<input type="number" class="input num" min="1" data-f="tar" data-sword="'+esc(p.sword)+'" value="'+p.targetLevel+'">'+
+  '<span class="plan-name">'+esc(p.sword)+'</span>'+
+  '<button class="icon-btn" data-del="'+esc(p.sword)+'" aria-label="删除">✕</button>'+
+  '<div class="plan-sub">'+badge+
+    '<div class="lv-row">'+
+      '<span class="lv-t">Lv</span>'+
+      '<input type="number" class="input num" min="1" data-f="cur" data-sword="'+esc(p.sword)+'" value="'+p.currentLevel+'">'+
+      '<span class="help-icon" onclick="showCapHelp(event, \'row-'+esc(p.sword)+'\')">？</span>'+
+      '<span class="lv-arrow" aria-hidden="true"></span>'+
+      '<span class="lv-t">Lv</span>'+
+      '<input type="number" class="input num" min="1" data-f="tar" data-sword="'+esc(p.sword)+'" value="'+p.targetLevel+'">'+
+    '</div>'+
   '</div>'+
-  '<button class="icon-btn" data-del="'+esc(p.sword)+'" style="padding:4px 8px;">✕</button>'+
-  '<div class="cap-feedback" data-cap-feedback="'+esc(p.sword)+'" style="flex-basis:100%;"></div>';
+  '<div class="cap-feedback" data-cap-feedback="'+esc(p.sword)+'"></div>';
   list.appendChild(d);
   });
   $("selCount").textContent="已选择 "+sel.length+" / "+plans.length+" 把刀剑";
@@ -1869,13 +1987,24 @@ $("btnAdd").addEventListener("click",function(){
   var cur=parseInt($("curLevel").value,10), tar=parseInt($("tarLevel").value,10);
   if(isNaN(cur)||isNaN(tar)||cur<1||tar<1){ toast("等级请输入 1 以上的数字"); return; }
   if(tar<cur){ toast("目标等级不能小于当前等级"); return; }
-  var rarity = hasVariants(sword) ? ($("raritySel").value || "普") : "普";
+  var rarity="普", form="", vs=variantsOf(sword);
+  if(vs.length>1){
+    var ex=plans.find(function(p){return p.sword===sword;});
+    var vkey = selectedSword===sword ? $("raritySel").value
+             : (ex ? variantKey(ex.rarity||"普", resolveForm(sword,ex.rarity||"普",ex.form)) : vs[0].key);
+    var pv=parseVariantKey(vkey); rarity=pv.rarity; form=pv.form;
+  }
+  else if(vs.length===1){ rarity=vs[0].rarity; form=vs[0].form; }
+  var vlabel=variantLabel(rarity,form);
   var f=plans.find(function(p){return p.sword===sword;});
-  if(f){ f.currentLevel=cur; f.targetLevel=tar; f.rarity=rarity; toast("已更新 "+sword+"（"+rarity+"）"); }
-  else{ plans.push({sword:sword,rarity:rarity,currentLevel:cur,targetLevel:tar}); toast("已加入计划："+sword+"（"+rarity+"） Lv"+cur+" → "+tar); }
+  if(f){ f.currentLevel=cur; f.targetLevel=tar; f.rarity=rarity; if(form) f.form=form; else delete f.form; toast("已更新 "+sword+"（"+vlabel+"）"); }
+  else{
+    var np={sword:sword,rarity:rarity,currentLevel:cur,targetLevel:tar}; if(form) np.form=form;
+    plans.push(np); toast("已加入计划："+sword+"（"+vlabel+"） Lv"+cur+" → "+tar);
+  }
   saveJSON("touken_plans",plans);
   selectedSword=null; $("swordSearch").value="";
-  $("rareLabel").style.display="none"; $("raritySel").style.display="none";
+  setVarUI(false);
   renderPlans(); renderHome();
 });
 /* 实时刷新：输入时立刻更新该行的缺数据提示（不保存，不重绘） */
@@ -1905,16 +2034,11 @@ $("planList").addEventListener("change",function(e){
     saveJSON("touken_plans",plans);
     toast("已保存 "+sword+"：Lv"+plan.currentLevel+" → "+plan.targetLevel);
     renderHome();
-  } else if(e.target.getAttribute("data-rare")){
-    var plan2=plans.find(function(p){return p.sword===sword;});
-    if(!plan2) return;
-    plan2.rarity=e.target.value;
-    saveJSON("touken_plans",plans);
-    toast("已切换 "+sword+" → "+plan2.rarity+"（需求不同）");
-    renderPlans(); renderHome();
   }
 });
 $("planList").addEventListener("click",function(e){
+  var ve=e.target.closest("[data-var-edit]");
+  if(ve){ openVarPop(ve, ve.getAttribute("data-var-edit")); return; }
   var del=e.target.getAttribute("data-del");
   if(del){
     plans=plans.filter(function(p){return p.sword!==del;});
@@ -2202,7 +2326,7 @@ function bindSuggestInput(inputId){
   });
   $(inputId).addEventListener("input",function(){
     if(inputId==="swordSearch" && $(inputId).value!==selectedSword){   // 手动改字 = 取消已选
-      selectedSword=null; $("rareLabel").style.display="none"; $("raritySel").style.display="none";
+      selectedSword=null; setVarUI(false);
     }
     openSuggest(inputId,false);
   });
@@ -2215,11 +2339,10 @@ function onPickSuggest(inputId,name,el){
   if(inputId==="swordSearch"){
     if(selectedSword===name){   // 再点已选中的 = 取消
       selectedSword=null; $(inputId).value="";
-      $("rareLabel").style.display="none"; $("raritySel").style.display="none";
+      setVarUI(false);
     } else {
       selectedSword=name; $(inputId).value=name;
-      if(hasVariants(name)){ $("rareLabel").style.display="inline"; $("raritySel").style.display="inline-block"; }
-      else { $("rareLabel").style.display="none"; $("raritySel").style.display="none"; }
+      setVarUI(hasVariants(name), name);
     }
     closeSuggest(SUG[inputId].box);   // 单选：选完就关
     return;
@@ -2247,6 +2370,23 @@ document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeAllSu
    更新日志弹窗
    ================================================================ */
 var CHANGELOG_DATA = [
+  {
+    ver: "v2.3.0",
+    date: "2026-10-17",
+    items: {
+      "新增": [
+        "新增首次活动「讨伐大作战」今剑（彩·六寸五分の小天狗）与陆奥守吉行（普·勇気百寸）的突破数据。",
+        "全新视觉：夏日花火、紫阳花、风铃主题，日系绘本水彩剪纸风格。",
+        "页眉星星按钮可切换白天 / 黄昏 / 夜晚色调，傍晚和夜里还有萤火虫。",
+        "风铃会随风轻摆，鼠标触碰、点击或滚动页面都会摇晃。",
+        "点按钮、卡片或空白处都有轻轻的点击特效。"
+      ],
+      "优化": [
+        "背包按钮改为右上角的花环徽章，带「背包」小吊牌，翻页时会轻轻摇晃",
+        "其他变动看仓库更新日志。"
+      ]
+    }
+  },
   {
     ver: "v2.2.1", 
     date: "2026-10-03", 
@@ -2379,6 +2519,649 @@ document.addEventListener("keydown", function(e){
 renderHome();
 genFortune();
 showView("home");
+</script>
+
+<script>
+/* ================================================================
+   夏日花火 · 紫阳花 · 风铃 —— 纯视觉增强脚本（独立）
+   只负责：昼夜色调 / 背景插画层（紫阳花团、幽灵花火、涟漪、花瓣、星光、萤火）/
+           偶发的小花火 / 风铃摆动物理 / 全局点击特效 / 入口卡片倾斜 / 导航滑块 /
+           把运势里的 emoji 换成矢量图标
+   不读写 plans、inventory 等业务数据；删掉这一段，网站功能完全不受影响
+   ================================================================ */
+(function(){
+  "use strict";
+  var NS = "http://www.w3.org/2000/svg";
+  var root = document.documentElement;
+  var RM = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+  function $(id){ return document.getElementById(id); }
+  function rnd(a, b){ return a + Math.random() * (b - a); }
+  function pick(a){ return a[Math.floor(Math.random() * a.length)]; }
+  function clamp(v, a, b){ return v < a ? a : (v > b ? b : v); }
+  function el(tag, attrs, parent){
+    var n = document.createElementNS(NS, tag);
+    for(var k in attrs){ n.setAttribute(k, attrs[k]); }
+    if(parent) parent.appendChild(n);
+    return n;
+  }
+  function div(cls, parent){
+    var d = document.createElement("div");
+    d.className = cls;
+    if(parent) parent.appendChild(d);
+    return d;
+  }
+  function vw(){ return window.innerWidth; }
+  function vh(){ return window.innerHeight; }
+
+  var FW = ["#f7f2e6", "#ecc4cf", "#e8d49a", "#bdb9e3", "#bcd6ee"];      /* 花火：奶白 / 淡粉 / 鹅黄 / 蓝紫 / 天蓝 */
+  var CF = ["#dba8b8", "#b1a8d6", "#8eaed4", "#9bc5b5", "#e4cd92", "#e3b8a2"]; /* 点击彩纸 */
+
+  /* ---------------- 昼夜色调 ---------------- */
+  var TODS = ["day", "dusk", "night"];
+  var TCOL = { day: "#bcd2e5", dusk: "#b4b4d6", night: "#8798c0" };
+  var tod = null;
+  try{ tod = localStorage.getItem("wc_tod"); }catch(e){}
+  if(TODS.indexOf(tod) < 0){
+    var h = new Date().getHours();
+    tod = (h >= 6 && h < 16) ? "day" : (h < 19 && h >= 16 ? "dusk" : "night");
+  }
+  function setTod(t){
+    tod = t;
+    root.setAttribute("data-tod", t);
+    var m = document.querySelector('meta[name="theme-color"]');
+    if(m) m.setAttribute("content", TCOL[t]);
+  }
+  setTod(tod);
+  var todBtn = $("todBtn");
+  if(todBtn){
+    todBtn.addEventListener("click", function(){
+      var n = TODS[(TODS.indexOf(tod) + 1) % 3];
+      setTod(n);
+      try{ localStorage.setItem("wc_tod", n); }catch(e){}
+      todBtn.classList.remove("spin");
+      void todBtn.offsetWidth;
+      todBtn.classList.add("spin");
+    });
+  }
+
+  /* ---------------- 公共：小花 symbol ---------------- */
+  var defs = $("wcDefs");
+  if(defs && !$("wcFl")){
+    var sym = el("symbol", { id: "wcFl", viewBox: "-10 -10 20 20" }, defs);
+    for(var q = 0; q < 4; q++){
+      el("path", { d: "M0 0C-5.6 -3 -5.4 -9.4 0 -10C5.4 -9.4 5.6 -3 0 0Z", fill: "currentColor", transform: "rotate(" + (q * 90) + ")" }, sym);
+    }
+    el("circle", { r: "1.7", fill: "#f7f2e6", opacity: ".85" }, sym);
+  }
+
+  /* ---------------- 紫阳花团（四角，带视差） ---------------- */
+  var bgHyd = $("wcHyd");
+  var PALS = [
+    ["#8eaed4", "#a6c0de", "#7f9fcb", "#b1a8d6", "#9bc5b5"],
+    ["#dba8b8", "#e6c0cb", "#b1a8d6", "#c6b8dc", "#8eaed4"],
+    ["#9bc5b5", "#8eaed4", "#b6d3c8", "#a6c0de", "#e4cd92"],
+    ["#b1a8d6", "#c9c0e3", "#dba8b8", "#e4cd92", "#8eaed4"]
+  ];
+  function cluster(o){
+    var w = div("hy-cl", bgHyd);
+    var s = o.size;
+    w.style.width = s + "px";
+    w.style.height = s + "px";
+    w.style.setProperty("--dp", o.dp);
+    ["left", "right", "top", "bottom"].forEach(function(k){ if(o[k] !== undefined) w.style[k] = o[k]; });
+    var svg = el("svg", { viewBox: "-100 -100 200 200", width: s, height: s }, w);
+    svg.style.filter = "drop-shadow(3px 5px 0 rgba(58,68,116,.16))";
+    svg.style.setProperty("--ox", o.ox || "50%");
+    svg.style.setProperty("--oy", o.oy || "50%");
+    /* 叶 */
+    for(var l = 0; l < 4; l++){
+      var a = rnd(0, 360), g = el("g", { transform: "rotate(" + a + ")" }, svg);
+      el("path", { d: "M0 0C28 -22 82 -18 98 4C80 30 26 30 0 0Z", fill: pick(["#8fb3a2", "#9cbfae", "#86a9a0"]), stroke: "#f7f2e6", "stroke-width": "1.2", opacity: ".95" }, g);
+      el("path", { d: "M8 0C34 -2 66 -2 90 3", stroke: "#f7f2e6", "stroke-width": "1", fill: "none", opacity: ".6" }, g);
+    }
+    /* 花（由外向内画，中心的在最上） */
+    var N = o.n, pal = o.pal;
+    for(var i = N; i >= 1; i--){
+      var r = Math.sqrt(i / N) * 86, th = i * 2.39996;
+      var x = Math.cos(th) * r, y = Math.sin(th) * r * .94;
+      var fs = clamp(19 - r * .06 + rnd(-2.2, 2.2), 11, 22);
+      var t = clamp(((x / 86 + 1) / 2) * .7 + Math.random() * .3, 0, .999);
+      var col = pal[Math.floor(t * pal.length)];
+      el("use", {
+        href: "#wcFl", x: (x - fs / 2).toFixed(1), y: (y - fs / 2).toFixed(1), width: fs.toFixed(1), height: fs.toFixed(1),
+        transform: "rotate(" + Math.round(rnd(0, 90)) + " " + x.toFixed(1) + " " + y.toFixed(1) + ")", style: "color:" + col
+      }, svg);
+    }
+  }
+  function buildHyd(){
+    if(!bgHyd) return;
+    bgHyd.innerHTML = "";
+    var W = vw();
+    var s = clamp(W * .36, 230, 430);
+    var n = W < 700 ? 46 : 70;
+    cluster({ size: s, left: (-s * .3) + "px", bottom: (-s * .34) + "px", pal: PALS[0], dp: 1, n: n, ox: "20%", oy: "80%" });
+    cluster({ size: s * .92, right: (-s * .28) + "px", bottom: (-s * .3) + "px", pal: PALS[1], dp: 1.3, n: n, ox: "80%", oy: "80%" });
+    if(W >= 760){
+      cluster({ size: s * .62, left: (-s * .28) + "px", top: "36%", pal: PALS[2], dp: .7, n: 40, ox: "10%" });
+      cluster({ size: s * .6, right: (-s * .26) + "px", top: "24%", pal: PALS[3], dp: .8, n: 38, ox: "90%" });
+    }
+  }
+
+  /* ---------------- 花火图形 ---------------- */
+  function burstG(parent, x, y, R, cols){
+    var g = el("g", {}, parent);
+    g.style.transformOrigin = x + "px " + y + "px";
+    var n = Math.round(rnd(12, 17)), a0 = rnd(0, 6.28);
+    for(var i = 0; i < n; i++){
+      var a = a0 + i * 6.2832 / n, long = (i % 2 === 0);
+      var r1 = R * (long ? 1 : .6), r0 = R * .13, w = R * (long ? .05 : .037);
+      var ca = Math.cos(a), sa = Math.sin(a), px = -sa, py = ca;
+      var d = "M" + (x + ca * r0 + px * w).toFixed(1) + " " + (y + sa * r0 + py * w).toFixed(1) +
+              "L" + (x + ca * r1).toFixed(1) + " " + (y + sa * r1).toFixed(1) +
+              "L" + (x + ca * r0 - px * w).toFixed(1) + " " + (y + sa * r0 - py * w).toFixed(1) + "Z";
+      el("path", { d: d, fill: cols[i % cols.length] }, g);
+      if(long){
+        el("circle", { cx: (x + ca * (r1 + R * .11)).toFixed(1), cy: (y + sa * (r1 + R * .11)).toFixed(1), r: (R * .03).toFixed(1), fill: cols[(i + 1) % cols.length] }, g);
+      }
+    }
+    el("circle", { cx: x, cy: y, r: (R * .075).toFixed(1), fill: "#fffaf0" }, g);
+    return g;
+  }
+  function twoCols(){ var a = pick(FW), b = pick(FW); if(a === b) b = "#ecc4cf"; return [a, b]; }
+
+  /* 幽灵花火：几朵固定在背景里若隐若现 */
+  function buildGhost(){
+    var host = $("wcGhost");
+    if(!host) return;
+    host.innerHTML = "";
+    var W = vw(), H = vh();
+    var svg = el("svg", { width: W, height: H }, host);
+    var wide = W >= 1100, m = (W - 940) / 2;
+    var spots = wide
+      ? [[m * .5, H * .2, 120], [W - m * .5, H * .38, 140], [m * .45, H * .62, 90], [W - m * .4, H * .78, 80]]
+      : [[W * .16, H * .2, 88], [W * .84, H * .32, 100], [W * .5, H * .08, 64]];
+    spots.forEach(function(s){
+      var g = el("g", { "class": "gb" }, svg);
+      burstG(g, s[0], s[1], s[2], twoCols());
+      g.style.animationDelay = (-Math.random() * 9) + "s";
+    });
+  }
+
+  /* ---------------- 雨点涟漪 ---------------- */
+  var bgRain = $("wcRain");
+  function rippleOnce(){
+    if(!bgRain || document.hidden) return;
+    var x = rnd(4, 96), y = rnd(52, 97), w = rnd(70, 150);
+    var svg = el("svg", { "class": "wc-rp", viewBox: "-50 -18 100 36", width: w, height: w * .36 }, bgRain);
+    svg.style.left = "calc(" + x + "% - " + (w / 2) + "px)";
+    svg.style.top = y + "%";
+    var drop = div("wc-drop", bgRain);
+    drop.style.left = x + "%";
+    drop.style.top = y + "%";
+    var dp = drop.animate([{ transform: "translateY(-90px)", opacity: 0 }, { opacity: .9, offset: .3 }, { transform: "translateY(0)", opacity: 0 }], { duration: 520, easing: "ease-in" });
+    dp.onfinish = function(){ drop.remove(); };
+    var done = 0;
+    for(var i = 0; i < 3; i++){
+      var e = el("ellipse", { rx: 47, ry: 16, "stroke-width": 1.3 }, svg);
+      e.style.transformBox = "fill-box";
+      e.style.transformOrigin = "center";
+      var an = e.animate([{ transform: "scale(0)", opacity: 0 }, { opacity: .75, offset: .2 }, { transform: "scale(1)", opacity: 0 }],
+        { duration: 2800, delay: 480 + i * 340, easing: "ease-out", fill: "both" });
+      an.onfinish = function(){ if(++done === 3) svg.remove(); };
+    }
+  }
+
+  /* ---------------- 飘落花瓣 / 星光 / 萤火 ---------------- */
+  function buildDrift(){
+    var host = $("wcDrift");
+    if(!host) return;
+    host.innerHTML = "";
+    var narrow = vw() < 700;
+    var nP = narrow ? 8 : 15, nS = narrow ? 14 : 24, nF = narrow ? 8 : 14;
+    var pal = ["#dba8b8", "#b1a8d6", "#8eaed4", "#e4cd92", "#9bc5b5", "#e3b8a2"];
+    for(var i = 0; i < nP; i++){
+      var p = div("wc-pt", host);
+      p.style.setProperty("--x", rnd(2, 98) + "%");
+      p.style.setProperty("--s", rnd(13, 24) + "px");
+      p.style.setProperty("--d", rnd(30, 52) + "s");
+      p.style.setProperty("--dl", (-rnd(0, 50)) + "s");
+      p.style.setProperty("--w", rnd(-70, 90) + "px");
+      p.style.setProperty("--sp", rnd(5, 11) + "s");
+      var sv = el("svg", { viewBox: "-10 -10 20 20" }, p);
+      var col = pick(pal);
+      if(i % 3 === 0){
+        el("use", { href: "#wcFl", x: -10, y: -10, width: 20, height: 20, style: "color:" + col }, sv);
+      }else{
+        el("path", { d: "M0 -9C7 -6 7 5 0 9C-7 5 -7 -6 0 -9Z", fill: col, stroke: "#f7f2e6", "stroke-width": ".9" }, sv);
+      }
+    }
+    var scol = ["#f1e5bd", "#f7f2e6", "#ecc4cf", "#cfd3f0"];
+    for(var j = 0; j < nS; j++){
+      var t = div("wc-tw", host);
+      t.style.setProperty("--x", rnd(1, 99) + "%");
+      t.style.setProperty("--y", rnd(1, 82) + "%");
+      t.style.setProperty("--s", rnd(7, 15) + "px");
+      t.style.setProperty("--d", rnd(2.8, 6) + "s");
+      t.style.setProperty("--dl", (-rnd(0, 6)) + "s");
+      t.style.setProperty("--c", pick(scol));
+    }
+    for(var k = 0; k < nF; k++){
+      var f = div("wc-ff", host);
+      f.style.setProperty("--x", rnd(2, 98) + "%");
+      f.style.setProperty("--y", rnd(30, 96) + "%");
+      f.style.setProperty("--d", rnd(7, 13) + "s");
+      f.style.setProperty("--dl", (-rnd(0, 12)) + "s");
+      f.style.setProperty("--fx", rnd(-40, 50) + "px");
+      f.style.setProperty("--fy", rnd(-50, 10) + "px");
+    }
+  }
+
+  /* ---------------- 真·花火（WAAPI）：火箭 → 绽放 → 火星 ---------------- */
+  var fwBox = $("wcFw");
+  var fwSvg = null, softBox = null, softSvg = null, fxLayer = $("fxLayer"), fxSvg = null;
+  function ensureSvgs(){
+    if(fwBox && !fwSvg){ fwSvg = el("svg", { width: "100%", height: "100%", "class": "fx-fw" }, fwBox); fwSvg.style.cssText = "position:absolute;inset:0;overflow:visible"; }
+    if(!softBox){
+      softBox = div("fx-layer soft", document.body);
+      softBox.style.zIndex = 9989;
+      softSvg = el("svg", { width: "100%", height: "100%" }, softBox);
+      softSvg.style.cssText = "position:absolute;inset:0;overflow:visible";
+    }
+    if(fxLayer && !fxSvg){ fxSvg = el("svg", { width: "100%", height: "100%" }, fxLayer); fxSvg.style.cssText = "position:absolute;inset:0;overflow:visible"; }
+  }
+  function explode(svg, x, y, R, dur){
+    var cols = twoCols();
+    var g = burstG(svg, x, y, R, cols);
+    var an = g.animate([
+      { transform: "scale(.12) rotate(-14deg)", opacity: 0 },
+      { opacity: 1, offset: .22 },
+      { transform: "scale(1) rotate(0deg)", opacity: .95, offset: .58 },
+      { transform: "scale(1.1) rotate(4deg)", opacity: 0 }
+    ], { duration: dur || 2300, easing: "cubic-bezier(.2,.7,.3,1)", fill: "both" });
+    an.onfinish = function(){ g.remove(); };
+    var ns = Math.round(R / 9);
+    for(var i = 0; i < ns; i++){
+      var a = rnd(0, 6.283), d = R * rnd(.9, 1.35);
+      var c = el("circle", { cx: x, cy: y, r: rnd(1.4, 2.8), fill: pick(cols) }, svg);
+      var sp = c.animate([
+        { transform: "translate(0,0)", opacity: 0 },
+        { opacity: 1, offset: .3 },
+        { transform: "translate(" + (Math.cos(a) * d).toFixed(1) + "px," + (Math.sin(a) * d + R * .5).toFixed(1) + "px)", opacity: 0 }
+      ], { duration: (dur || 2300) * rnd(.7, 1), delay: 180, easing: "cubic-bezier(.2,.6,.4,1)", fill: "both" });
+      sp.onfinish = (function(n){ return function(){ n.remove(); }; })(c);
+    }
+  }
+  function launch(box, svg, x, y, R){
+    var rk = div("fx-rocket", box);
+    rk.style.transform = "translate(" + x + "px," + vh() + "px)";
+    var a = rk.animate([
+      { transform: "translate(" + x + "px," + (vh() + 12) + "px)" },
+      { transform: "translate(" + x + "px," + y + "px)" }
+    ], { duration: rnd(650, 950), easing: "cubic-bezier(.25,.7,.4,1)", fill: "forwards" });
+    a.onfinish = function(){ rk.remove(); explode(svg, x, y, R); };
+  }
+  function ambient(){
+    if(!document.hidden && !RM){
+      ensureSvgs();
+      var W = vw(), H = vh(), wide = W >= 1100, m = (W - 940) / 2;
+      var x, y = rnd(H * .12, H * .5), R = rnd(70, 120);
+      if(wide){
+        x = Math.random() < .5 ? rnd(m * .22, m * .88) : W - rnd(m * .22, m * .88);
+        launch(fwBox, fwSvg, x, y, R);
+      }else{
+        x = rnd(W * .14, W * .86);
+        launch(softBox, softSvg, x, y, R * .8);
+      }
+    }
+    setTimeout(ambient, rnd(11000, 20000));
+  }
+  var lastFinale = 0;
+  function finale(){
+    if(RM) return;
+    var now = Date.now();
+    if(now - lastFinale < 5000) return;
+    lastFinale = now;
+    ensureSvgs();
+    for(var i = 0; i < 5; i++){
+      (function(i){
+        setTimeout(function(){
+          var x = rnd(vw() * .1, vw() * .9), y = rnd(vh() * .12, vh() * .46);
+          launch(softBox, softSvg, x, y, rnd(55, 95));
+        }, i * 260);
+      })(i);
+    }
+  }
+  var toast = $("toast");
+  if(toast && window.MutationObserver){
+    new MutationObserver(function(){
+      if(toast.classList.contains("show") && /已完成|已根据|导入成功|已导出/.test(toast.textContent)) finale();
+    }).observe(toast, { attributes: true, attributeFilter: ["class"], childList: true, characterData: true, subtree: true });
+  }
+
+  /* ---------------- 风铃（弹簧 + 风 + 滚动 / 悬停 / 点击冲量） ---------------- */
+  var chimes = [];
+  var CHIME_COLS = [
+    { bell: "#bcd3ea", band: "#b1a8d6", strip: "#e9bfcb" },
+    { bell: "#cfe3da", band: "#8eaed4", strip: "#ecdca0" },
+    { bell: "#e6d6ea", band: "#dba8b8", strip: "#bcd3ea" }
+  ];
+  function makeChime(parent, x, y, s, cols){
+    var svg = el("svg", { viewBox: "0 0 70 190", "class": "chime" }, parent);
+    svg.style.left = x + "px";
+    svg.style.top = y + "px";
+    svg.style.width = (70 * s) + "px";
+    svg.style.height = (190 * s) + "px";
+    el("path", { d: "M25 -2h20v6a10 5.5 0 0 1 -20 0z", fill: "#cfc3df", stroke: "#f7f2e6", "stroke-width": "1" }, svg);
+    var g1 = el("g", {}, svg);
+    el("line", { x1: 35, y1: 6, x2: 35, y2: 34, stroke: "#8d86b4", "stroke-width": "1.6", "stroke-linecap": "round" }, g1);
+    el("path", { d: "M13 66C13 38 22 33 35 33C48 33 57 38 57 66Z", fill: cols.bell, stroke: "#f7f2e6", "stroke-width": "1.3" }, g1);
+    el("path", { d: "M14.4 55C26 61 44 61 55.6 55L57 66H13Z", fill: cols.band, opacity: ".9" }, g1);
+    for(var i = 0; i < 6; i++){
+      el("circle", { cx: 17 + i * 7.2, cy: 66, r: 3.7, fill: cols.band, stroke: "#f7f2e6", "stroke-width": "1" }, g1);
+    }
+    el("use", { href: "#wcFl", x: 22, y: 41, width: 10, height: 10, style: "color:#f7f2e6", opacity: ".9" }, g1);
+    el("use", { href: "#wcFl", x: 38, y: 44, width: 8, height: 8, style: "color:#f7f2e6", opacity: ".8" }, g1);
+    el("circle", { cx: 35, cy: 33, r: 3, fill: "#e4cd92", stroke: "#f7f2e6", "stroke-width": "1" }, g1);
+    var g2 = el("g", {}, g1);
+    el("line", { x1: 35, y1: 68, x2: 35, y2: 96, stroke: "#8d86b4", "stroke-width": "1.4", "stroke-linecap": "round" }, g2);
+    el("path", { d: "M26 96H44V152L35 143L26 152Z", fill: cols.strip, stroke: "#f7f2e6", "stroke-width": "1.3", "stroke-linejoin": "round" }, g2);
+    el("use", { href: "#wcFl", x: 29, y: 107, width: 12, height: 12, style: "color:#f7f2e6", opacity: ".95" }, g2);
+    el("path", { d: "M31 128h8", stroke: "#f7f2e6", "stroke-width": "1.2", "stroke-linecap": "round", opacity: ".8" }, g2);
+    var hit = el("rect", { x: 4, y: 0, width: 62, height: 156, "class": "hit" }, svg);
+    var c = { svg: svg, g1: g1, g2: g2, a1: 0, v1: 0, a2: 0, v2: 0, ph: rnd(0, 6.28), k1: 13 + rnd(-1.5, 1.5), c1: 1.0, wind: 1, sx: 1 };
+    c.v1 = rnd(-6, 6);
+    chimes.push(c);
+    var lastX = null;
+    hit.addEventListener("pointerenter", function(e){ c.v1 += (e.movementX >= 0 ? 1 : -1) * 14; c.v2 += rnd(-10, 10); lastX = e.clientX; });
+    hit.addEventListener("pointermove", function(e){
+      if(lastX === null) lastX = e.clientX;
+      c.v1 += clamp((e.clientX - lastX) * .7, -14, 14);
+      lastX = e.clientX;
+    });
+    hit.addEventListener("pointerdown", function(){ c.v1 += (Math.random() < .5 ? -1 : 1) * 70; c.v2 += rnd(-60, 60); });
+    return c;
+  }
+  var bag = { a1: 0, v1: 0, a2: 0, v2: 0, ph: 1.7, k1: 16, c1: 1.5, wind: .5, node: null };
+  function buildChimes(){
+    chimes = [];
+    var side = $("sideChimes"), hd = $("hdChimes");
+    if(side) side.innerHTML = "";
+    if(hd) hd.innerHTML = "";
+    var W = vw(), m = (W - 940) / 2;
+    if(side && W >= 1200){
+      var s = clamp(m / 150, .78, 1.15);
+      makeChime(side, m * .5 - 35 * s, 0, s, CHIME_COLS[0]);
+      makeChime(side, W - m * .5 - 35 * s, 0, s * .9, CHIME_COLS[2]);
+    }else if(hd && W >= 600){
+      makeChime(hd, 6, 0, .62, CHIME_COLS[0]);
+      makeChime(hd, 64, 0, .52, CHIME_COLS[1]);
+    }
+  }
+  var lastT = performance.now(), T = 0;
+  function spring(o, dt, wind){
+    var acc1 = -o.k1 * o.a1 - o.c1 * o.v1 + wind;
+    o.v1 += acc1 * dt;
+    o.a1 = clamp(o.a1 + o.v1 * dt, -40, 40);
+    var acc2 = -26 * o.a2 - 1.5 * o.v2 - .55 * acc1;
+    o.v2 += acc2 * dt;
+    o.a2 = clamp(o.a2 + o.v2 * dt, -55, 55);
+  }
+  function frame(now){
+    var dt = Math.min(.033, (now - lastT) / 1000);
+    lastT = now;
+    T += dt;
+    var gust = (Math.sin(T * .31) + 1) / 2;
+    for(var i = 0; i < chimes.length; i++){
+      var c = chimes[i];
+      var w = (Math.sin(T * .8 + c.ph) * .55 + Math.sin(T * 2.1 + c.ph * 2) * .3) * (.25 + gust) * c.wind * 60;
+      spring(c, dt, w);
+      c.g1.setAttribute("transform", "rotate(" + c.a1.toFixed(2) + " 35 6)");
+      c.g2.setAttribute("transform", "rotate(" + c.a2.toFixed(2) + " 35 68)");
+    }
+    if(bag.node){
+      var bw = (Math.sin(T * .7 + bag.ph) * .5 + Math.sin(T * 1.7) * .25) * (.25 + gust) * bag.wind * 40;
+      spring(bag, dt, bw);
+      bag.node.style.transform = "rotate(" + (bag.a1 * .5).toFixed(2) + "deg)";
+    }
+    requestAnimationFrame(frame);
+  }
+  var lastSY = window.scrollY || 0;
+  var rafSY = false;
+  window.addEventListener("scroll", function(){
+    var y = window.scrollY || 0, dy = y - lastSY;
+    lastSY = y;
+    if(!rafSY){
+      rafSY = true;
+      requestAnimationFrame(function(){ root.style.setProperty("--sy", y); rafSY = false; });
+    }
+    var imp = clamp(dy, -80, 80);
+    for(var i = 0; i < chimes.length; i++){ chimes[i].v1 += imp * .35; chimes[i].v2 += imp * .2; }
+    bag.v1 += imp * .35;
+  }, { passive: true });
+
+  /* ---------------- 视差：鼠标 ---------------- */
+  var px = 0, py = 0, pqueued = false;
+  window.addEventListener("pointermove", function(e){
+    if(e.pointerType === "touch") return;
+    px = (e.clientX / vw() - .5) * 2;
+    py = (e.clientY / vh() - .5) * 2;
+    if(!pqueued){
+      pqueued = true;
+      requestAnimationFrame(function(){
+        root.style.setProperty("--mx", px.toFixed(3));
+        root.style.setProperty("--my", py.toFixed(3));
+        pqueued = false;
+      });
+    }
+  }, { passive: true });
+
+  /* ---------------- 点击特效：按钮 / 卡片 / 背景各有一种，轻、淡、快 ---------------- */
+  var MASKS = ["var(--i-floret)", "var(--i-star4)", "var(--i-petal)"];
+  var IS_UI = 'button,a,.btn,.entry-card,[data-go],.icon-btn,.sort-btn,.chip,.mtag,.suggest>div,.check,select,.help-icon,.mat-chip,.avatar-btn,.tod-btn,.footer-link,.cl-close,label';
+  var IS_CARD = '.card,.stat,.mat-card,.stage-card,.plan-row,.syn-card,.f-line,.bag-item,#bagDrawer,.cl-panel,.f-event,.tip';
+  function fxRing(x, y, size, color, to, dur){
+    var r = div("fx-ring", fxLayer);
+    r.style.width = r.style.height = size + "px";
+    r.style.margin = (-size / 2) + "px 0 0 " + (-size / 2) + "px";
+    r.style.color = color;
+    var a = r.animate([
+      { transform: "translate(" + x + "px," + y + "px) scale(.3)", opacity: .75 },
+      { transform: "translate(" + x + "px," + y + "px) scale(" + to + ")", opacity: 0 }
+    ], { duration: dur, easing: "cubic-bezier(.2,.7,.3,1)", fill: "forwards" });
+    a.onfinish = function(){ r.remove(); };
+  }
+  function fxBits(x, y, n, spread, life){
+    for(var i = 0; i < n; i++){
+      var p = div("fx-pt", fxLayer);
+      p.style.setProperty("--m", pick(MASKS));
+      p.style.color = pick(CF);
+      var s = rnd(.7, 1.15);
+      var ang = rnd(0, 6.283), d = rnd(spread * .5, spread);
+      var dx = Math.cos(ang) * d, dy = Math.sin(ang) * d;
+      var a = p.animate([
+        { transform: "translate(" + x + "px," + y + "px) scale(.2) rotate(0deg)", opacity: 0 },
+        { transform: "translate(" + (x + dx * .6) + "px," + (y + dy * .6 - 6) + "px) scale(" + s + ") rotate(" + rnd(-90, 90) + "deg)", opacity: 1, offset: .35 },
+        { transform: "translate(" + (x + dx) + "px," + (y + dy + 16) + "px) scale(" + (s * .5) + ") rotate(" + rnd(-200, 200) + "deg)", opacity: 0 }
+      ], { duration: life * rnd(.8, 1.1), easing: "cubic-bezier(.2,.7,.3,1)", fill: "forwards" });
+      a.onfinish = (function(n){ return function(){ n.remove(); }; })(p);
+    }
+  }
+  var lastClick = 0;
+  document.addEventListener("pointerdown", function(e){
+    if(RM || !fxLayer) return;
+    var t = e.target;
+    if(!(t instanceof Element)) return;
+    if(t.closest('input:not([type="checkbox"]):not([type="file"]),textarea')) return;
+    var now = performance.now();
+    if(now - lastClick < 60) return;
+    lastClick = now;
+    ensureSvgs();
+    var x = e.clientX, y = e.clientY;
+    if(t.closest(IS_UI)){
+      fxBits(x, y, 7, 38, 720);
+      fxRing(x, y, 26, "rgba(177,168,214,.9)", 2.6, 560);
+    }else if(t.closest(IS_CARD)){
+      fxRing(x, y, 30, "rgba(193,134,155,.75)", 3.2, 700);
+      fxBits(x, y, 3, 22, 600);
+    }else{
+      explode(fxSvg, x, y, rnd(34, 48), 900);
+      fxBits(x, y, 4, 30, 700);
+    }
+  }, true);
+
+  /* ---------------- 换页时吹过一阵花瓣 ---------------- */
+  function gust(){
+    if(RM || !fxLayer) return;
+    ensureSvgs();
+    var H = vh();
+    for(var i = 0; i < 12; i++){
+      var p = div("fx-pt", softBox);
+      p.style.setProperty("--m", i % 3 ? "var(--i-petal)" : "var(--i-floret)");
+      p.style.color = pick(CF);
+      var y0 = rnd(H * .1, H * .8), x0 = -20;
+      var a = p.animate([
+        { transform: "translate(" + x0 + "px," + y0 + "px) rotate(0deg) scale(" + rnd(.8, 1.3) + ")", opacity: 0 },
+        { opacity: .9, offset: .15 },
+        { transform: "translate(" + (vw() * .5) + "px," + (y0 + rnd(-60, 60)) + "px) rotate(" + rnd(200, 420) + "deg)", offset: .55 },
+        { transform: "translate(" + (vw() + 30) + "px," + (y0 + rnd(-30, 120)) + "px) rotate(" + rnd(500, 800) + "deg)", opacity: 0 }
+      ], { duration: rnd(1500, 2400), delay: i * 70, easing: "ease-in-out", fill: "both" });
+      a.onfinish = (function(n){ return function(){ n.remove(); }; })(p);
+    }
+  }
+  var nav = document.querySelector(".bottom-nav");
+  document.addEventListener("click", function(e){
+    var t = e.target;
+    if(t instanceof Element && (t.closest(".bottom-nav button") || t.closest("[data-go]"))) setTimeout(gust, 60);
+  });
+
+  /* ---------------- 入口卡片：微倾斜 ---------------- */
+  document.querySelectorAll(".entry-card").forEach(function(c){
+    c.addEventListener("pointermove", function(e){
+      if(e.pointerType === "touch") return;
+      var r = c.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      c.style.setProperty("--ry", (x * 10).toFixed(2) + "deg");
+      c.style.setProperty("--rx", (-y * 8).toFixed(2) + "deg");
+    });
+    c.addEventListener("pointerleave", function(){
+      c.style.setProperty("--ry", "0deg");
+      c.style.setProperty("--rx", "0deg");
+    });
+  });
+
+  /* ---------------- 底部导航：滑动的花瓣色块 ---------------- */
+  if(nav){
+    var pill = document.createElement("span");
+    pill.className = "nav-pill";
+    nav.insertBefore(pill, nav.firstChild);
+    nav.classList.add("has-pill");
+    var place = function(instant){
+      var on = nav.querySelector("button.on");
+      if(!on){ pill.style.opacity = "0"; return; }
+      if(instant){ pill.style.transition = "none"; }
+      pill.style.opacity = "1";
+      pill.style.width = on.offsetWidth + "px";
+      pill.style.transform = "translateX(" + on.offsetLeft + "px)";
+      if(instant){ void pill.offsetWidth; pill.style.transition = ""; }
+    };
+    place(true);
+    if(window.MutationObserver){
+      new MutationObserver(function(){ place(false); }).observe(nav, { attributes: true, attributeFilter: ["class"], subtree: true });
+    }
+    window.addEventListener("resize", function(){ place(true); });
+    if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ place(true); }); }
+  }
+
+  /* ---------------- emoji → 矢量图标（运势 / 天气 / 小判） ---------------- */
+  var CATIC = { "厨房": "f-dango", "锻刀": "f-sword", "内番": "f-broom", "异常": "f-bird", "出阵": "f-flag", "手入": "f-heal", "池畔": "f-fish", "万屋": "f-box", "茶会": "f-tea", "夜巡": "f-moon", "马厩": "f-shoe", "庭院": "f-flower", "文书": "f-scroll" };
+  var EMIC = {
+    "☀": "w-sun", "🌇": "w-sun", "🌤": "w-cloud", "⛅": "w-cloud", "☁": "w-cloud", "🌧": "w-rain", "🌦": "w-rain",
+    "🍃": "w-wind", "🌬": "w-wind", "🌙": "w-moon", "🌕": "w-moon", "🌸": "w-flower", "❄": "w-snow", "🧊": "w-snow",
+    "🌈": "w-rainbow", "🍂": "w-leaf", "⛈": "w-bolt", "⚡": "w-bolt", "🌫": "w-fog", "💴": "coin"
+  };
+  var KEEP = "✓✔✕✖⚠";
+  var EM_RE = /(?:[☀-➿⭐⬆⬇]|[\uD83C-\uD83E][\uDC00-\uDFFF])️?/g;
+  function fixText(node){
+    var txt = node.nodeValue;
+    if(!EM_RE.test(txt)){ EM_RE.lastIndex = 0; return; }
+    EM_RE.lastIndex = 0;
+    var frag = document.createDocumentFragment(), last = 0, m;
+    while((m = EM_RE.exec(txt))){
+      var ch = m[0].replace("️", "");
+      if(KEEP.indexOf(ch) >= 0) continue;
+      if(m.index > last) frag.appendChild(document.createTextNode(txt.slice(last, m.index)));
+      var s = document.createElement("span");
+      s.className = "fx-ic";
+      s.setAttribute("data-ic", EMIC[ch] || "w-flower");
+      s.setAttribute("aria-hidden", "true");
+      frag.appendChild(s);
+      last = m.index + m[0].length;
+    }
+    EM_RE.lastIndex = 0;
+    if(last === 0) return;
+    if(last < txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+  }
+  function fixIcons(scope){
+    var lines = scope.querySelectorAll ? scope.querySelectorAll(".f-line") : [];
+    for(var i = 0; i < lines.length; i++){
+      var first = lines[i].firstElementChild;
+      if(first && first.className === ""){
+        var cat = lines[i].querySelector(".f-cat");
+        first.className = "fx-ic";
+        first.setAttribute("data-ic", CATIC[cat ? cat.textContent.trim() : ""] || "f-flower");
+        first.setAttribute("aria-hidden", "true");
+        first.textContent = "";
+      }
+    }
+    var w = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, null), n, list = [];
+    while((n = w.nextNode())){ list.push(n); }
+    list.forEach(fixText);
+  }
+  ["fortuneLines", "fortuneEvent", "synResult"].forEach(function(id){
+    var host = $(id);
+    if(!host || !window.MutationObserver) return;
+    var busy = false;
+    var run = function(){
+      if(busy) return;
+      busy = true;
+      try{ fixIcons(host); }catch(e){}
+      busy = false;
+    };
+    new MutationObserver(function(){ run(); }).observe(host, { childList: true, subtree: true });
+    run();
+  });
+
+  /* ---------------- 启动 ---------------- */
+  var bagHang = $("bagHang");
+  if(bagHang) bag.node = bagHang;
+  buildHyd();
+  buildGhost();
+  buildDrift();
+  buildChimes();
+  ensureSvgs();
+  if(!RM){
+    setInterval(rippleOnce, 1500);
+    setTimeout(rippleOnce, 400);
+    setTimeout(ambient, 3800);
+    requestAnimationFrame(function(t){ lastT = t; frame(t); });
+  }else{
+    requestAnimationFrame(function(t){ lastT = t; frame(t); });
+  }
+  var rt = null, lastW = vw();
+  window.addEventListener("resize", function(){
+    clearTimeout(rt);
+    rt = setTimeout(function(){
+      if(Math.abs(vw() - lastW) < 40 && Math.abs(vh() - (window._lastH || vh())) < 200) return;
+      lastW = vw();
+      window._lastH = vh();
+      buildHyd();
+      buildGhost();
+      buildDrift();
+      buildChimes();
+    }, 260);
+  });
+})();
 </script>
 </body>
 </html>

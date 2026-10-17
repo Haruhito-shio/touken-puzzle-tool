@@ -55,6 +55,7 @@ const CONFIG = {
       type: "类型", // 刀种（大太刀/太刀…）
       sword: "刀刀", // 刀男名字
       rarity: "稀有度", // 普 / 彩
+      form: "异名", // 【新增】游戏里名字下面那行字（如 勇気百寸）。同一把刀有多套时用它区分；只有一套可留空；整列都没有也能转换
       stage: "进阶", // 突破阶段，如 10->20
       matHdr: "材料", // 材料需求列（合并表头，从它开始向右全部算）
     },
@@ -77,6 +78,9 @@ const CONFIG = {
       drops: "掉落材料", // 右块掉落清单（日文）
     },
   },
+
+  /* 稀有度留空时按这个补 */
+  defaultRarity: "普",
 
   /* 游戏货币，识别出来后单独记录成“合成花费”，不参与材料缺口计算 */
   coinName: "小判",
@@ -154,6 +158,8 @@ function findCols(rows, headerText, matchAll){
   });
   return matchAll ? out : (out.length?[out[0]]:[]);
 }
+/* 形态标签：三日月宗近【彩】 / 陆奥守吉行【普·勇気百寸】 */
+function btLabel(b){ return b.sword+"【"+b.rarity+(b.form?"·"+b.form:"")+"】"; }
 function fail(msg){ console.error("【转换失败】"+msg); process.exit(1); }
 
 /* ---------- 自动选择最新表格 ---------- */
@@ -310,7 +316,9 @@ let matCellSkipRows = [];
 
 if(charsSheet){
   const cType=findCols(charsSheet,cc.type), cSword=findCols(charsSheet,cc.sword),
-        cRare=findCols(charsSheet,cc.rarity), cStage=findCols(charsSheet,cc.stage);
+        cRare=findCols(charsSheet,cc.rarity), cStage=findCols(charsSheet,cc.stage),
+        cForm=findCols(charsSheet,cc.form);                       // 【新增】异名列（可选）
+  if(!cForm.length) console.log("ℹ 表「刀男所需材料」没有「"+cc.form+"」列：所有刀按「没有异名」处理（只有一套时这是正常的）");
   const cMat=findCols(charsSheet,cc.matHdr,true);   // 材料表头可能横跨多列（合并）
   if(!cType.length||!cSword.length||!cRare.length||!cStage.length||!cMat.length){
     warnings.push("【表头】表「刀男所需材料」没找齐表头（类型/刀刀/稀有度/进阶/材料），请核对 CONFIG.headerTexts.chars");
@@ -325,6 +333,7 @@ if(charsSheet){
       return { key:n, ok:false };
     };
 
+    let prevBt=null;   // 上一条阶段记录（用来处理「只在每套第一行填异名」的情况）
     for(let r=1;r<charsSheet.length;r++){
       const row=charsSheet[r];
       const st=parseStage(row[cStage[0]]);
@@ -337,6 +346,11 @@ if(charsSheet){
       if(chars.indexOf(sword)<0) chars.push(sword);
       if(!swordTypes[sword]) swordTypes[sword]=type||"未知";
 
+      /* 异名：合并单元格已自动展开；如果只在每套的第一行填了，后面的阶段行（起点大于上一条）自动沿用 */
+      let form = cForm.length ? cleanName(row[cForm[0]]) : "";
+      if(!form && prevBt && prevBt.sword===sword && prevBt.rarity===rarity && prevBt.form && st.from>prevBt.fromStage){
+        form = prevBt.form;
+      }
       const needs={};
       cMat.forEach(function(c){
         const cell=clean(row[c]);
@@ -346,11 +360,33 @@ if(charsSheet){
         const rn=resolveName(pm.name, "表「刀男所需材料」第"+(r+1)+"行");
         needs[rn.key]=(needs[rn.key]||0)+pm.qty;
       });
-      breakthroughs.push({ sword:sword, rarity:rarity, fromStage:st.from, toStage:st.to, needs:needs });
-      if(Object.keys(needs).length===0) emptyNeeds.push(sword+"("+rarity+") "+st.from+"->"+st.to);
+      const bt = { sword:sword, rarity:rarity };
+      if(form) bt.form = form;                       // 没有异名就不写这个字段（旧数据格式不变）
+      bt.fromStage=st.from; bt.toStage=st.to; bt.needs=needs;
+      breakthroughs.push(bt);
+      prevBt = bt;
+      if(Object.keys(needs).length===0) emptyNeeds.push(btLabel(bt)+" "+st.from+"->"+st.to);
     }
   }
 }
+
+/* ---------- 【新增】异名校验 ---------- */
+(function(){
+  const seen={}, group={};
+  breakthroughs.forEach(function(b){
+    const k=b.sword+"||"+b.rarity+"||"+(b.form||"")+"||"+b.fromStage+"||"+b.toStage;
+    if(seen[k]) warnings.push("【重复阶段】"+btLabel(b)+" "+b.fromStage+"->"+b.toStage+" 出现了不止一次：如果这是同一稀有度的两套不同形态，请在表里填上各自的「"+CONFIG.headerTexts.chars.form+"」");
+    seen[k]=1;
+    const g=b.sword+"||"+b.rarity;
+    (group[g]=group[g]||{sword:b.sword,rarity:b.rarity,forms:{}}).forms[b.form||""]=1;
+  });
+  Object.keys(group).forEach(function(g){
+    const f=Object.keys(group[g].forms);
+    if(f.length>1 && f.indexOf("")>=0){
+      warnings.push("【异名不全】"+group[g].sword+"【"+group[g].rarity+"】有多套形态，但其中有的没填「"+CONFIG.headerTexts.chars.form+"」（"+f.filter(function(x){return x;}).join("、")+" 之外还有一套空的）。网页下拉里那套只会显示「"+group[g].rarity+"」，建议补上");
+    }
+  });
+})();
 
 /* =====================================================================
  * 第 4 步：解析表4 关卡统计 → 关卡掉落清单（日文 → 中文）
@@ -360,12 +396,14 @@ let dropUnmapped = {};   // 掉落里找不到中文名的
 let stageSkipRows = [];
 if(stagesSheet){
   const sd = CONFIG.headerTexts.stages;
-  const allStageCols = findCols(stagesSheet, sd.stage, true);   // 左右两块都有「关卡」
+  const leftStageCols = findCols(stagesSheet, sd.stage, true);    // 左块「关卡」列
+  const rightStageCols = findCols(stagesSheet, "行标签", true);   // 右块透视表关卡列叫「行标签」
+  const allStageCols = leftStageCols.concat(rightStageCols);
   const dropCols = findCols(stagesSheet, sd.drops);
   if(!allStageCols.length || !dropCols.length){
-    warnings.push("【表头】表「关卡统计」没找到「关卡/掉落材料」表头，关卡掉落数据为空，请核对 CONFIG.headerTexts.stages");
+    warnings.push("【表头】表「关卡统计」没找到「关卡/行标签/掉落材料」表头，关卡掉落数据为空，请核对 CONFIG.headerTexts.stages");
   } else {
-    const rightStageCol = allStageCols[allStageCols.length-1];  // 右块的关卡列
+    const rightStageCol = rightStageCols.length ? rightStageCols[rightStageCols.length-1] : allStageCols[allStageCols.length-1];  // 右块的关卡列
     const dropCol = dropCols[0];
     for(let r=1;r<stagesSheet.length;r++){
       const row=stagesSheet[r];
@@ -498,7 +536,7 @@ function setDiff(aArr, bArr){
 }
 function makeBreakthroughMap(list){
   const map=new Map();
-  (list||[]).forEach(function(bt){ map.set(bt.sword+"||"+bt.rarity+"||"+bt.fromStage+"||"+bt.toStage, bt); });
+  (list||[]).forEach(function(bt){ map.set(bt.sword+"||"+bt.rarity+"||"+(bt.form||"")+"||"+bt.fromStage+"||"+bt.toStage, bt); });
   return map;
 }
 function makeRecipeMap(list){
@@ -567,10 +605,10 @@ function buildDiffReport(oldData, newData){
   const oldBtMap=makeBreakthroughMap(oldData.breakthroughs), newBtMap=makeBreakthroughMap(newData.breakthroughs);
   const bk=setDiff([...oldBtMap.keys()], [...newBtMap.keys()]);
   d.push("### 3.1 整条阶段新增（"+bk.onlyB.length+"）");
-  if(bk.onlyB.length) bk.onlyB.forEach(function(k){ const v=newBtMap.get(k); d.push("- "+v.sword+"【"+v.rarity+"】 "+v.fromStage+"→"+v.toStage); });
+  if(bk.onlyB.length) bk.onlyB.forEach(function(k){ const v=newBtMap.get(k); d.push("- "+btLabel(v)+" "+v.fromStage+"→"+v.toStage); });
   else d.push("- 无");
   d.push("### 3.2 整条阶段删除（"+bk.onlyA.length+"）");
-  if(bk.onlyA.length) bk.onlyA.forEach(function(k){ const v=oldBtMap.get(k); d.push("- "+v.sword+"【"+v.rarity+"】 "+v.fromStage+"→"+v.toStage); });
+  if(bk.onlyA.length) bk.onlyA.forEach(function(k){ const v=oldBtMap.get(k); d.push("- "+btLabel(v)+" "+v.fromStage+"→"+v.toStage); });
   else d.push("- 无");
   d.push("### 3.3 已有阶段内部材料需求变化");
   let hasNeed=false;
@@ -581,7 +619,7 @@ function buildDiffReport(oldData, newData){
     nk.both.forEach(function(m){ if(oN[m]!==nN[m]) lines.push(m+"："+oN[m]+" → "+nN[m]); });
     if(nk.onlyB.length) lines.push("新增材料："+nk.onlyB.join("、"));
     if(nk.onlyA.length) lines.push("移除材料："+nk.onlyA.join("、"));
-    if(lines.length){ hasNeed=true; d.push("- **"+n.sword+"【"+n.rarity+"】 "+n.fromStage+"→"+n.toStage+"**"); lines.forEach(function(x){ d.push("　- "+x); }); }
+    if(lines.length){ hasNeed=true; d.push("- **"+btLabel(n)+" "+n.fromStage+"→"+n.toStage+"**"); lines.forEach(function(x){ d.push("　- "+x); }); }
   });
   if(!hasNeed) d.push("- 无");
   d.push("");
@@ -682,11 +720,14 @@ report.push("| 关卡（掉落清单） | "+stages.length+" 关 |");
 report.push("");
 report.push("### 角色与稀有度分布");
 const blocks={};
-breakthroughs.forEach(function(b){ const k=b.sword+"（"+b.rarity+"）"; blocks[k]=1; });
+breakthroughs.forEach(function(b){ blocks[btLabel(b)]=1; });
+const multi={};
+breakthroughs.forEach(function(b){ (multi[b.sword]=multi[b.sword]||{})[b.rarity+"·"+(b.form||"")]=1; });
+const multiList=Object.keys(multi).filter(function(k){ return Object.keys(multi[k]).length>1; });
 report.push("");
 report.push("- 刀男总数："+chars.length+" 把");
-report.push("- 稀有度组合块："+Object.keys(blocks).length+" 个（普/彩分开算；5 把刀有普、彩两套：太郎太刀、三日月宗近、一期一振、歌仙兼定、乱藤四郎）");
-report.push("- 每块都是 3 个阶段（10→20 / 20→30 / 30→35），共 "+breakthroughs.length+" 条");
+report.push("- 形态组合块："+Object.keys(blocks).length+" 个（稀有度 + 异名各算一块）；有多套形态的刀 "+multiList.length+" 把："+(multiList.join("、")||"无"));
+report.push("- 每块一般是 3 个阶段（10→20 / 20→30 / 30→35），共 "+breakthroughs.length+" 条");
 report.push("");
 report.push("### 材料中日对照表");
 report.push("");
@@ -761,7 +802,7 @@ report.push("- [ ] 材料数量：基础材料是否都能在关卡掉落里找�
 report.push("- [ ] 半成品列表是否齐全：茶碗/围棋/双色牡丹饼/算盘/花札/团子/锄头/花蜜/锤子/纸/笔/臼与杵/书写道具/天妇罗/双六/味增汤/味噌/面包/各种心得");
 report.push("- [ ] 合成递归：茶碗 → 碗(お椀) → 粘土+打火石，应能一层层拆到底");
 report.push("- [ ] 突破筛选：5→35 应算 10→20、20→30、30→35 三段（起点>当前 且 起点<目标）");
-report.push("- [ ] 普/彩两套的刀：太郎太刀、三日月宗近、一期一振、歌仙兼定、乱藤四郎，选稀有度后需求应不同");
+report.push("- [ ] 有多套形态的刀（见上面「形态组合块」那行）：每套的「异名」都填了，网页下拉里显示成「普 · 勇気百寸」，选不同套后需求应不同");
 report.push("- [ ] 关卡掉落是「有没有」清单，不是掉率；关卡 x/n 只表示覆盖几种材料");
 report.push("");
 report.push("---");

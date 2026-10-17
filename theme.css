@@ -1,40 +1,82 @@
 /**
- * theme.css 刀剣乱舞ぱずぎり材料规划工具
- * 仅存放设计Token、全局基础样式，无组件class
- * UI规范V1：Pastel高明度低饱和｜日系柔和｜禁止厚重阴影/新拟态
+ * theme.css 刀剣乱舞ぱずぎり材料规划工具 · 夏日花火与紫阳花 水彩剪纸主题 V3
+ * 只放：设计 Token、矢量图标 Token、全局基础、和纸纹理与背景装饰层样式；不含组件 class
+ *
+ * 设计语言
+ *  · 日系童话绘本 × 纸艺拼贴：层叠的和纸、胶带、剪出来的花火与紫阳花，水彩晕染的边界
+ *  · 低明度莫兰迪：天色是灰调的紫阳花蓝，纸是暖米，文字与边框用深蓝灰/茶色，没有纯黑纯白
+ *  · 天色会变（昼 / 黄昏 / 夜）：点页眉星星切换；默认按本机时间
  */
+
+/* 让天色变化可以平滑过渡（不支持 @property 的浏览器会直接切换，不影响使用） */
+@property --sky-1 { syntax: '<color>'; inherits: true; initial-value: #bcd2e5; }
+@property --sky-2 { syntax: '<color>'; inherits: true; initial-value: #d6e4ec; }
+
 :root {
-  /* === 颜色系统 Pastel马卡龙低饱和 === */
-  --bg: #f8f2e9;                /* 页面背景：浅奶油米色 */
-  --card: #fffbf5;              /* 卡片底色 规范指定 */
-  --line: #e4d8c6;              /* 分割边框 */
+  /* === 天色（昼）=== */
+  --sky-1: #bcd2e5;
+  --sky-2: #d6e4ec;
+  --fw-op: .62;                 /* 背景花火的显现程度：昼淡、夜浓 */
+  --sky-ink: #47507a;           /* 直接落在天空上的文字色 */
+  transition: --sky-1 1.4s ease, --sky-2 1.4s ease;
 
-  --ink: #524a42;               /* 正文文字，不使用#000纯黑 */
-  --ink-strong: #3e3832;        /* 标题文字 */
-  --ink-soft: #948672;         /* 辅助说明小字 */
+  /* === 和纸 === */
+  --bg: #cfdfea;
+  --paper: #f5f0e6;
+  --paper-2: #ede6d9;
+  --paper-3: #e3dccd;
+  --paper-hi: #fbf8f1;
+  --card: #f5f0e6;
+  --card-soft: #faf6ee;
+  --line: rgba(100, 112, 160, 0.28);
+  --line-soft: rgba(255, 255, 255, 0.78);
 
-  --primary: #d47480;           /* 主色：柔和豆沙粉 */
-  --primary-soft: #f9e6e8;      /* 主色浅背景 */
-  --primary-text: #b0535f;      /* 主色文字 */
+  /* === 颜料：紫阳花蓝为主，粉紫黄绿点缀 === */
+  --hy-blue: #8eaed4;   --hy-blue-d: #6f8fbd;   --hy-blue-l: #bcd0e6;  --hy-blue-xl: #d3e0ee;
+  --lav: #b1a8d6;       --lav-d: #8f86bd;       --lav-l: #d4cee9;
+  --pink: #dba8b8;      --pink-d: #c1869b;      --pink-l: #ecd2d9;
+  --mint: #9bc5b5;      --mint-d: #76a894;      --mint-l: #cfe3da;
+  --butter: #e4cd92;    --butter-d: #c9ad63;    --butter-l: #f1e5bd;
+  --peach: #e3b8a2;
 
-  --good: #82a87b;              /* 拥有/完成 绿色 */
-  --good-soft: #e4efe0;
-  --good-text: #587c51;
+  /* === 文字：深蓝灰 / 茶色，绝不用纯黑 === */
+  --ink: #4a516b;
+  --ink-strong: #363d58;
+  --ink-soft: #666b84;
+  --tea: #7a6451;
 
-  --warn: #d89b48;              /* 缺口/警告 琥珀色，不用刺眼红色警报 */
-  --warn-soft: #f9eed8;
-  --warn-text: #ad792a;
+  /* === 语义色 === */
+  --primary: var(--pink-d);
+  --primary-deep: #a8627f;
+  --primary-dark: #8a4560;
+  --primary-soft: #f1dfe4;
+  --primary-text: #8a4560;
 
-  /* === 阴影：只允许极轻外阴影，禁止厚重、内阴影、新拟态 === */
-  --shadow-soft: 0 2px 10px rgba(85, 65, 45, 0.08);
-  --shadow-hover: 0 4px 16px rgba(85, 65, 45, 0.12);
-  --shadow-dropdown: 0 6px 20px rgba(70, 50, 30, 0.14);
+  --good: var(--mint-d);
+  --good-soft: #dcebe3;
+  --good-text: #3f6f5b;
 
-  /* === 圆角系统 规范卡片20‑28px === */
-  --radius-xl: 24px;    /* 大卡片 */
-  --radius-lg: 20px;
-  --radius-md: 14px;    /* 按钮、抽屉 */
-  --radius-sm: 12px;    /* 输入框、小卡片、chip */
+  --warn: var(--butter-d);
+  --warn-soft: #f1e6c4;
+  --warn-text: #7d5f1f;
+
+  /* === 渐变（颜料晕染） === */
+  --grad-primary: linear-gradient(135deg, #e9bccb 0%, #d9b5d0 55%, #bfb5e1 100%);
+  --grad-water: linear-gradient(135deg, #d3e1f0 0%, #dcd7ee 100%);
+  --grad-mint: linear-gradient(135deg, #cfe5db 0%, #cfe0ef 100%);
+  --grad-butter: linear-gradient(135deg, #f1e5bd 0%, #efd3c6 100%);
+
+  /* === 阴影：带蓝紫色的柔光 + 纸层硬阴影，不用灰黑 === */
+  --shadow-soft: 0 14px 26px -12px rgba(52, 64, 110, .36);
+  --shadow-hover: 0 22px 34px -12px rgba(52, 64, 110, .46);
+  --shadow-dropdown: 0 18px 34px -10px rgba(52, 64, 110, .5);
+  --glow-pink: 0 10px 20px -6px rgba(168, 98, 127, .5);
+
+  /* === 圆角：全部柔和大圆角 === */
+  --radius-xl: 28px;
+  --radius-lg: 22px;
+  --radius-md: 18px;
+  --radius-sm: 14px;
   --radius-xs: 10px;
 
   /* === 间距 === */
@@ -44,19 +86,92 @@
   --gap-lg: 12px;
   --gap-xl: 14px;
 
-  /* === 动画过渡 === */
+  /* === 动效 === */
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
   --transition-fast: 0.18s ease;
-  --transition-norm: 0.24s ease;
-  --transition-slow: 0.35s ease-out;
+  --transition-norm: 0.3s var(--ease-out);
+  --transition-slow: 0.8s var(--ease-out);
 
   /* === 字体 === */
-  --font-stack: "寒蝉半圆体", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  --font-stack: "寒蝉半圆体", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+
+  /* === 纹理 / 剪纸素材 Token（SVG 内联，离线可用） === */
+  --tx-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .30 0 0 0 0 .33 0 0 0 0 .42 0 0 0 1.1 -.42'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --tx-fiber: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .42' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .40 0 0 0 0 .44 1.7 0 0 0 -.78'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  --tx-paper: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .30 0 0 0 0 .33 0 0 0 0 .42 0 0 0 .55 -.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --tx-blot: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='b' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.0045 .006' numOctaves='4' seed='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .60 0 0 0 0 .64 0 0 0 0 .84 1.9 0 0 0 -.66'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23b)'/%3E%3C/svg%3E");
+  --tx-weave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Cpath d='M0 .5H6M.5 0V6' stroke='%234a516b' stroke-opacity='.05' stroke-width='1'/%3E%3C/svg%3E");
+  --scallop: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Cpath d='M0 0H28A14 14 0 0 1 0 0Z' fill='%23000'/%3E%3C/svg%3E");
+  --scallop-up: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Cpath d='M0 14H28A14 14 0 0 0 0 14Z' fill='%23000'/%3E%3C/svg%3E");
+  --petal-ring: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='pool' cx='.5' cy='.7' r='.65'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='.5'/%3E%3Cstop offset='.75' stop-color='%23fff' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='bk' cx='.5' cy='.5' r='.5'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='.85'/%3E%3Cstop offset='.6' stop-color='%23fff' stop-opacity='.35'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='gl' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23dfeaf5'/%3E%3Cstop offset='1' stop-color='%23a9c3df'/%3E%3C/linearGradient%3E%3Cfilter id='ds' x='-10%25' y='-10%25' width='125%25' height='125%25'%3E%3CfeDropShadow dx='1.4' dy='2' stdDeviation='0' flood-color='%233a4474' flood-opacity='.2'/%3E%3C/filter%3E%3Csymbol id='fl' viewBox='-50 -50 100 100' overflow='visible'%3E%3Cg fill='currentColor' stroke='%23fff' stroke-opacity='.4' stroke-width='1.3'%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(45)' /%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(135)' /%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(225)' /%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(315)' /%3E%3C/g%3E%3Cg fill='url(%23pool)'%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(45)' /%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(135)' /%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(225)' /%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(315)' /%3E%3C/g%3E%3Cg fill='%23fff' fill-opacity='.3'%3E%3Cpath d='M0 0C-14.00 -5.60 -19.04 -21.84 -4.20 -27.44Q0 -25.20 4.20 -27.44C19.04 -21.84 14.00 -5.60 0 0Z' transform='rotate(45)' /%3E%3Cpath d='M0 0C-14.00 -5.60 -19.04 -21.84 -4.20 -27.44Q0 -25.20 4.20 -27.44C19.04 -21.84 14.00 -5.60 0 0Z' transform='rotate(135)' /%3E%3Cpath d='M0 0C-14.00 -5.60 -19.04 -21.84 -4.20 -27.44Q0 -25.20 4.20 -27.44C19.04 -21.84 14.00 -5.60 0 0Z' transform='rotate(225)' /%3E%3Cpath d='M0 0C-14.00 -5.60 -19.04 -21.84 -4.20 -27.44Q0 -25.20 4.20 -27.44C19.04 -21.84 14.00 -5.60 0 0Z' transform='rotate(315)' /%3E%3C/g%3E%3Ccircle r='6.5' fill='%23efe3b6'/%3E%3Ccircle r='2.6' fill='%23c9ad63'/%3E%3C/symbol%3E%3C/defs%3E%3Cg filter='url(%23ds)'%3E%3Cpath d='M0 0C-10.00 -4.00 -13.60 -15.60 -3.00 -19.60Q0 -18.00 3.00 -19.60C13.60 -15.60 10.00 -4.00 0 0Z' transform='translate(50 50) rotate(15) translate(0 -26)' fill='%23d4cee9'/%3E%3Cpath d='M0 0C-10.00 -4.00 -13.60 -15.60 -3.00 -19.60Q0 -18.00 3.00 -19.60C13.60 -15.60 10.00 -4.00 0 0Z' transform='translate(50 50) rotate(45) translate(0 -26)' fill='%23bcd0e6'/%3E%3Cpath d='M0 0C-10.00 -4.00 -13.60 -15.60 -3.00 -19.60Q0 -18.00 3.00 -19.60C13.60 -15.60 10.00 -4.00 0 0Z' transform='translate(50 50) rotate(75) translate(0 -26)' fill='%23ecd2d9'/%3E%3Cpath d='M0 0C-10.00 -4.00 -13.60 -15.60 -3.00 -19.60Q0 -18.00 3.00 -19.60C13.60 -15.60 10.00 -4.00 0 0Z' transform='translate(50 50) rotate(105) translate(0 -26)' fill='%23d4cee9'/%3E%3Cpath d='M0 0C-10.00 -4.00 -13.60 -15.60 -3.00 -19.60Q0 -18.00 3.00 -19.60C13.60 -15.60 10.00 -4.00 0 0Z' transform='translate(50 50) rotate(135) translate(0 -26)' fill='%23bcd0e6'/%3E%3Cpath d='M0 0C-10.00 -4.00 -13.60 -15.60 -3.00 -19.60Q0 -18.00 3.00 -19.60C13.60 -15.60 10.00 -4.00 0 0Z' transform='translate(50 50) rotate(165) translate(0 -26)' fill='%23ecd2d9'/%3E%3Cpath d='M0 0C-10.00 -4.00 -13.60 -15.60 -3.00 -19.60Q0 -18.00 3.00 -19.60C13.60 -15.60 10.00 -4.00 0 0Z' transform='translate(50 50) rotate(195) translate(0 -26)' fill='%23d4cee9'/%3E%3Cpath d='M0 0C-10.00 -4.00 -13.60 -15.60 -3.00 -19.60Q0 -18.00 3.00 -19.60C13.60 -15.60 10.00 -4.00 0 0Z' transform='translate(50 50) rotate(225) translate(0 -26)' fill='%23bcd0e6'/%3E%3Cpath d='M0 0C-10.00 -4.00 -13.60 -15.60 -3.00 -19.60Q0 -18.00 3.00 -19.60C13.60 -15.60 10.00 -4.00 0 0Z' transform='translate(50 50) rotate(255) translate(0 -26)' fill='%23ecd2d9'/%3E%3Cpath d='M0 0C-10.00 -4.00 -13.60 -15.60 -3.00 -19.60Q0 -18.00 3.00 -19.60C13.60 -15.60 10.00 -4.00 0 0Z' transform='translate(50 50) rotate(285) translate(0 -26)' fill='%23d4cee9'/%3E%3Cpath d='M0 0C-10.00 -4.00 -13.60 -15.60 -3.00 -19.60Q0 -18.00 3.00 -19.60C13.60 -15.60 10.00 -4.00 0 0Z' transform='translate(50 50) rotate(315) translate(0 -26)' fill='%23bcd0e6'/%3E%3Cpath d='M0 0C-10.00 -4.00 -13.60 -15.60 -3.00 -19.60Q0 -18.00 3.00 -19.60C13.60 -15.60 10.00 -4.00 0 0Z' transform='translate(50 50) rotate(345) translate(0 -26)' fill='%23ecd2d9'/%3E%3Cpath d='M0 0C-11.50 -4.60 -15.64 -17.94 -3.45 -22.54Q0 -20.70 3.45 -22.54C15.64 -17.94 11.50 -4.60 0 0Z' transform='translate(50 50) rotate(0) translate(0 -23)' fill='%238eaed4' stroke='%23fff' stroke-opacity='.45' stroke-width='.8'/%3E%3Cpath d='M0 0C-11.50 -4.60 -15.64 -17.94 -3.45 -22.54Q0 -20.70 3.45 -22.54C15.64 -17.94 11.50 -4.60 0 0Z' transform='translate(50 50) rotate(30) translate(0 -23)' fill='%23b1a8d6' stroke='%23fff' stroke-opacity='.45' stroke-width='.8'/%3E%3Cpath d='M0 0C-11.50 -4.60 -15.64 -17.94 -3.45 -22.54Q0 -20.70 3.45 -22.54C15.64 -17.94 11.50 -4.60 0 0Z' transform='translate(50 50) rotate(60) translate(0 -23)' fill='%236f8fbd' stroke='%23fff' stroke-opacity='.45' stroke-width='.8'/%3E%3Cpath d='M0 0C-11.50 -4.60 -15.64 -17.94 -3.45 -22.54Q0 -20.70 3.45 -22.54C15.64 -17.94 11.50 -4.60 0 0Z' transform='translate(50 50) rotate(90) translate(0 -23)' fill='%23dba8b8' stroke='%23fff' stroke-opacity='.45' stroke-width='.8'/%3E%3Cpath d='M0 0C-11.50 -4.60 -15.64 -17.94 -3.45 -22.54Q0 -20.70 3.45 -22.54C15.64 -17.94 11.50 -4.60 0 0Z' transform='translate(50 50) rotate(120) translate(0 -23)' fill='%238eaed4' stroke='%23fff' stroke-opacity='.45' stroke-width='.8'/%3E%3Cpath d='M0 0C-11.50 -4.60 -15.64 -17.94 -3.45 -22.54Q0 -20.70 3.45 -22.54C15.64 -17.94 11.50 -4.60 0 0Z' transform='translate(50 50) rotate(150) translate(0 -23)' fill='%23b1a8d6' stroke='%23fff' stroke-opacity='.45' stroke-width='.8'/%3E%3Cpath d='M0 0C-11.50 -4.60 -15.64 -17.94 -3.45 -22.54Q0 -20.70 3.45 -22.54C15.64 -17.94 11.50 -4.60 0 0Z' transform='translate(50 50) rotate(180) translate(0 -23)' fill='%236f8fbd' stroke='%23fff' stroke-opacity='.45' stroke-width='.8'/%3E%3Cpath d='M0 0C-11.50 -4.60 -15.64 -17.94 -3.45 -22.54Q0 -20.70 3.45 -22.54C15.64 -17.94 11.50 -4.60 0 0Z' transform='translate(50 50) rotate(210) translate(0 -23)' fill='%23dba8b8' stroke='%23fff' stroke-opacity='.45' stroke-width='.8'/%3E%3Cpath d='M0 0C-11.50 -4.60 -15.64 -17.94 -3.45 -22.54Q0 -20.70 3.45 -22.54C15.64 -17.94 11.50 -4.60 0 0Z' transform='translate(50 50) rotate(240) translate(0 -23)' fill='%238eaed4' stroke='%23fff' stroke-opacity='.45' stroke-width='.8'/%3E%3Cpath d='M0 0C-11.50 -4.60 -15.64 -17.94 -3.45 -22.54Q0 -20.70 3.45 -22.54C15.64 -17.94 11.50 -4.60 0 0Z' transform='translate(50 50) rotate(270) translate(0 -23)' fill='%23b1a8d6' stroke='%23fff' stroke-opacity='.45' stroke-width='.8'/%3E%3Cpath d='M0 0C-11.50 -4.60 -15.64 -17.94 -3.45 -22.54Q0 -20.70 3.45 -22.54C15.64 -17.94 11.50 -4.60 0 0Z' transform='translate(50 50) rotate(300) translate(0 -23)' fill='%236f8fbd' stroke='%23fff' stroke-opacity='.45' stroke-width='.8'/%3E%3Cpath d='M0 0C-11.50 -4.60 -15.64 -17.94 -3.45 -22.54Q0 -20.70 3.45 -22.54C15.64 -17.94 11.50 -4.60 0 0Z' transform='translate(50 50) rotate(330) translate(0 -23)' fill='%23dba8b8' stroke='%23fff' stroke-opacity='.45' stroke-width='.8'/%3E%3C/g%3E%3C/svg%3E");
+  --ft-row: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 26' width='160' height='26'%3E%3Cdefs%3E%3CradialGradient id='pool' cx='.5' cy='.7' r='.65'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='.5'/%3E%3Cstop offset='.75' stop-color='%23fff' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='bk' cx='.5' cy='.5' r='.5'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='.85'/%3E%3Cstop offset='.6' stop-color='%23fff' stop-opacity='.35'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='gl' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23dfeaf5'/%3E%3Cstop offset='1' stop-color='%23a9c3df'/%3E%3C/linearGradient%3E%3Cfilter id='ds' x='-10%25' y='-10%25' width='125%25' height='125%25'%3E%3CfeDropShadow dx='1.4' dy='2' stdDeviation='0' flood-color='%233a4474' flood-opacity='.2'/%3E%3C/filter%3E%3Csymbol id='fl' viewBox='-50 -50 100 100' overflow='visible'%3E%3Cg fill='currentColor' stroke='%23fff' stroke-opacity='.4' stroke-width='1.3'%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(45)' /%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(135)' /%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(225)' /%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(315)' /%3E%3C/g%3E%3Cg fill='url(%23pool)'%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(45)' /%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(135)' /%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(225)' /%3E%3Cpath d='M0 0C-23.00 -9.20 -31.28 -35.88 -6.90 -45.08Q0 -41.40 6.90 -45.08C31.28 -35.88 23.00 -9.20 0 0Z' transform='rotate(315)' /%3E%3C/g%3E%3Cg fill='%23fff' fill-opacity='.3'%3E%3Cpath d='M0 0C-14.00 -5.60 -19.04 -21.84 -4.20 -27.44Q0 -25.20 4.20 -27.44C19.04 -21.84 14.00 -5.60 0 0Z' transform='rotate(45)' /%3E%3Cpath d='M0 0C-14.00 -5.60 -19.04 -21.84 -4.20 -27.44Q0 -25.20 4.20 -27.44C19.04 -21.84 14.00 -5.60 0 0Z' transform='rotate(135)' /%3E%3Cpath d='M0 0C-14.00 -5.60 -19.04 -21.84 -4.20 -27.44Q0 -25.20 4.20 -27.44C19.04 -21.84 14.00 -5.60 0 0Z' transform='rotate(225)' /%3E%3Cpath d='M0 0C-14.00 -5.60 -19.04 -21.84 -4.20 -27.44Q0 -25.20 4.20 -27.44C19.04 -21.84 14.00 -5.60 0 0Z' transform='rotate(315)' /%3E%3C/g%3E%3Ccircle r='6.5' fill='%23efe3b6'/%3E%3Ccircle r='2.6' fill='%23c9ad63'/%3E%3C/symbol%3E%3C/defs%3E%3Cg filter='url(%23ds)'%3E%3Cg transform='translate(14 22) rotate(-50)'%3E%3Cpath d='M0 0C5 -4.2 5 -10.5 0 -14.0C-5 -10.5 -5 -4.2 0 0Z' fill='%239bc5b5'/%3E%3Cpath d='M0 -2L0 -12.3' stroke='%23fff' stroke-width='1.1' stroke-opacity='.55' fill='none' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate(66 22) rotate(55)'%3E%3Cpath d='M0 0C5 -4.2 5 -10.5 0 -14.0C-5 -10.5 -5 -4.2 0 0Z' fill='%239bc5b5'/%3E%3Cpath d='M0 -2L0 -12.3' stroke='%23fff' stroke-width='1.1' stroke-opacity='.55' fill='none' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate(118 22) rotate(-45)'%3E%3Cpath d='M0 0C5 -3.9 5 -9.8 0 -13.0C-5 -9.8 -5 -3.9 0 0Z' fill='%239bc5b5'/%3E%3Cpath d='M0 -2L0 -11.4' stroke='%23fff' stroke-width='1.1' stroke-opacity='.55' fill='none' stroke-linecap='round'/%3E%3C/g%3E%3Cuse href='%23fl' x='6.0' y='4.0' width='16.0' height='16.0' transform='rotate(8 14.0 12.0)' style='color:%238eaed4'/%3E%3Cuse href='%23fl' x='33.0' y='4.0' width='14.0' height='14.0' transform='rotate(30 40.0 11.0)' style='color:%23dba8b8'/%3E%3Cuse href='%23fl' x='58.0' y='4.0' width='16.0' height='16.0' transform='rotate(55 66.0 12.0)' style='color:%23b1a8d6'/%3E%3Cuse href='%23fl' x='85.0' y='4.0' width='14.0' height='14.0' transform='rotate(12 92.0 11.0)' style='color:%236f8fbd'/%3E%3Cuse href='%23fl' x='110.0' y='4.0' width='16.0' height='16.0' transform='rotate(40 118.0 12.0)' style='color:%23dba8b8'/%3E%3Cuse href='%23fl' x='136.0' y='6.0' width='12.0' height='12.0' transform='rotate(70 142.0 12.0)' style='color:%23e4cd92'/%3E%3C/g%3E%3C/svg%3E");
+
+  /* === 矢量图标 Token（用作 mask，颜色跟随 currentColor，取代 emoji） === */
+  --i-home: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' stroke='%23000' stroke-width='1.6' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M12 3.5L3.5 11H6V19.5H10.2V14.5H13.8V19.5H18V11H20.5Z'/%3E%3C/g%3E%3C/svg%3E");
+  --i-plan: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' transform='translate(12 12)'%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(45)' /%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(135)' /%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(225)' /%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(315)' /%3E%3C/g%3E%3C/svg%3E");
+  --i-source: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M12 3.2v4M12 16.8v4M3.2 12h4M16.8 12h4M5.8 5.8l2.8 2.8M15.4 15.4l2.8 2.8M5.8 18.2l2.8-2.8M15.4 8.6l2.8-2.8'/%3E%3C/g%3E%3Ccircle cx='12' cy='12' r='2.1'/%3E%3C/svg%3E");
+  --i-syn: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3C12 3 6.5 9.5 6.5 13.2A5.5 5.5 0 0 0 17.5 13.2C17.5 9.5 12 3 12 3Z'/%3E%3Cg fill='none' stroke='%23000' stroke-width='1.8' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M3.5 20.5Q12 17.5 20.5 20.5'/%3E%3C/g%3E%3C/svg%3E");
+  --i-star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1.5C12.9 8 16 11.1 22.5 12C16 12.9 12.9 16 12 22.5C11.1 16 8 12.9 1.5 12C8 11.1 11.1 8 12 1.5Z'/%3E%3C/svg%3E");
+  --i-bag: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' stroke='%23000' stroke-width='1.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M8.2 6.5C8.2 3.8 15.8 3.8 15.8 6.5L17.6 7.8C20.4 12 20.2 17.4 17 19.8C14.5 21 9.5 21 7 19.8C3.8 17.4 3.6 12 6.4 7.8Z'/%3E%3C/g%3E%3C/svg%3E");
+  --i-up: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M12 15V4M7.5 8.5L12 4l4.5 4.5M5 14.5v4.5h14v-4.5'/%3E%3C/g%3E%3C/svg%3E");
+  --i-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M12 4v11M7.5 10.5L12 15l4.5-4.5M5 14.5v4.5h14v-4.5'/%3E%3C/g%3E%3C/svg%3E");
+  --i-heart: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' stroke='%23000' stroke-width='1.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M12 20C4 14 3 9 6 6.5C8.5 4.5 11 6 12 8C13 6 15.5 4.5 18 6.5C21 9 20 14 12 20Z'/%3E%3C/g%3E%3C/svg%3E");
+  --i-memo: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.9' stroke-linejoin='round' stroke-linecap='round'%3E%3Crect x='5' y='3.5' width='14' height='17' rx='3.5'/%3E%3Cpath d='M9 9h6M9 13h6M9 17h3'/%3E%3C/g%3E%3C/svg%3E");
+  --i-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='3' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M5 12.5L10 17.5L19 7'/%3E%3C/g%3E%3C/svg%3E");
+  --i-chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='2.6' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M9 5l7 7-7 7'/%3E%3C/g%3E%3C/svg%3E");
+  --i-petal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M0 0C-9.00 -3.60 -12.24 -14.04 -2.70 -17.64Q0 -16.20 2.70 -17.64C12.24 -14.04 9.00 -3.60 0 0Z' transform='translate(12 21)'/%3E%3C/svg%3E");
+  --i-dot: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='6'/%3E%3C/svg%3E");
+  --i-floret: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' transform='translate(12 12)'%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(45)' /%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(135)' /%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(225)' /%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(315)' /%3E%3C/g%3E%3C/svg%3E");
+  --i-star4: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1.5C12.9 8 16 11.1 22.5 12C16 12.9 12.9 16 12 22.5C11.1 16 8 12.9 1.5 12C8 11.1 11.1 8 12 1.5Z'/%3E%3C/svg%3E");
+  --i-f-dango: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000'%3E%3Ccircle cx='12' cy='5.6' r='3.4'/%3E%3Ccircle cx='12' cy='12' r='3.4'/%3E%3Ccircle cx='12' cy='18.4' r='3.4'/%3E%3C/g%3E%3Cg fill='none' stroke='%23000' stroke-width='1.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M12 1.5v21'/%3E%3C/g%3E%3C/svg%3E");
+  --i-f-sword: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='2.4' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M6.5 17.5L19 5M8 12.5l4.5 4.5M5.5 18.5L3.6 20.4'/%3E%3C/g%3E%3C/svg%3E");
+  --i-f-broom: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' stroke='%23000' stroke-width='1.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M9 12L15 14L12.5 21H4.5Z'/%3E%3C/g%3E%3Cg fill='none' stroke='%23000' stroke-width='2.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M13.5 12.5L19.5 3.5'/%3E%3C/g%3E%3C/svg%3E");
+  --i-f-bird: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' stroke='%23000' stroke-width='1.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M4.5 19.5C4.5 9.5 11.5 4.5 20 4.2C20.4 12.5 15 19.5 4.5 19.5Z'/%3E%3C/g%3E%3C/svg%3E");
+  --i-f-flag: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M6 21V3.5M6 4.5H18L15 8.5L18 12.5H6'/%3E%3C/g%3E%3C/svg%3E");
+  --i-f-heal: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='2' stroke-linejoin='round' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='8.5'/%3E%3Cpath d='M12 8v8M8 12h8'/%3E%3C/g%3E%3C/svg%3E");
+  --i-f-fish: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' stroke='%23000' stroke-width='1.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M2.5 12C6.5 5.5 13 5.5 17 12C13 18.5 6.5 18.5 2.5 12Z'/%3E%3Cpath d='M17 12L22 7V17Z'/%3E%3C/g%3E%3C/svg%3E");
+  --i-f-box: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.8' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M4 8l8-4 8 4v9l-8 4-8-4zM4 8l8 4 8-4M12 12v9'/%3E%3C/g%3E%3C/svg%3E");
+  --i-f-tea: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' stroke='%23000' stroke-width='1.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M4 9.5H16V14C16 17.2 14 19 10 19C6 19 4 17.2 4 14Z'/%3E%3C/g%3E%3Cg fill='none' stroke='%23000' stroke-width='1.7' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M16 10.5H17.6A2.4 2.4 0 0 1 17.6 15.3H16M8 3.2q-1.2 1.6 0 3M12 3.2q-1.2 1.6 0 3'/%3E%3C/g%3E%3C/svg%3E");
+  --i-f-moon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5A6.8 6.8 0 0 0 20.5 14.5Z'/%3E%3C/svg%3E");
+  --i-f-shoe: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='3.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M6.5 20.5V11A5.5 5.5 0 0 1 17.5 11V20.5'/%3E%3C/g%3E%3C/svg%3E");
+  --i-f-flower: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' transform='translate(12 12)'%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(45)' /%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(135)' /%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(225)' /%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(315)' /%3E%3C/g%3E%3C/svg%3E");
+  --i-f-scroll: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' stroke='%23000' stroke-width='1.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M6 4H18V17.5A2.5 2.5 0 0 0 20.5 20H8A2 2 0 0 1 6 18Z'/%3E%3C/g%3E%3C/svg%3E");
+  --i-w-sun: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='4.6'/%3E%3Cg fill='none' stroke='%23000' stroke-width='2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1'/%3E%3C/g%3E%3C/svg%3E");
+  --i-w-cloud: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' stroke='%23000' stroke-width='1.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M7 18.5H17.5A4.2 4.2 0 0 0 17.5 10.2A6 6 0 0 0 6 11.2A3.7 3.7 0 0 0 7 18.5Z'/%3E%3C/g%3E%3C/svg%3E");
+  --i-w-rain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' stroke='%23000' stroke-width='1.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M7 14H17.5A4 4 0 0 0 17.5 6.2A5.6 5.6 0 0 0 6.4 7.2A3.4 3.4 0 0 0 7 14Z'/%3E%3C/g%3E%3Cg fill='none' stroke='%23000' stroke-width='1.8' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M8 17.5l-1 3M12.5 17.5l-1 3M17 17.5l-1 3'/%3E%3C/g%3E%3C/svg%3E");
+  --i-w-wind: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M3 9h11a2.8 2.8 0 1 0-2.8-2.8M3 14h15a2.8 2.8 0 1 1-2.8 2.8M3 19h7'/%3E%3C/g%3E%3C/svg%3E");
+  --i-w-moon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5A6.8 6.8 0 0 0 20.5 14.5Z'/%3E%3C/svg%3E");
+  --i-w-flower: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' transform='translate(12 12)'%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(45)' /%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(135)' /%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(225)' /%3E%3Cpath d='M0 0C-5.30 -2.12 -7.21 -8.27 -1.59 -10.39Q0 -9.54 1.59 -10.39C7.21 -8.27 5.30 -2.12 0 0Z' transform='rotate(315)' /%3E%3C/g%3E%3C/svg%3E");
+  --i-w-snow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.9' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9'/%3E%3C/g%3E%3C/svg%3E");
+  --i-w-bolt: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' stroke='%23000' stroke-width='1.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M13.5 2L5.5 13.5H11L10 22L18.5 9.5H13Z'/%3E%3C/g%3E%3C/svg%3E");
+  --i-w-fog: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='2.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M4 8h13M7 12.5h13M4 17h11'/%3E%3C/g%3E%3C/svg%3E");
+  --i-w-leaf: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%23000' stroke='%23000' stroke-width='1.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M5 19C4 10 10 4 20 4C20 14 14 20 5 19Z'/%3E%3C/g%3E%3C/svg%3E");
+  --i-coin: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.9' stroke-linejoin='round' stroke-linecap='round'%3E%3Cellipse cx='12' cy='12' rx='8' ry='9.6'/%3E%3Crect x='9.4' y='9.4' width='5.2' height='5.2' rx='1.2'/%3E%3C/g%3E%3C/svg%3E");
+  --i-w-rainbow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-width='2.2' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M3.5 18A8.5 8.5 0 0 1 20.5 18M7 18A5 5 0 0 1 17 18'/%3E%3C/g%3E%3C/svg%3E");
 }
 
-/* ========= 全局基础元素样式（只放html body 通用reset，不放组件） ========= */
+/* 黄昏：薰衣草 × 蜜桃 */
+:root[data-tod="dusk"] {
+  --sky-1: #b4b4d6;
+  --sky-2: #dccdd8;
+  --fw-op: .9;
+  --sky-ink: #4d4670;
+}
+/* 夜：灰蓝 × 紫，仍保持柔和不发黑 */
+:root[data-tod="night"] {
+  --sky-1: #8798c0;
+  --sky-2: #aebbd6;
+  --fw-op: 1.15;
+  --sky-ink: #353d63;
+}
+
+/* ========= 全局基础（只放 reset，不放组件） ========= */
 *{
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+  scrollbar-width: thin;
+  scrollbar-color: #a9b6d6 transparent;
 }
 
 html,
@@ -65,11 +180,263 @@ body{
   padding: 0;
 }
 
+html{
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  background: var(--sky-2);
+}
+
 body{
-  background-color: var(--bg);
+  background-color: transparent;
   color: var(--ink);
   font-family: var(--font-stack);
   font-weight: normal;
-  line-height: 1.6;
-  padding-bottom: 72px;
+  line-height: 1.65;
+  padding-bottom: 118px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+::selection{ background: #e6c9d6; color: var(--ink-strong); }
+
+::-webkit-scrollbar{ width: 10px; height: 10px; }
+::-webkit-scrollbar-track{ background: transparent; }
+::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, #b7c6e4, #d1c8e6);
+  border: 2px solid rgba(245, 240, 230, .8);
+  border-radius: 10px;
+}
+
+:focus-visible{
+  outline: 3px solid rgba(143, 134, 189, .55);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+/* 图标通用：<span class="mk mk-heart"></span>，颜色跟随文字 */
+.mk{
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: -.2em;
+  margin-right: .3em;
+  background: currentColor;
+  -webkit-mask: var(--mk) center / contain no-repeat;
+  mask: var(--mk) center / contain no-repeat;
+}
+.mk-home{ --mk: var(--i-home); }
+.mk-plan{ --mk: var(--i-plan); }
+.mk-source{ --mk: var(--i-source); }
+.mk-syn{ --mk: var(--i-syn); }
+.mk-star{ --mk: var(--i-star); }
+.mk-bag{ --mk: var(--i-bag); }
+.mk-up{ --mk: var(--i-up); }
+.mk-down{ --mk: var(--i-down); }
+.mk-heart{ --mk: var(--i-heart); }
+.mk-memo{ --mk: var(--i-memo); }
+.mk-check{ --mk: var(--i-check); }
+.mk-chev{ --mk: var(--i-chev); }
+.mk-petal{ --mk: var(--i-petal); }
+.mk-dot{ --mk: var(--i-dot); }
+.mk-floret{ --mk: var(--i-floret); }
+.mk-star4{ --mk: var(--i-star4); }
+.mk-f-dango{ --mk: var(--i-f-dango); }
+.mk-f-sword{ --mk: var(--i-f-sword); }
+.mk-f-broom{ --mk: var(--i-f-broom); }
+.mk-f-bird{ --mk: var(--i-f-bird); }
+.mk-f-flag{ --mk: var(--i-f-flag); }
+.mk-f-heal{ --mk: var(--i-f-heal); }
+.mk-f-fish{ --mk: var(--i-f-fish); }
+.mk-f-box{ --mk: var(--i-f-box); }
+.mk-f-tea{ --mk: var(--i-f-tea); }
+.mk-f-moon{ --mk: var(--i-f-moon); }
+.mk-f-shoe{ --mk: var(--i-f-shoe); }
+.mk-f-flower{ --mk: var(--i-f-flower); }
+.mk-f-scroll{ --mk: var(--i-f-scroll); }
+.mk-w-sun{ --mk: var(--i-w-sun); }
+.mk-w-cloud{ --mk: var(--i-w-cloud); }
+.mk-w-rain{ --mk: var(--i-w-rain); }
+.mk-w-wind{ --mk: var(--i-w-wind); }
+.mk-w-moon{ --mk: var(--i-w-moon); }
+.mk-w-flower{ --mk: var(--i-w-flower); }
+.mk-w-snow{ --mk: var(--i-w-snow); }
+.mk-w-bolt{ --mk: var(--i-w-bolt); }
+.mk-w-fog{ --mk: var(--i-w-fog); }
+.mk-w-leaf{ --mk: var(--i-w-leaf); }
+.mk-coin{ --mk: var(--i-coin); }
+.mk-w-rainbow{ --mk: var(--i-w-rainbow); }
+
+/* ================================================================
+   水彩背景装饰层 .wc-bg
+   fixed 铺满、z-index:-1、不接收点击（里面的风铃单独开启）。
+   由下到上：天色 → 水彩晕染 → 纸纹/布纹 → 幽灵花火 → 涟漪与雨滴 → 紫阳花 → 飘落花瓣与星光
+   ================================================================ */
+.wc-bg{
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 100%);
+}
+.wc-wash{
+  position: absolute;
+  inset: -12%;
+  background:
+    radial-gradient(44% 36% at 12% 8%, rgba(177, 168, 214, .5), transparent 72%),
+    radial-gradient(40% 34% at 92% 6%, rgba(219, 168, 184, .38), transparent 72%),
+    radial-gradient(46% 40% at 90% 96%, rgba(155, 197, 181, .44), transparent 72%),
+    radial-gradient(44% 38% at 6% 92%, rgba(142, 174, 212, .62), transparent 72%),
+    radial-gradient(34% 26% at 50% 46%, rgba(228, 205, 146, .18), transparent 74%),
+    radial-gradient(30% 22% at 70% 30%, rgba(255, 255, 255, .16), transparent 74%);
+  animation: wash-drift 46s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes wash-drift{
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(2%, 1.5%, 0) scale(1.05); }
+  100% { transform: translate3d(-1.5%, 2.5%, 0) scale(1.02); }
+}
+/* 和纸：水彩晕斑 + 纤维 + 细颗粒 + 极细布纹 */
+.wc-bg::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: .34;
+  background-image: var(--tx-blot), var(--tx-fiber), var(--tx-noise), var(--tx-weave);
+  background-size: 900px 900px, 360px 360px, 240px 240px, 6px 6px;
+}
+.wc-layer{
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.wc-ghost{ z-index: 1; opacity: calc(var(--fw-op) * .55); transition: opacity 1.4s ease; }
+.wc-fwlive{ z-index: 1; }
+.wc-rain{ z-index: 2; }
+.wc-hyd{ z-index: 2; }
+.wc-drift{ z-index: 3; }
+.wc-defs{ position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* --- 幽灵花火：若隐若现、缓慢呼吸 --- */
+.wc-ghost svg{ position: absolute; inset: 0; width: 100%; height: 100%; filter: drop-shadow(1.5px 2px 0 rgba(58, 68, 116, .14)); }
+.wc-ghost .gb{
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ghost-breathe 9s ease-in-out infinite alternate;
+}
+@keyframes ghost-breathe{
+  0%   { transform: scale(.95) rotate(-2deg); }
+  100% { transform: scale(1.05) rotate(3deg); }
+}
+
+/* --- 紫阳花团：四角各一簇，随鼠标与滚动轻微视差，自己也在微风里摇 --- */
+.hy-cl{
+  position: absolute;
+  --dp: 1;
+  transform: translate3d(calc(var(--mx, 0) * -22px * var(--dp)), calc(var(--my, 0) * -14px * var(--dp) + var(--sy, 0) * -.035px * var(--dp)), 0);
+  transition: transform .5s var(--ease-out);
+  will-change: transform;
+}
+.hy-cl svg{ display: block; overflow: visible; animation: hy-sway 14s ease-in-out infinite alternate; transform-origin: var(--ox, 50%) var(--oy, 50%); }
+@keyframes hy-sway{
+  0%   { transform: rotate(-1.4deg) scale(1); }
+  100% { transform: rotate(1.6deg) scale(1.025); }
+}
+
+/* --- 雨滴落入水面的涟漪 --- */
+.wc-rp{ position: absolute; overflow: visible; }
+.wc-rp ellipse{ fill: none; stroke: #8fb1d2; vector-effect: non-scaling-stroke; }
+.wc-drop{
+  position: absolute;
+  width: 3px;
+  height: 14px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.85));
+  opacity: .8;
+}
+
+/* --- 飘落的花瓣与闪烁的星光 --- */
+.wc-pt{
+  position: absolute;
+  top: 0;
+  left: var(--x, 50%);
+  width: var(--s, 18px);
+  height: var(--s, 18px);
+  margin-left: calc(var(--s, 18px) / -2);
+  opacity: 0;
+  animation: pt-fall var(--d, 36s) linear var(--dl, 0s) infinite;
+  will-change: transform;
+}
+.wc-pt svg{ display: block; width: 100%; height: 100%; overflow: visible; animation: pt-spin var(--sp, 9s) ease-in-out infinite alternate; filter: drop-shadow(1px 1.4px 0 rgba(58, 68, 116, .16)); }
+@keyframes pt-fall{
+  0%   { transform: translate3d(0, -8vh, 0); opacity: 0; }
+  6%   { opacity: .9; }
+  25%  { transform: translate3d(var(--w, 40px), 24vh, 0); }
+  50%  { transform: translate3d(calc(var(--w, 40px) * -.7), 52vh, 0); }
+  75%  { transform: translate3d(calc(var(--w, 40px) * .8), 80vh, 0); }
+  94%  { opacity: .8; }
+  100% { transform: translate3d(calc(var(--w, 40px) * -.3), 110vh, 0); opacity: 0; }
+}
+@keyframes pt-spin{
+  0%   { transform: rotate(-40deg) scaleY(.82); }
+  100% { transform: rotate(60deg) scaleY(1); }
+}
+.wc-tw{
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--s, 12px);
+  height: var(--s, 12px);
+  margin: calc(var(--s, 12px) / -2) 0 0 calc(var(--s, 12px) / -2);
+  background: var(--c, #f1e5bd);
+  -webkit-mask: var(--i-star4) center / contain no-repeat;
+  mask: var(--i-star4) center / contain no-repeat;
+  animation: tw var(--d, 4s) ease-in-out var(--dl, 0s) infinite;
+}
+@keyframes tw{
+  0%, 100% { opacity: .15; transform: scale(.6) rotate(0deg); }
+  50%      { opacity: .95; transform: scale(1.15) rotate(45deg); }
+}
+/* 萤火：只有黄昏和夜里才出来 */
+.wc-ff{
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff6cf 0 28%, rgba(247, 226, 150, .55) 48%, rgba(247, 226, 150, 0) 72%);
+  transform: scale(2.2);
+  opacity: 0;
+  animation: ff var(--d, 9s) ease-in-out var(--dl, 0s) infinite;
+}
+:root[data-tod="day"] .wc-ff{ display: none; }
+@keyframes ff{
+  0%   { opacity: 0; transform: translate(0, 0) scale(1.4); }
+  20%  { opacity: .95; }
+  50%  { transform: translate(var(--fx, 30px), var(--fy, -24px)) scale(2.4); opacity: .6; }
+  80%  { opacity: .9; }
+  100% { opacity: 0; transform: translate(calc(var(--fx, 30px) * 1.6), calc(var(--fy, -24px) * .4)) scale(1.4); }
+}
+
+/* ========= 尊重"减少动态效果"系统设置 ========= */
+@media (prefers-reduced-motion: reduce){
+  *,
+  *::before,
+  *::after{
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .wc-pt,
+  .wc-tw,
+  .wc-ff,
+  .wc-rp,
+  .wc-drop{ display: none; }
 }
