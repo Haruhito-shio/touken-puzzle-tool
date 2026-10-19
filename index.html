@@ -2538,7 +2538,7 @@ showView("home");
   var root = document.documentElement;
   var RM = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
   /* 【新增·移动端降级】手机/平板（触屏设备）为 true；纯鼠标 PC 恒为 false，下方所有 LITE 分支在 PC 端不会执行。与 CSS 中的降级条件保持一致 */
-  var LITE = !!(window.matchMedia && matchMedia("(hover: none) and (pointer: coarse), (max-width: 1024px) and (any-pointer: coarse)").matches);
+  var LITE = !!(window.matchMedia && matchMedia("(hover: none) and (pointer: coarse)").matches);
   function $(id){ return document.getElementById(id); }
   function rnd(a, b){ return a + Math.random() * (b - a); }
   function pick(a){ return a[Math.floor(Math.random() * a.length)]; }

@@ -448,7 +448,8 @@ body{
    ║ 只去掉耗 GPU 的特效，布局 / 颜色 / 文字 / 基础外观不变。
    ║ PC 端（宽屏+鼠标）不会命中此媒体查询，上方原有样式一行未改。
    ╚══════════════════════════════════════════════════════════════════╝ */
-@media (hover: none) and (pointer: coarse), (max-width: 1024px) and (any-pointer: coarse){
+@media (hover: none) and (pointer: coarse){
+
   /* 1) 循环动画全部关闭 */
   .wc-wash{ animation: none; }
   .wc-ghost .gb{ animation: none; }
