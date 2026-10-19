@@ -472,3 +472,9 @@ body{
   .wc-bg::after{ mix-blend-mode: normal; opacity: .16; }
 }
 /* ═══════════════ 【新增·移动端降级】theme.css 结束 ═══════════════ */
+/* ==========全局永久关闭所有背景粒子特效========== */
+.wc-rain, .wc-ff, .wc-pt, .wc-tw, .wc-wash, .wc-fwlive {
+  display: none !important;
+  animation: none !important;
+}
+

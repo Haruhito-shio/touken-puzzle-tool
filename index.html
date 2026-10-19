@@ -3154,7 +3154,7 @@ showView("home");
   }else if(!RM){
     setInterval(rippleOnce, 1500);
     setTimeout(rippleOnce, 400);
-    setTimeout(ambient, 3800);
+    // setTimeout(ambient, 3800);  // 关闭背景自动绽放烟花
     requestAnimationFrame(function(t){ lastT = t; frame(t); });
   }else{
     requestAnimationFrame(function(t){ lastT = t; frame(t); });
