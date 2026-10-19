@@ -150,8 +150,8 @@
       <div id="planEmpty" class="empty" style="display:none;"><div class="big">还没有突破计划</div>从上方添加一把刀剑</div>
       <div class="row" style="justify-content:space-between;margin-top:8px;"><span class="muted" id="selCount"></span></div>
       <div class="btn-row" style="margin-top:8px;">
-        <button class="btn btn-primary" id="btnAll">全部计划：计算缺口</button>
-        <button class="btn btn-soft" id="btnSel" disabled>用勾选角色计算缺口</button>
+        <button class="btn btn-primary" id="btnAll">全部计划</button>
+        <button class="btn btn-soft" id="btnSel" disabled>勾选计算</button>
       </div>
       <div class="tip" style="margin-bottom:0;">左边的勾选框只用于本次临时计算，不会删除或改动已保存的计划。计算后缺口在本页下方显示，需要看关卡再点「查看缺口来源」。</div>
     </div>
@@ -2370,9 +2370,9 @@ document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeAllSu
    更新日志弹窗
    ================================================================ */
 var CHANGELOG_DATA = [
-  {
+    {
     ver: "v2.3.0",
-    date: "2026-10-17",
+    date: "2026-10-19",
     items: {
       "新增": [
         "新增首次活动「讨伐大作战」今剑（彩·六寸五分の小天狗）与陆奥守吉行（普·勇気百寸）的突破数据。",
@@ -2382,8 +2382,11 @@ var CHANGELOG_DATA = [
         "点按钮、卡片或空白处都有轻轻的点击特效。"
       ],
       "优化": [
-        "背包按钮改为右上角的花环徽章，带「背包」小吊牌，翻页时会轻轻摇晃",
-        "其他变动看仓库更新日志。"
+        "背包按钮改为右上角的花环徽章，带「背包」小吊牌，翻页时会轻轻摇晃。",
+        "新增移动端性能优化：手机/平板自动关闭部分重特效，PC端不受影响。",
+        "修复iPhone上点击输入框页面会自动放大的问题。",
+        "调整纸张纹理细腻度，视觉更柔和。",
+        "其他具体变动看仓库更新日志。"
       ]
     }
   },
@@ -2534,6 +2537,8 @@ showView("home");
   var NS = "http://www.w3.org/2000/svg";
   var root = document.documentElement;
   var RM = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+  /* 【新增·移动端降级】手机/平板（触屏设备）为 true；纯鼠标 PC 恒为 false，下方所有 LITE 分支在 PC 端不会执行。与 CSS 中的降级条件保持一致 */
+  var LITE = !!(window.matchMedia && matchMedia("(hover: none) and (pointer: coarse), (max-width: 1024px) and (any-pointer: coarse)").matches);
   function $(id){ return document.getElementById(id); }
   function rnd(a, b){ return a + Math.random() * (b - a); }
   function pick(a){ return a[Math.floor(Math.random() * a.length)]; }
@@ -2639,9 +2644,10 @@ showView("home");
     var W = vw();
     var s = clamp(W * .36, 230, 430);
     var n = W < 700 ? 46 : 70;
+    if(LITE) n = 26; /* 【新增·移动端降级】减少花朵数量 */
     cluster({ size: s, left: (-s * .3) + "px", bottom: (-s * .34) + "px", pal: PALS[0], dp: 1, n: n, ox: "20%", oy: "80%" });
     cluster({ size: s * .92, right: (-s * .28) + "px", bottom: (-s * .3) + "px", pal: PALS[1], dp: 1.3, n: n, ox: "80%", oy: "80%" });
-    if(W >= 760){
+    if(W >= 760){ /* 【新增·移动端降级】降级时不画两侧额外花团，算了还是加上美观 */
       cluster({ size: s * .62, left: (-s * .28) + "px", top: "36%", pal: PALS[2], dp: .7, n: 40, ox: "10%" });
       cluster({ size: s * .6, right: (-s * .26) + "px", top: "24%", pal: PALS[3], dp: .8, n: 38, ox: "90%" });
     }
@@ -2690,7 +2696,7 @@ showView("home");
   /* ---------------- 雨点涟漪 ---------------- */
   var bgRain = $("wcRain");
   function rippleOnce(){
-    if(!bgRain || document.hidden) return;
+    if(!bgRain || document.hidden || LITE) return; /* 【新增·移动端降级】 */
     var x = rnd(4, 96), y = rnd(52, 97), w = rnd(70, 150);
     var svg = el("svg", { "class": "wc-rp", viewBox: "-50 -18 100 36", width: w, height: w * .36 }, bgRain);
     svg.style.left = "calc(" + x + "% - " + (w / 2) + "px)";
@@ -2718,6 +2724,7 @@ showView("home");
     host.innerHTML = "";
     var narrow = vw() < 700;
     var nP = narrow ? 8 : 15, nS = narrow ? 14 : 24, nF = narrow ? 8 : 14;
+    if(LITE){ nP = 0; nF = 0; nS = 10; } /* 【新增·移动端降级】不生成花瓣/萤火虫，星星减少 */
     var pal = ["#dba8b8", "#b1a8d6", "#8eaed4", "#e4cd92", "#9bc5b5", "#e3b8a2"];
     for(var i = 0; i < nP; i++){
       var p = div("wc-pt", host);
@@ -2801,7 +2808,7 @@ showView("home");
     a.onfinish = function(){ rk.remove(); explode(svg, x, y, R); };
   }
   function ambient(){
-    if(!document.hidden && !RM){
+    if(!document.hidden && !RM && !LITE){ /* 【新增·移动端降级】 */
       ensureSvgs();
       var W = vw(), H = vh(), wide = W >= 1100, m = (W - 940) / 2;
       var x, y = rnd(H * .12, H * .5), R = rnd(70, 120);
@@ -2817,7 +2824,7 @@ showView("home");
   }
   var lastFinale = 0;
   function finale(){
-    if(RM) return;
+    if(RM || LITE) return; /* 【新增·移动端降级】 */
     var now = Date.now();
     if(now - lastFinale < 5000) return;
     lastFinale = now;
@@ -2884,6 +2891,7 @@ showView("home");
   var bag = { a1: 0, v1: 0, a2: 0, v2: 0, ph: 1.7, k1: 16, c1: 1.5, wind: .5, node: null };
   function buildChimes(){
     chimes = [];
+    if(LITE) return; /* 【新增·移动端降级】不生成风铃 */
     var side = $("sideChimes"), hd = $("hdChimes");
     if(side) side.innerHTML = "";
     if(hd) hd.innerHTML = "";
@@ -2928,6 +2936,7 @@ showView("home");
   var lastSY = window.scrollY || 0;
   var rafSY = false;
   window.addEventListener("scroll", function(){
+    if(LITE) return; /* 【新增·移动端降级】不做滚动视差与风铃摇晃 */
     var y = window.scrollY || 0, dy = y - lastSY;
     lastSY = y;
     if(!rafSY){
@@ -2988,7 +2997,7 @@ showView("home");
   }
   var lastClick = 0;
   document.addEventListener("pointerdown", function(e){
-    if(RM || !fxLayer) return;
+    if(RM || !fxLayer) return; /* 【新增·移动端降级】不做点击特效，但我要！ */
     var t = e.target;
     if(!(t instanceof Element)) return;
     if(t.closest('input:not([type="checkbox"]):not([type="file"]),textarea')) return;
@@ -3011,7 +3020,7 @@ showView("home");
 
   /* ---------------- 换页时吹过一阵花瓣 ---------------- */
   function gust(){
-    if(RM || !fxLayer) return;
+    if(RM || LITE || !fxLayer) return; /* 【新增·移动端降级】 */
     ensureSvgs();
     var H = vh();
     for(var i = 0; i < 12; i++){
@@ -3140,7 +3149,9 @@ showView("home");
   buildDrift();
   buildChimes();
   ensureSvgs();
-  if(!RM){
+  if(LITE){
+    /* 【新增·移动端降级】降级：不启动涟漪定时器、环境花火、风铃 rAF 动画循环 */
+  }else if(!RM){
     setInterval(rippleOnce, 1500);
     setTimeout(rippleOnce, 400);
     setTimeout(ambient, 3800);

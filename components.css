@@ -2264,3 +2264,78 @@ button.var-badge:active{ transform: translateY(2px); box-shadow: none; }
   .lv-row .num{ width: 48px; font-size: 14px; padding: 6px 2px; }
   .lv-row .help-icon{ margin-left: 0; }
 }
+
+
+/* ╔══════════════════════════════════════════════════════════════════╗
+   ║ 【新增·移动端降级】components.css 部分
+   ║ 触发：触屏且无悬停的设备（手机/平板），或带触屏且宽度 ≤1024px。纯鼠标 PC 无论窗口多窄/缩放多大都不触发
+   ║ 只去掉耗 GPU 的特效，布局 / 颜色 / 文字 / 基础外观不变。
+   ║ PC 端（宽屏+鼠标）不会命中此媒体查询，上方原有样式一行未改。
+   ╚══════════════════════════════════════════════════════════════════╝ */
+@media (hover: none) and (pointer: coarse), (max-width: 1024px) and (any-pointer: coarse){
+  /* 1) 循环动画关闭（入场一次性动画 jelly-in / pop-in 保留） */
+  .sec-title::before{ animation: none; }
+  .tip::before{ animation: none; }
+  .tod-btn::before{ animation: none; }
+  .entry-card[data-go="inventory"]:hover::before{ animation: none; }
+  .entry-card[data-go="source"]:hover::before{ animation: none; }
+  .entry-card[data-go="synthesis"]:hover::before{ animation: none; }
+  .entry-card[data-go="plans"]:hover::before{ animation: none; }
+  .bar>i{ animation: none; }
+  .bar>i::after{ animation: none; }
+  #toast::before{ animation: none; }
+  .empty::before{ animation: none; }
+  .avatar-btn{ animation: jelly-in 0.55s cubic-bezier(.34, 1.56, .64, 1) both; }
+  .avatar-btn::before{ animation: spin-slow 46s linear infinite; }
+  .avatar-btn::after{ animation: tag-idle 5s ease-in-out infinite; }
+  .f-event-hidden{ animation: pop-in .55s var(--ease-out); }
+  /* 2) 风铃、背景花火层：隐藏 */
+  .side-chimes, .hd-chimes, .fx-layer.soft{ display: none; }
+  /* 3) 毛玻璃 backdrop-filter 全部关闭，背景改为更不透明以保证文字清晰 */
+  #bagMask, .cl-mask{ -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(70, 84, 134, .5); }
+  .var-pop{ -webkit-backdrop-filter: none; backdrop-filter: none; background: linear-gradient(145deg, rgba(255, 253, 248, .98), rgba(250, 244, 236, .97) 55%, rgba(246, 240, 250, .96)); }
+  /* 4) 滤镜阴影：页眉天空只保留零模糊的下层纸边 */
+  .hd-sky{ filter: drop-shadow(0 7px 0 rgba(160, 148, 206, .62)); }
+  .chime, .hd-chimes .chime, .side-chimes .chime{ filter: none; }
+  /* 5) 入口卡片：去掉 3D perspective 与 will-change */
+  .entry-card{ transform: none; will-change: auto; }
+  .fx-pt, .fx-ring{ will-change: auto; }
+  /* 6) 多层/模糊 box-shadow：只保留零模糊的“叠纸边”层，去掉大范围模糊阴影 */
+  .card{ box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 6px 7px 0 -1px var(--ly1), 12px 14px 0 -2px var(--ly2); }
+  .card:hover{ box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 7px 9px 0 -1px var(--ly1), 14px 18px 0 -2px var(--ly2); }
+  .btn-primary{ box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), 0 4px 0 #b4849f; }
+  .btn-soft{ box-shadow: inset 0 1px 0 rgba(255, 255, 255, .65), 0 4px 0 #9db3d3; }
+  .btn-primary:not([disabled]):hover{ box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 6px 0 #b4849f; }
+  .btn-soft:not([disabled]):hover{ box-shadow: inset 0 1px 0 rgba(255,255,255,.65), 0 6px 0 #9db3d3; }
+  .btn-primary:not([disabled]):active{ box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 1px 0 #b4849f; }
+  .btn-soft:not([disabled]):active{ box-shadow: inset 0 1px 0 rgba(255,255,255,.4), 0 1px 0 #9db3d3; }
+  .check:checked{ box-shadow: none; }
+  .tod-btn{ box-shadow: 0 2px 0 #c9ad63; }
+  .entry-card{ box-shadow: 5px 6px 0 -1px var(--ecl); }
+  .entry-card:hover{ box-shadow: 7px 9px 0 -1px var(--ecl); }
+  .stat{ box-shadow: 4px 5px 0 -1px var(--sl); }
+  .mat-card:hover{ box-shadow: 4px 6px 0 -1px rgba(185, 199, 228, .85); }
+  .stage-card:hover{ box-shadow: 5px 8px 0 -1px rgba(185, 199, 228, .9); }
+  .mtag{ box-shadow: 0 3px 0 rgba(168, 98, 127, .3); }
+  .suggest>div:hover{ box-shadow: none; }
+  #bagDrawer{ box-shadow: -8px 0 0 -2px #cdc7e6, -16px 0 0 -4px #b9cde7; }
+  .bag-item:hover{ box-shadow: 4px 6px 0 -1px rgba(185, 199, 228, .9); }
+  .bottom-nav{ box-shadow: 0 5px 0 -1px #cdc7e6, 0 10px 0 -3px #b9cde7; }
+  .bottom-nav .nav-pill{ box-shadow: 0 3px 0 #b4849f; }
+  .card{ box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), 4px 5px 0 -1px var(--ly1), 8px 10px 0 -2px var(--ly2); }
+  @media (max-width: 599px){ #bagDrawer{ box-shadow: 0 -8px 0 -2px #cdc7e6, 0 -16px 0 -4px #b9cde7; } }
+  .avatar-btn{ box-shadow: 0 0 0 3px #f7f2e6, 0 0 0 4.5px rgba(120, 130, 180, .38); }
+  .avatar-btn::after{ box-shadow: 0 3px 0 #c9ad63; }
+  .avatar-btn:hover{ box-shadow: 0 0 0 3px #f7f2e6, 0 0 0 7px rgba(219, 168, 184, .55); }
+  .avatar-btn:active{ box-shadow: 0 0 0 3px #f7f2e6, 0 0 0 4.5px rgba(120, 130, 180, .38); }
+  .cl-panel{ box-shadow: 7px 8px 0 -1px #cdc7e6, 14px 16px 0 -2px #b9cde7; }
+  .fx-rocket{ box-shadow: none; }
+  .var-pop{ box-shadow: inset 0 1px 0 rgba(255, 255, 255, .95); }
+}
+/* ═══════════════ 【新增·移动端降级】components.css 结束 ═══════════════ */
+/* 【移动端】防止iOS点击输入框自动放大 */
+@media (hover: none) and (pointer: coarse) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
