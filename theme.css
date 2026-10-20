@@ -9,16 +9,25 @@
  */
 
 /* 让天色变化可以平滑过渡（不支持 @property 的浏览器会直接切换，不影响使用） */
-@property --sky-1 { syntax: '<color>'; inherits: true; initial-value: #bcd2e5; }
-@property --sky-2 { syntax: '<color>'; inherits: true; initial-value: #d6e4ec; }
+@property --sky-1 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #bcd2e5;
+}
+@property --sky-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #d6e4ec;
+}
 
 :root {
   /* === 天色（昼）=== */
   --sky-1: #bcd2e5;
   --sky-2: #d6e4ec;
-  --fw-op: .62;                 /* 背景花火的显现程度：昼淡、夜浓 */
-  --sky-ink: #47507a;           /* 直接落在天空上的文字色 */
-  transition: --sky-1 1.4s ease, --sky-2 1.4s ease;
+  --fw-op: 0.62; /* 背景花火的显现程度：昼淡、夜浓 */
+  --sky-ink: #47507a; /* 直接落在天空上的文字色 */
+  transition: none;
+
 
   /* === 和纸 === */
   --bg: #cfdfea;
@@ -32,11 +41,22 @@
   --line-soft: rgba(255, 255, 255, 0.78);
 
   /* === 颜料：紫阳花蓝为主，粉紫黄绿点缀 === */
-  --hy-blue: #8eaed4;   --hy-blue-d: #6f8fbd;   --hy-blue-l: #bcd0e6;  --hy-blue-xl: #d3e0ee;
-  --lav: #b1a8d6;       --lav-d: #8f86bd;       --lav-l: #d4cee9;
-  --pink: #dba8b8;      --pink-d: #c1869b;      --pink-l: #ecd2d9;
-  --mint: #9bc5b5;      --mint-d: #76a894;      --mint-l: #cfe3da;
-  --butter: #e4cd92;    --butter-d: #c9ad63;    --butter-l: #f1e5bd;
+  --hy-blue: #8eaed4;
+  --hy-blue-d: #6f8fbd;
+  --hy-blue-l: #bcd0e6;
+  --hy-blue-xl: #d3e0ee;
+  --lav: #b1a8d6;
+  --lav-d: #8f86bd;
+  --lav-l: #d4cee9;
+  --pink: #dba8b8;
+  --pink-d: #c1869b;
+  --pink-l: #ecd2d9;
+  --mint: #9bc5b5;
+  --mint-d: #76a894;
+  --mint-l: #cfe3da;
+  --butter: #e4cd92;
+  --butter-d: #c9ad63;
+  --butter-l: #f1e5bd;
   --peach: #e3b8a2;
 
   /* === 文字：深蓝灰 / 茶色，绝不用纯黑 === */
@@ -61,16 +81,21 @@
   --warn-text: #7d5f1f;
 
   /* === 渐变（颜料晕染） === */
-  --grad-primary: linear-gradient(135deg, #e9bccb 0%, #d9b5d0 55%, #bfb5e1 100%);
+  --grad-primary: linear-gradient(
+    135deg,
+    #e9bccb 0%,
+    #d9b5d0 55%,
+    #bfb5e1 100%
+  );
   --grad-water: linear-gradient(135deg, #d3e1f0 0%, #dcd7ee 100%);
   --grad-mint: linear-gradient(135deg, #cfe5db 0%, #cfe0ef 100%);
   --grad-butter: linear-gradient(135deg, #f1e5bd 0%, #efd3c6 100%);
 
   /* === 阴影：带蓝紫色的柔光 + 纸层硬阴影，不用灰黑 === */
-  --shadow-soft: 0 14px 26px -12px rgba(52, 64, 110, .36);
-  --shadow-hover: 0 22px 34px -12px rgba(52, 64, 110, .46);
-  --shadow-dropdown: 0 18px 34px -10px rgba(52, 64, 110, .5);
-  --glow-pink: 0 10px 20px -6px rgba(168, 98, 127, .5);
+  --shadow-soft: 0 14px 26px -12px rgba(52, 64, 110, 0.36);
+  --shadow-hover: 0 22px 34px -12px rgba(52, 64, 110, 0.46);
+  --shadow-dropdown: 0 18px 34px -10px rgba(52, 64, 110, 0.5);
+  --glow-pink: 0 10px 20px -6px rgba(168, 98, 127, 0.5);
 
   /* === 圆角：全部柔和大圆角 === */
   --radius-xl: 28px;
@@ -87,14 +112,16 @@
   --gap-xl: 14px;
 
   /* === 动效 === */
-  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
-  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --transition-fast: 0.18s ease;
   --transition-norm: 0.3s var(--ease-out);
   --transition-slow: 0.8s var(--ease-out);
 
   /* === 字体 === */
-  --font-stack: "寒蝉半圆体", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  --font-stack:
+    "寒蝉半圆体", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    system-ui, -apple-system, sans-serif;
 
   /* === 纹理 / 剪纸素材 Token（SVG 内联，离线可用） === */
   --tx-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='1' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .36 0 0 0 0 .4 0 0 0 0 .52 0 0 0 .3 -.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23n%29'/%3E%3C/svg%3E");
@@ -155,7 +182,7 @@
 :root[data-tod="dusk"] {
   --sky-1: #b4b4d6;
   --sky-2: #dccdd8;
-  --fw-op: .9;
+  --fw-op: 0.9;
   --sky-ink: #4d4670;
 }
 /* 夜：灰蓝 × 紫，仍保持柔和不发黑 */
@@ -167,7 +194,7 @@
 }
 
 /* ========= 全局基础（只放 reset，不放组件） ========= */
-*{
+* {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
   scrollbar-width: thin;
@@ -175,18 +202,18 @@
 }
 
 html,
-body{
+body {
   margin: 0;
   padding: 0;
 }
 
-html{
+html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   background: var(--sky-2);
 }
 
-body{
+body {
   background-color: transparent;
   color: var(--ink);
   font-family: var(--font-stack);
@@ -198,81 +225,171 @@ body{
   min-height: 100vh;
 }
 
-::selection{ background: #e6c9d6; color: var(--ink-strong); }
+::selection {
+  background: #e6c9d6;
+  color: var(--ink-strong);
+}
 
-::-webkit-scrollbar{ width: 10px; height: 10px; }
-::-webkit-scrollbar-track{ background: transparent; }
-::-webkit-scrollbar-thumb{
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #b7c6e4, #d1c8e6);
-  border: 2px solid rgba(245, 240, 230, .8);
+  border: 2px solid rgba(245, 240, 230, 0.8);
   border-radius: 10px;
 }
 
-:focus-visible{
-  outline: 3px solid rgba(143, 134, 189, .55);
+:focus-visible {
+  outline: 3px solid rgba(143, 134, 189, 0.55);
   outline-offset: 2px;
   border-radius: 10px;
 }
 
 /* 图标通用：<span class="mk mk-heart"></span>，颜色跟随文字 */
-.mk{
+.mk {
   display: inline-block;
   width: 1.15em;
   height: 1.15em;
-  vertical-align: -.2em;
-  margin-right: .3em;
+  vertical-align: -0.2em;
+  margin-right: 0.3em;
   background: currentColor;
   -webkit-mask: var(--mk) center / contain no-repeat;
   mask: var(--mk) center / contain no-repeat;
 }
-.mk-home{ --mk: var(--i-home); }
-.mk-plan{ --mk: var(--i-plan); }
-.mk-source{ --mk: var(--i-source); }
-.mk-syn{ --mk: var(--i-syn); }
-.mk-star{ --mk: var(--i-star); }
-.mk-bag{ --mk: var(--i-bag); }
-.mk-up{ --mk: var(--i-up); }
-.mk-down{ --mk: var(--i-down); }
-.mk-heart{ --mk: var(--i-heart); }
-.mk-memo{ --mk: var(--i-memo); }
-.mk-check{ --mk: var(--i-check); }
-.mk-chev{ --mk: var(--i-chev); }
-.mk-petal{ --mk: var(--i-petal); }
-.mk-dot{ --mk: var(--i-dot); }
-.mk-floret{ --mk: var(--i-floret); }
-.mk-star4{ --mk: var(--i-star4); }
-.mk-f-dango{ --mk: var(--i-f-dango); }
-.mk-f-sword{ --mk: var(--i-f-sword); }
-.mk-f-broom{ --mk: var(--i-f-broom); }
-.mk-f-bird{ --mk: var(--i-f-bird); }
-.mk-f-flag{ --mk: var(--i-f-flag); }
-.mk-f-heal{ --mk: var(--i-f-heal); }
-.mk-f-fish{ --mk: var(--i-f-fish); }
-.mk-f-box{ --mk: var(--i-f-box); }
-.mk-f-tea{ --mk: var(--i-f-tea); }
-.mk-f-moon{ --mk: var(--i-f-moon); }
-.mk-f-shoe{ --mk: var(--i-f-shoe); }
-.mk-f-flower{ --mk: var(--i-f-flower); }
-.mk-f-scroll{ --mk: var(--i-f-scroll); }
-.mk-w-sun{ --mk: var(--i-w-sun); }
-.mk-w-cloud{ --mk: var(--i-w-cloud); }
-.mk-w-rain{ --mk: var(--i-w-rain); }
-.mk-w-wind{ --mk: var(--i-w-wind); }
-.mk-w-moon{ --mk: var(--i-w-moon); }
-.mk-w-flower{ --mk: var(--i-w-flower); }
-.mk-w-snow{ --mk: var(--i-w-snow); }
-.mk-w-bolt{ --mk: var(--i-w-bolt); }
-.mk-w-fog{ --mk: var(--i-w-fog); }
-.mk-w-leaf{ --mk: var(--i-w-leaf); }
-.mk-coin{ --mk: var(--i-coin); }
-.mk-w-rainbow{ --mk: var(--i-w-rainbow); }
+.mk-home {
+  --mk: var(--i-home);
+}
+.mk-plan {
+  --mk: var(--i-plan);
+}
+.mk-source {
+  --mk: var(--i-source);
+}
+.mk-syn {
+  --mk: var(--i-syn);
+}
+.mk-star {
+  --mk: var(--i-star);
+}
+.mk-bag {
+  --mk: var(--i-bag);
+}
+.mk-up {
+  --mk: var(--i-up);
+}
+.mk-down {
+  --mk: var(--i-down);
+}
+.mk-heart {
+  --mk: var(--i-heart);
+}
+.mk-memo {
+  --mk: var(--i-memo);
+}
+.mk-check {
+  --mk: var(--i-check);
+}
+.mk-chev {
+  --mk: var(--i-chev);
+}
+.mk-petal {
+  --mk: var(--i-petal);
+}
+.mk-dot {
+  --mk: var(--i-dot);
+}
+.mk-floret {
+  --mk: var(--i-floret);
+}
+.mk-star4 {
+  --mk: var(--i-star4);
+}
+.mk-f-dango {
+  --mk: var(--i-f-dango);
+}
+.mk-f-sword {
+  --mk: var(--i-f-sword);
+}
+.mk-f-broom {
+  --mk: var(--i-f-broom);
+}
+.mk-f-bird {
+  --mk: var(--i-f-bird);
+}
+.mk-f-flag {
+  --mk: var(--i-f-flag);
+}
+.mk-f-heal {
+  --mk: var(--i-f-heal);
+}
+.mk-f-fish {
+  --mk: var(--i-f-fish);
+}
+.mk-f-box {
+  --mk: var(--i-f-box);
+}
+.mk-f-tea {
+  --mk: var(--i-f-tea);
+}
+.mk-f-moon {
+  --mk: var(--i-f-moon);
+}
+.mk-f-shoe {
+  --mk: var(--i-f-shoe);
+}
+.mk-f-flower {
+  --mk: var(--i-f-flower);
+}
+.mk-f-scroll {
+  --mk: var(--i-f-scroll);
+}
+.mk-w-sun {
+  --mk: var(--i-w-sun);
+}
+.mk-w-cloud {
+  --mk: var(--i-w-cloud);
+}
+.mk-w-rain {
+  --mk: var(--i-w-rain);
+}
+.mk-w-wind {
+  --mk: var(--i-w-wind);
+}
+.mk-w-moon {
+  --mk: var(--i-w-moon);
+}
+.mk-w-flower {
+  --mk: var(--i-w-flower);
+}
+.mk-w-snow {
+  --mk: var(--i-w-snow);
+}
+.mk-w-bolt {
+  --mk: var(--i-w-bolt);
+}
+.mk-w-fog {
+  --mk: var(--i-w-fog);
+}
+.mk-w-leaf {
+  --mk: var(--i-w-leaf);
+}
+.mk-coin {
+  --mk: var(--i-coin);
+}
+.mk-w-rainbow {
+  --mk: var(--i-w-rainbow);
+}
 
 /* ================================================================
    水彩背景装饰层 .wc-bg
    fixed 铺满、z-index:-1、不接收点击（里面的风铃单独开启）。
    由下到上：天色 → 水彩晕染 → 纸纹/布纹 → 幽灵花火 → 涟漪与雨滴 → 紫阳花 → 飘落花瓣与星光
    ================================================================ */
-.wc-bg{
+.wc-bg {
   position: fixed;
   inset: 0;
   z-index: -1;
@@ -280,88 +397,175 @@ body{
   pointer-events: none;
   background: linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 100%);
 }
-.wc-wash{
+.wc-wash {
   position: absolute;
   inset: -12%;
   background:
-    radial-gradient(44% 36% at 12% 8%, rgba(177, 168, 214, .5), transparent 72%),
-    radial-gradient(40% 34% at 92% 6%, rgba(219, 168, 184, .38), transparent 72%),
-    radial-gradient(46% 40% at 90% 96%, rgba(155, 197, 181, .44), transparent 72%),
-    radial-gradient(44% 38% at 6% 92%, rgba(142, 174, 212, .62), transparent 72%),
-    radial-gradient(34% 26% at 50% 46%, rgba(228, 205, 146, .18), transparent 74%),
-    radial-gradient(30% 22% at 70% 30%, rgba(255, 255, 255, .16), transparent 74%);
+    radial-gradient(
+      44% 36% at 12% 8%,
+      rgba(177, 168, 214, 0.5),
+      transparent 72%
+    ),
+    radial-gradient(
+      40% 34% at 92% 6%,
+      rgba(219, 168, 184, 0.38),
+      transparent 72%
+    ),
+    radial-gradient(
+      46% 40% at 90% 96%,
+      rgba(155, 197, 181, 0.44),
+      transparent 72%
+    ),
+    radial-gradient(
+      44% 38% at 6% 92%,
+      rgba(142, 174, 212, 0.62),
+      transparent 72%
+    ),
+    radial-gradient(
+      34% 26% at 50% 46%,
+      rgba(228, 205, 146, 0.18),
+      transparent 74%
+    ),
+    radial-gradient(
+      30% 22% at 70% 30%,
+      rgba(255, 255, 255, 0.16),
+      transparent 74%
+    );
   animation: wash-drift 46s ease-in-out infinite alternate;
   will-change: transform;
 }
-@keyframes wash-drift{
-  0%   { transform: translate3d(0, 0, 0) scale(1); }
-  50%  { transform: translate3d(2%, 1.5%, 0) scale(1.05); }
-  100% { transform: translate3d(-1.5%, 2.5%, 0) scale(1.02); }
+@keyframes wash-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, 1.5%, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(-1.5%, 2.5%, 0) scale(1.02);
+  }
 }
 /* 和纸：水彩晕斑 + 纤维 + 细颗粒 + 极细布纹 */
-.wc-bg::after{
+.wc-bg::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 3;
   pointer-events: none;
   mix-blend-mode: multiply;
-  opacity: .34;
+  opacity: 0.34;
   background-image: var(--tx-blot), var(--tx-fiber), var(--tx-noise), var(--tx-weave);
-  background-size: 900px 900px, 360px 360px, 240px 240px, 6px 6px;
+  background-size:
+    900px 900px,
+    360px 360px,
+    240px 240px,
+    6px 6px;
 }
-.wc-layer{
+.wc-layer {
   position: absolute;
   inset: 0;
   overflow: hidden;
 }
-.wc-ghost{ z-index: 1; opacity: calc(var(--fw-op) * .55); transition: opacity 1.4s ease; }
-.wc-fwlive{ z-index: 1; }
-.wc-rain{ z-index: 2; }
-.wc-hyd{ z-index: 2; }
-.wc-drift{ z-index: 3; }
-.wc-defs{ position: absolute; width: 0; height: 0; overflow: hidden; }
+.wc-ghost {
+  z-index: 1;
+  opacity: calc(var(--fw-op) * 0.55);
+  transition: opacity 1.4s ease;
+}
+.wc-fwlive {
+  z-index: 1;
+}
+.wc-rain {
+  z-index: 2;
+}
+.wc-hyd {
+  z-index: 2;
+}
+.wc-drift {
+  z-index: 3;
+}
+.wc-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
 
 /* --- 幽灵花火：若隐若现、缓慢呼吸 --- */
-.wc-ghost svg{ position: absolute; inset: 0; width: 100%; height: 100%; filter: drop-shadow(1.5px 2px 0 rgba(58, 68, 116, .14)); }
-.wc-ghost .gb{
+.wc-ghost svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(1.5px 2px 0 rgba(58, 68, 116, 0.14));
+}
+.wc-ghost .gb {
   transform-box: fill-box;
   transform-origin: center;
   animation: ghost-breathe 9s ease-in-out infinite alternate;
 }
-@keyframes ghost-breathe{
-  0%   { transform: scale(.95) rotate(-2deg); }
-  100% { transform: scale(1.05) rotate(3deg); }
+@keyframes ghost-breathe {
+  0% {
+    transform: scale(0.95) rotate(-2deg);
+  }
+  100% {
+    transform: scale(1.05) rotate(3deg);
+  }
 }
 
 /* --- 紫阳花团：四角各一簇，随鼠标与滚动轻微视差，自己也在微风里摇 --- */
-.hy-cl{
+.hy-cl {
   position: absolute;
   --dp: 1;
-  transform: translate3d(calc(var(--mx, 0) * -22px * var(--dp)), calc(var(--my, 0) * -14px * var(--dp) + var(--sy, 0) * -.035px * var(--dp)), 0);
-  transition: transform .5s var(--ease-out);
+  transform: translate3d(
+    calc(var(--mx, 0) * -22px * var(--dp)),
+    calc(
+      var(--my, 0) * -14px * var(--dp) + var(--sy, 0) * -0.035px * var(--dp)
+    ),
+    0
+  );
+  transition: transform 0.5s var(--ease-out);
   will-change: transform;
 }
-.hy-cl svg{ display: block; overflow: visible; animation: hy-sway 14s ease-in-out infinite alternate; transform-origin: var(--ox, 50%) var(--oy, 50%); }
-@keyframes hy-sway{
-  0%   { transform: rotate(-1.4deg) scale(1); }
-  100% { transform: rotate(1.6deg) scale(1.025); }
+.hy-cl svg {
+  display: block;
+  overflow: visible;
+  animation: hy-sway 14s ease-in-out infinite alternate;
+  transform-origin: var(--ox, 50%) var(--oy, 50%);
+}
+@keyframes hy-sway {
+  0% {
+    transform: rotate(-1.4deg) scale(1);
+  }
+  100% {
+    transform: rotate(1.6deg) scale(1.025);
+  }
 }
 
 /* --- 雨滴落入水面的涟漪 --- */
-.wc-rp{ position: absolute; overflow: visible; }
-.wc-rp ellipse{ fill: none; stroke: #8fb1d2; vector-effect: non-scaling-stroke; }
-.wc-drop{
+.wc-rp {
+  position: absolute;
+  overflow: visible;
+}
+.wc-rp ellipse {
+  fill: none;
+  stroke: #8fb1d2;
+  vector-effect: non-scaling-stroke;
+}
+.wc-drop {
   position: absolute;
   width: 3px;
   height: 14px;
   border-radius: 3px;
-  background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.85));
-  opacity: .8;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.85)
+  );
+  opacity: 0.8;
 }
 
 /* --- 飘落的花瓣与闪烁的星光 --- */
-.wc-pt{
+.wc-pt {
   position: absolute;
   top: 0;
   left: var(--x, 50%);
@@ -372,21 +576,48 @@ body{
   animation: pt-fall var(--d, 36s) linear var(--dl, 0s) infinite;
   will-change: transform;
 }
-.wc-pt svg{ display: block; width: 100%; height: 100%; overflow: visible; animation: pt-spin var(--sp, 9s) ease-in-out infinite alternate; filter: drop-shadow(1px 1.4px 0 rgba(58, 68, 116, .16)); }
-@keyframes pt-fall{
-  0%   { transform: translate3d(0, -8vh, 0); opacity: 0; }
-  6%   { opacity: .9; }
-  25%  { transform: translate3d(var(--w, 40px), 24vh, 0); }
-  50%  { transform: translate3d(calc(var(--w, 40px) * -.7), 52vh, 0); }
-  75%  { transform: translate3d(calc(var(--w, 40px) * .8), 80vh, 0); }
-  94%  { opacity: .8; }
-  100% { transform: translate3d(calc(var(--w, 40px) * -.3), 110vh, 0); opacity: 0; }
+.wc-pt svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  animation: pt-spin var(--sp, 9s) ease-in-out infinite alternate;
+  filter: drop-shadow(1px 1.4px 0 rgba(58, 68, 116, 0.16));
 }
-@keyframes pt-spin{
-  0%   { transform: rotate(-40deg) scaleY(.82); }
-  100% { transform: rotate(60deg) scaleY(1); }
+@keyframes pt-fall {
+  0% {
+    transform: translate3d(0, -8vh, 0);
+    opacity: 0;
+  }
+  6% {
+    opacity: 0.9;
+  }
+  25% {
+    transform: translate3d(var(--w, 40px), 24vh, 0);
+  }
+  50% {
+    transform: translate3d(calc(var(--w, 40px) * -0.7), 52vh, 0);
+  }
+  75% {
+    transform: translate3d(calc(var(--w, 40px) * 0.8), 80vh, 0);
+  }
+  94% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate3d(calc(var(--w, 40px) * -0.3), 110vh, 0);
+    opacity: 0;
+  }
 }
-.wc-tw{
+@keyframes pt-spin {
+  0% {
+    transform: rotate(-40deg) scaleY(0.82);
+  }
+  100% {
+    transform: rotate(60deg) scaleY(1);
+  }
+}
+.wc-tw {
   position: absolute;
   left: var(--x);
   top: var(--y);
@@ -398,49 +629,81 @@ body{
   mask: var(--i-star4) center / contain no-repeat;
   animation: tw var(--d, 4s) ease-in-out var(--dl, 0s) infinite;
 }
-@keyframes tw{
-  0%, 100% { opacity: .15; transform: scale(.6) rotate(0deg); }
-  50%      { opacity: .95; transform: scale(1.15) rotate(45deg); }
+@keyframes tw {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.6) rotate(0deg);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.15) rotate(45deg);
+  }
 }
 /* 萤火：只有黄昏和夜里才出来 */
-.wc-ff{
+.wc-ff {
   position: absolute;
   left: var(--x);
   top: var(--y);
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: radial-gradient(circle, #fff6cf 0 28%, rgba(247, 226, 150, .55) 48%, rgba(247, 226, 150, 0) 72%);
+  background: radial-gradient(
+    circle,
+    #fff6cf 0 28%,
+    rgba(247, 226, 150, 0.55) 48%,
+    rgba(247, 226, 150, 0) 72%
+  );
   transform: scale(2.2);
   opacity: 0;
   animation: ff var(--d, 9s) ease-in-out var(--dl, 0s) infinite;
 }
-:root[data-tod="day"] .wc-ff{ display: none; }
-@keyframes ff{
-  0%   { opacity: 0; transform: translate(0, 0) scale(1.4); }
-  20%  { opacity: .95; }
-  50%  { transform: translate(var(--fx, 30px), var(--fy, -24px)) scale(2.4); opacity: .6; }
-  80%  { opacity: .9; }
-  100% { opacity: 0; transform: translate(calc(var(--fx, 30px) * 1.6), calc(var(--fy, -24px) * .4)) scale(1.4); }
+:root[data-tod="day"] .wc-ff {
+  display: none;
+}
+@keyframes ff {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(1.4);
+  }
+  20% {
+    opacity: 0.95;
+  }
+  50% {
+    transform: translate(var(--fx, 30px), var(--fy, -24px)) scale(2.4);
+    opacity: 0.6;
+  }
+  80% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(
+        calc(var(--fx, 30px) * 1.6),
+        calc(var(--fy, -24px) * 0.4)
+      )
+      scale(1.4);
+  }
 }
 
 /* ========= 尊重"减少动态效果"系统设置 ========= */
-@media (prefers-reduced-motion: reduce){
+@media (prefers-reduced-motion: reduce) {
   *,
   *::before,
-  *::after{
-    animation-duration: .01ms !important;
+  *::after {
+    animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: .01ms !important;
+    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
   .wc-pt,
   .wc-tw,
   .wc-ff,
   .wc-rp,
-  .wc-drop{ display: none; }
+  .wc-drop {
+    display: none;
+  }
 }
-
 
 /* ╔══════════════════════════════════════════════════════════════════╗
    ║ 【新增·移动端降级】theme.css 部分
@@ -448,33 +711,88 @@ body{
    ║ 只去掉耗 GPU 的特效，布局 / 颜色 / 文字 / 基础外观不变。
    ║ PC 端（宽屏+鼠标）不会命中此媒体查询，上方原有样式一行未改。
    ╚══════════════════════════════════════════════════════════════════╝ */
-@media (hover: none) and (pointer: coarse){
-
+@media (hover: none) and (pointer: coarse) {
   /* 1) 循环动画全部关闭 */
-  .wc-wash{ animation: none; }
-  .wc-ghost .gb{ animation: none; }
-  .hy-cl svg{ animation: none; }
-  .wc-pt{ animation: none; }
-  .wc-pt svg{ animation: none; }
-  .wc-tw{ animation: none; }
-  .wc-ff{ animation: none; }
+  .wc-wash {
+    animation: none;
+  }
+  .wc-ghost .gb {
+    animation: none;
+  }
+  .hy-cl svg {
+    animation: none;
+  }
+  .wc-pt {
+    animation: none;
+  }
+  .wc-pt svg {
+    animation: none;
+  }
+  .wc-tw {
+    animation: none;
+  }
+  .wc-ff {
+    animation: none;
+  }
   /* 2) 飘落花瓣 / 雨滴涟漪 / 萤火虫：整层隐藏（JS 也不再生成） */
-  .wc-rain, .wc-pt, .wc-ff{ display: none; }
+  .wc-rain,
+  .wc-pt,
+  .wc-ff {
+    display: none;
+  }
   /* 3) 星星不再闪烁，改为静态半透明 */
-  .wc-tw{ opacity: .5; }
+  .wc-tw {
+    opacity: 0.5;
+  }
   /* 4) 紫阳花团：取消视差位移、过渡、摇摆、will-change、滤镜阴影（SVG 上有行内 filter，需 !important） */
-  .hy-cl{ transform: none !important; transition: none; will-change: auto; }
-  .hy-cl svg{ animation: none; filter: none !important; will-change: auto; }
-  .wc-ghost svg{ filter: none; }
-  .wc-ghost{ transition: none; }
-  .wc-wash{ will-change: auto; }
+  .hy-cl {
+    transform: none !important;
+    transition: none;
+    will-change: auto;
+  }
+  .hy-cl svg {
+    animation: none;
+    filter: none !important;
+    will-change: auto;
+  }
+  .wc-ghost svg {
+    filter: none;
+  }
+  .wc-ghost {
+    transition: none;
+  }
+  .wc-wash {
+    will-change: auto;
+  }
   /* 5) 全屏纸纹：mix-blend-mode 混合很耗 GPU，改为普通叠加并减淡 */
-  .wc-bg::after{ mix-blend-mode: normal; opacity: .16; }
+  .wc-bg::after {
+    mix-blend-mode: normal;
+    opacity: 0.16;
+  }
 }
 /* ═══════════════ 【新增·移动端降级】theme.css 结束 ═══════════════ */
 /* ==========全局永久关闭所有背景粒子特效========== */
-.wc-rain, .wc-ff, .wc-pt, .wc-tw, .wc-wash, .wc-fwlive {
+.wc-rain,
+.wc-ff,
+.wc-pt,
+.wc-tw,
+.wc-wash,
+.wc-fwlive {
   display: none !important;
   animation: none !important;
 }
 
+/* ╔══════════════════════════════════════════════════════════════════╗
+   ║ 【新增·移动端降级 · 第二批】去掉“看不见”的纹理层 + 下拉大阴影
+   ║ 触发条件与上面相同（触屏且无悬停）。PC 端不命中，原样式一行未改。
+   ║ fiber / blot 两张纹理本身不透明度为 0（肉眼看不见），但手机仍要现算 SVG 噪声，
+   ║ 这里改成 1×1 透明图，画面不变。
+   ╚══════════════════════════════════════════════════════════════════╝ */
+@media (hover: none) and (pointer: coarse) {
+  :root {
+    --tx-fiber: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGBgAAAABQABpfZFQAAAAABJRU5ErkJggg==");
+    --tx-blot: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGBgAAAABQABpfZFQAAAAABJRU5ErkJggg==");
+    --shadow-dropdown: 0 0 0 0 transparent; /* 下拉框 34px 大模糊阴影 → 去掉，保留零模糊的纸边层 */
+  }
+}
+/* ═══════════════ 【新增·移动端降级 · 第二批】theme.css 结束 ═══════════════ */

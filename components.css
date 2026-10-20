@@ -1132,9 +1132,11 @@ header .credit{
 #bagMask{
   position: fixed;
   inset: 0;
-  background: rgba(70, 84, 134, .5);
+  background: rgba(70, 84, 134, .34);
   z-index: 60;
   display: none;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   animation: mask-in .35s ease;
 }
 @keyframes mask-in{
@@ -1865,7 +1867,9 @@ footer::before{
   position: fixed;
   inset: 0;
   z-index: 9000;
-  background: rgba(70, 84, 134, .5);
+  background: rgba(70, 84, 134, .36);
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
   display: none;
   align-items: center;
   justify-content: center;
@@ -2047,7 +2051,7 @@ footer::before{
   background: currentColor;
   -webkit-mask: var(--m) center / contain no-repeat;
   mask: var(--m) center / contain no-repeat;
-  will-change: transform, opacity;
+  /* 【内存优化】去掉常驻 will-change，动画期间浏览器自动提升图层 */
 }
 .fx-ring{
   position: absolute;
@@ -2055,7 +2059,6 @@ footer::before{
   top: 0;
   border-radius: 50%;
   border: 1.6px solid currentColor;
-  will-change: transform, opacity;
 }
 .fx-ring.flat{ border-radius: 50%; }
 .fx-fw{
@@ -2244,10 +2247,11 @@ button.var-badge:active{ transform: translateY(2px); box-shadow: none; }
   z-index: 999;
   max-width: min(320px, calc(100vw - 24px));
   padding: 12px;
-  border-radius: 18px;
-  background: linear-gradient(145deg, rgba(255, 253, 248, .98), rgba(250, 244, 236, .96) 55%, rgba(246, 240, 250, .95));
-  border: 1px solid rgba(255, 255, 255, .9);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .95), 0 14px 30px -8px rgba(60, 70, 120, .4);
+  /* 与 .cap-pop / .ing-pop 同款：半透明白底 + 淡蓝灰描边 + 纸边阴影 */
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, .75);
+  border: 1.6px solid #c4cce0;
+  box-shadow: 0 3px 0 rgba(120, 130, 175, .3);
   animation: pop-in .3s var(--ease-spring);
 }
 .var-pop .var-chips{ gap: 8px; }
@@ -2286,9 +2290,7 @@ button.var-badge:active{ transform: translateY(2px); box-shadow: none; }
   .f-event-hidden{ animation: pop-in .55s var(--ease-out); }
   /* 2) 风铃、背景花火层：隐藏 */
   .side-chimes, .hd-chimes, .fx-layer.soft{ display: none; }
-  /* 3) 毛玻璃 backdrop-filter 全部关闭，背景改为更不透明以保证文字清晰 */
-  #bagMask, .cl-mask{ -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(70, 84, 134, .5); }
-  .var-pop{ -webkit-backdrop-filter: none; backdrop-filter: none; background: linear-gradient(145deg, rgba(255, 253, 248, .98), rgba(250, 244, 236, .97) 55%, rgba(246, 240, 250, .96)); }
+  /* 3) 背包/更新日志的遮罩已恢复为模糊遮罩（手机端也保留），此处不再关闭 */
   /* 4) 滤镜阴影：页眉天空只保留零模糊的下层纸边 */
   .hd-sky{ filter: drop-shadow(0 7px 0 rgba(160, 148, 206, .62)); }
   .chime, .hd-chimes .chime, .side-chimes .chime{ filter: none; }
@@ -2325,7 +2327,6 @@ button.var-badge:active{ transform: translateY(2px); box-shadow: none; }
   .avatar-btn:active{ box-shadow: 0 0 0 3px #f7f2e6, 0 0 0 4.5px rgba(120, 130, 180, .38); }
   .cl-panel{ box-shadow: 7px 8px 0 -1px #cdc7e6, 14px 16px 0 -2px #b9cde7; }
   .fx-rocket{ box-shadow: none; }
-  .var-pop{ box-shadow: inset 0 1px 0 rgba(255, 255, 255, .95); }
 }
 /* ═══════════════ 【新增·移动端降级】components.css 结束 ═══════════════ */
 /* 【移动端】防止iOS点击输入框自动放大 */
