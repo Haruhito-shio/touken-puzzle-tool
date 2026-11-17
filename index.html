@@ -64,7 +64,7 @@
     <div class="card">
       <div class="sec-title">突破阶段统计 <span class="sub">// 按所有突破计划合计</span></div>
       <div id="stageStats"></div>
-      <div class="muted small" style="margin-top:8px;">同一把刀会有多段突破：<b>已完成</b> = 该段终点 ≤ 当前等级上限的段；<b>待完成</b> = 还没突破的段。想标记完成：到「编辑突破计划」，把那把刀的「当前等级上限」改到该段终点以上即可（例如突破到 30，10→20、20→30 两段就算完成）。</div>
+      <div class="muted small" style="margin-top:8px;">同一把刀会有多段突破：<b>已完成</b> = 该段终点 ≤ 当前等级上限的段；<b>待完成</b> = 还没突破的段。想标记完成：到「编辑突破计划」，把那把刀的「当前等级上限」选到已完成的阶段即可（例如选「30」，10→20、20→30 两段就算完成）。</div>
     </div>
 
     <!-- 本丸今日运势（趣味小功能，不改任何数据） -->
@@ -86,35 +86,39 @@
         <button class="btn btn-soft btn-mini grow" id="btnImport"><span class="mk mk-down" aria-hidden="true"></span>导入备份</button>
         <input type="file" id="importFile" accept=".json,application/json" hidden>
       </div>
-      <div class="muted small" style="margin-top:8px;">导出会下载一个备份文件；换设备或清浏览器后，导入即可恢复计划和背包。<span class="mk mk-star" aria-hidden="true"></span>备份只保存你的突破计划与背包库存，游戏公共数据（角色/材料/关卡等）不会被备份、也不会被覆盖。</div>
+      <div id="backupStatus" class="backup-status" style="display:none;"></div>
+      <div class="muted small" style="margin-top:8px;">导出会下载一个备份文件；换设备或清浏览器后，导入即可恢复计划和背包（导入前会确认，导入后可「撤销导入」）。<span class="mk mk-star" aria-hidden="true"></span>备份只保存你的突破计划与背包库存，游戏公共数据（角色/材料/关卡等）不会被备份、也不会被覆盖。</div>
     </div>
 
     <div class="card guide">
       <div class="sec-title">使用说明 <span class="sub">// 三分钟上手</span></div>
       <h3>1. 背包怎么改？</h3>
-      <ul><li>任意页面右上角按钮，滑出抽屉，改完即存；刷一关拿材料就点它改数字，不用来回跳页。合成物（碗 / 茶碗 / 围棋等）也可以填——需求里有同名合成物时优先用它抵掉，不会拆成基础材料去抵别的缺口。想批量整理，用首页「完整背包」。</li></ul>
+      <ul><li>任意页面右上角按钮，滑出抽屉，改完即存，不用来回跳页。每种材料可以直接输入数量，也可以点 ＋ / － 加减；材料多的时候用上方的搜索框（支持中文、日文、拼音首字母），或打开「只看已有库存」。需求里有同名合成物时优先用它抵掉，不会拆成基础材料去抵别的缺口。想批量整理，用首页「完整背包」。</li></ul>
       <h3>2. 怎么算缺口？</h3>
-      <ul><li>「编辑突破计划」里加刀、填等级，点「全部计划」或「用勾选角色计算」，缺口就在本页下方显示。</li></ul>
+      <ul><li>「编辑突破计划」里加刀、选等级上限和目标，点「全部计划」或「勾选计算」，缺口就在本页下方显示；之后再改计划、勾选或背包，结果会自动更新。</li>
+      <li>结果可以切换三种看法：<b>材料缺口</b>（每种材料缺多少，可点「谁需要」看是哪几把刀要）、<b>按刀剑</b>（每把刀要哪些材料，可选看基础材料或直接材料）、<b>合成清单</b>（哪些合成物需要自己合成）。底部的复制按钮会按当前这一种看法复制成文字。</li></ul>
       <h3>3. 缺口去哪刷？</h3>
-      <ul><li>缺口面板下方点「查看缺口来源」，自动跳到材料来源页并带上缺口材料；也可以自己搜材料手动选。关卡上的 x/n 只表示“覆盖几种材料”，不代表掉率。</li></ul>
-      <h3>4. 已有/需求/缺口怎么理解？</h3>
+      <ul><li>缺口面板下方点「查看缺口来源」，自动跳到材料来源页并带上缺口材料；也可以自己搜材料手动选。选好材料后下面会直接列出关卡，覆盖的材料越多越靠前；选了好几种材料时，可以点「推荐路线」看怎么少跑几关。关卡上的 x/n 只表示“覆盖几种材料”，不代表掉率。</li></ul>
+      <h3>4. 需求 / 已有 / 缺口怎么理解？</h3>
       <ul>
+      <li><b>统计口径</b>：材料需求总览顶部可以切换。「按材料种类」数的是几种材料（需求材料 / 已备齐 / 仍缺）；「按基础材料总数」把各材料的个数加起来（总需求 / 已有 / 缺口）。选中的一种显示在大方块里，另一种放在下面的「附加统计」。</li>
       <li><b>需求</b>：突破计划里所有材料逐层展开后的总量，<b>合成物优先用同名库存抵掉</b>，不够的才展开成基础材料。</li>
       <li><b>已有</b>：能抵掉的那部分基础材料库存——同名合成物直接抵同名需求；基础材料库存抵基础材料需求，<b>最多按需求计入</b>（需求 10 个粘土、你有 12 个，只算 10 个已有）。合成物不会“拆成”基础材料去抵别的基础材料缺口。</li>
       <li><b>缺口</b> = 需求 − 已有（不足 0 按 0 算）。</li>
       <li><b>小判</b>：只算<b>实际需要合成的量</b>，库存能抵的不用花小判。</li>
       </ul>
       <h3>5. 突破怎么算？</h3>
-      <ul><li>只算「起点 ≥ 当前等级上限 且 终点 ≤ 目标等级」的段。例：上限 5 目标 35 算 10→20、20→30、30→35 三段；上限正好停在 30 时，30→35 这一段也会算。</li>
-      <li>「当前等级上限」请填游戏里显示的<b>等级上限</b>（不是面板等级）。例：练到 10 做了突破、上限变 20，就填 20；还没突破过就填当前等级。</li></ul>
+      <ul><li>只算「当前上限之后、目标之内」的段。例：上限 10、目标 35，算 10→20、20→30、30→35 三段；上限选 30 时，只剩 30→35 这一段。</li>
+      <li>「当前等级上限」选游戏里显示的<b>等级上限</b>（不是面板等级）。例：练到 10 做了突破、上限变 20，就选 20；还没突破过选 10。</li>
+      <li>同一把刀可以同时规划多个形态（如普和彩），每个形态是一条独立的计划。</li></ul>
       <h3>6. 合成查询怎么用？</h3>
       <ul><li>「合成」页选合成物（茶碗 / 围棋 / 花札等），可以看它拆成哪些基础材料、各要几个、合成要花多少小判。合成物用加粗标出，点它可以看它自己的基础材料。数量可以改，结果实时更新。</li></ul>
       <h3>7. 更新日志在哪看？</h3>
-      <ul><li>页面底部「更新日志」可以点开，看每个版本改了什么。</li></ul>
+      <ul><li>有新的更新时，打开页面会自动弹出最新一条，看完关掉就不再弹了；想回顾以前的，点页面底部的「更新日志」。</li></ul>
       <h3><span class="mk mk-heart" aria-hidden="true"></span>致谢</h3>
       <ul><li>本工具的数据来自多位同事共同维护的在线表格（刀剣乱舞ぱずぎり统计）。每一个材料数量、每一条关卡掉落，都是大家一点一点整理、核对出来的成果，工具只是把它们搬到了更好查的地方。感谢每一位记录和更新数据的伙伴！</li></ul>
       <h3><span class="mk mk-memo" aria-hidden="true"></span>备注</h3>
-      <ul><li>感谢各位同事使用！用着哪里不顺手、算出来的数字对不上，都请在xhs告诉我～</li>
+      <ul><li>感谢各位同事使用！用着哪里不顺手、算出来的数字对不上，都请在xhs告诉我～</li></ul>
       <p class="muted small">材料显示：中日文一致只显示一个（水），不一致显示 日文|中文（丸太|木材）；小判是货币，不占背包、不计缺口。背包、计划只存在本机浏览器里。</p>
     </div>
   </section>
@@ -134,18 +138,20 @@
       </div>
       <div class="row" style="margin-top:10px;">
         <label class="small">当前等级上限</label>
-        <input id="curLevel" type="number" class="input num" min="1" value="1">
+        <button type="button" class="var-badge stage-btn" id="curBtn" data-stage="cur" aria-haspopup="true" aria-label="当前等级上限">10</button>
+        <input id="curLevel" type="hidden" value="10">
         <span class="muted">→</span>
-        <label class="small">目标 Lv</label>
-        <input id="tarLevel" type="number" class="input num" min="1" value="30">
+        <label class="small">目标</label>
+        <button type="button" class="var-badge stage-btn" id="tarBtn" data-stage="tar" aria-haspopup="true" aria-label="目标">30</button>
+        <input id="tarLevel" type="hidden" value="30">
         <button class="btn btn-primary btn-mini" id="btnAdd">加入计划</button>
       </div>
-      <div class="tip" style="margin-top:8px;">「当前等级上限」怎么填？填游戏里显示的<b>等级上限</b>（不是面板等级）。例：练到 10 级做了突破、上限变 20，就填 <b>20</b>；还没突破过就填当前等级。</div>
-      <div class="muted small" style="margin-top:6px;">选择角色后会自动出现稀有度选择；普/彩的材料需求不同。此外稀有度留空时默认为「普」。</div>
+      <div class="tip" style="margin-top:8px;">「当前等级上限」选游戏里显示的<b>等级上限</b>（不是面板等级）；还没突破过选 <b>10</b>。</div>
+      <div class="muted small" style="margin-top:6px;">选择角色后会出现稀有度 / 异名选择，普和彩的材料需求不同。同一把刀的不同形态可以分别加入，各算一条计划。误删计划可以点提示里的「撤销」找回。</div>
     </div>
 
     <div class="card">
-      <div class="sec-title">我的突破计划</div>
+      <div class="sec-title">我的突破计划<button type="button" class="steps-toggle" id="btnSteps" aria-pressed="false" title="显示 / 隐藏每条计划要突破的段">突破段</button></div>
       <div id="planList"></div>
       <div id="planEmpty" class="empty" style="display:none;"><div class="big">还没有突破计划</div>从上方添加一把刀剑</div>
       <div class="row" style="justify-content:space-between;margin-top:8px;"><span class="muted" id="selCount"></span></div>
@@ -153,34 +159,55 @@
         <button class="btn btn-primary" id="btnAll">全部计划</button>
         <button class="btn btn-soft" id="btnSel" disabled>勾选计算</button>
       </div>
-      <div class="tip" style="margin-bottom:0;">左边的勾选框只用于本次临时计算，不会删除或改动已保存的计划。计算后缺口在本页下方显示，需要看关卡再点「查看缺口来源」。</div>
+      <div class="tip" style="margin-bottom:0;">左边的勾选框用来选出要计算的计划，不会删除或改动已保存的计划。计算后缺口在本页下方显示，之后再改计划、勾选或背包，缺口会自动更新，需要看关卡再点「查看缺口来源」。</div>
     </div>
 
     <div class="card">
       <div class="sec-title">材料需求总览 <span class="sub">// 需求・所持・不足</span></div>
       <div id="sumEmpty" class="empty" style="display:none;"><div class="big">还没有计算结果</div>先点上面的计算按钮</div>
       <div id="sumBody" style="display:none;">
-        <div class="stat-grid">
-          <div class="stat t-total"><b id="sNeed">0</b><span>总需求</span></div>
-          <div class="stat t-done"><b id="sHave">0</b><span>已有</span></div>
-          <div class="stat t-left"><b id="sGap">0</b><span>缺口</span></div>
+        <div class="muted small" id="sScope"></div>
+        <div class="basis-row">
+          <span class="small muted">统计口径</span>
+          <div class="seg-mini" role="group" aria-label="统计口径">
+            <button type="button" class="on" data-basis="kind" aria-pressed="true">按材料种类</button>
+            <button type="button" data-basis="qty" aria-pressed="false">按基础材料总数</button>
+          </div>
         </div>
-        <div style="margin-top:8px;">
+        <div class="stat-grid">
+          <div class="stat t-total"><b id="sNeed">0</b><span id="sNeedL">需求材料</span></div>
+          <div class="stat t-done"><b id="sHave">0</b><span id="sHaveL">已备齐</span></div>
+          <div class="stat t-left"><b id="sGap">0</b><span id="sGapL">仍缺</span></div>
+        </div>
+        <div style="margin-top:10px;">
           <div class="bar-label"><span>整体进度</span><span id="sPct">0%</span></div>
           <div class="bar" id="sBarWrap"><i id="sBar" style="width:0%"></i></div>
           <div class="coin-note" id="sCoinNote"></div>
-                  <div id="sExtraTips" style="display:none;"></div>
+          <div class="sum-foot" id="sumFoot"></div>
+          <div id="sExtraTips" style="display:none;"></div>
         </div>
-        <div class="row" style="justify-content:space-between;align-items:center;margin-top:14px;">
-         <div class="sec-title" style="margin:0;">缺口材料</div>
-         <div class="sort-btns">
-          <button class="sort-btn on" data-sort="gap">缺口↓</button>
-          <button class="sort-btn" data-sort="pct">完成度↑</button>
-         </div>
+        <div class="seg" role="tablist" aria-label="结果视图">
+          <button type="button" class="seg-btn on" role="tab" aria-selected="true" data-sumview="mat">材料缺口</button>
+          <button type="button" class="seg-btn" role="tab" aria-selected="false" data-sumview="sword">按刀剑</button>
+          <button type="button" class="seg-btn" role="tab" aria-selected="false" data-sumview="craft">合成清单</button>
         </div>
-        <div id="gapList"></div>
-        <div id="gapEmpty" class="empty" style="display:none;">当前没有材料缺口</div>
-        <button class="btn btn-primary" id="btnGapSource" style="display:none;margin-top:10px;">查看缺口来源</button>
+        <div id="viewMat">
+          <div class="mat-tools">
+            <div class="sort-btns">
+              <button class="sort-btn on" data-sort="gap">缺口↓</button>
+              <button class="sort-btn" data-sort="pct">完成度↑</button>
+            </div>
+            <button type="button" class="tog-btn" id="btnOnlyGap" aria-pressed="false">仅看缺口</button>
+          </div>
+          <div id="gapEmpty" class="empty" style="display:none;">当前没有材料缺口，全部备齐了</div>
+          <div id="gapList"></div>
+        </div>
+        <div id="viewSword" style="display:none;"></div>
+        <div id="viewCraft" style="display:none;"></div>
+        <div class="sum-actions" id="sumActions" style="display:none;">
+          <button class="btn btn-primary" id="btnGapSource">查看缺口来源</button>
+          <button class="btn" id="btnCopyGap">复制缺口清单</button>
+        </div>
       </div>
     </div>
   </section>
@@ -189,7 +216,7 @@
   <section id="view-source" class="view">
     <div class="card">
       <div class="sec-title">材料来源查询 <span class="sub">// 独立查询</span></div>
-      <div class="muted small" style="margin-bottom:6px;">自己选材料看关卡掉落；若是从缺口跳转过来，材料已自动带好，可再增删。</div>
+      <div class="muted small" style="margin-bottom:6px;">选好材料，下面自动列出能掉落它们的关卡；从缺口跳转过来时，材料已自动带好，可再增删。</div>
       <div class="s-wrap">
         <input id="srcSearch" class="input" placeholder="点这里展开材料列表，或输入过滤后点选（可多选）" autocomplete="off">
         <div id="srcSuggest" class="suggest"></div>
@@ -197,12 +224,16 @@
       <div id="srcTags" class="taglist"></div>
       <div class="row" style="justify-content:space-between;">
         <span class="muted" id="srcCount">已选择 0 种材料</span>
-        <button class="btn btn-primary btn-mini" id="btnSrc" disabled>查询关卡</button>
+        <button class="btn btn-mini" id="btnSrcClear" disabled>清空</button>
       </div>
     </div>
     <div class="card" id="srcResultCard" style="display:none;">
-      <div class="sec-title">关卡覆盖结果</div>
-      <div class="muted small" style="margin-bottom:8px;">x/n 表示该关卡掉落清单覆盖了几种目标材料，不代表掉率。</div>
+      <div class="row src-head" style="justify-content:space-between;">
+        <div class="sec-title" style="margin:0;">关卡覆盖结果</div>
+        <button type="button" class="route-toggle" id="btnRoute" aria-expanded="false" style="display:none;">推荐路线 ▸</button>
+      </div>
+      <div id="srcRoute" class="route-box" style="display:none;"></div>
+      <div class="muted small" style="margin-bottom:8px;">x/n 表示该关卡掉落清单覆盖了几种目标材料，不代表掉率；覆盖得越多越靠前。</div>
       <div id="srcResult" class="result-grid"></div>
     </div>
   </section>
@@ -225,7 +256,11 @@
   <section id="view-inventory" class="view">
     <div class="card">
       <div class="sec-title">完整背包 <span class="sub">// 批量修改库存</span></div>
-      <div class="muted small" style="margin-bottom:8px;">列出所有材料（含合成物）。改完即存，所有页面缺口自动更新。</div>
+      <div class="muted small" style="margin-bottom:8px;">列出所有材料（含合成物）。可搜索，直接输入数量或点 ＋ / － 加减；改完即存，所有页面缺口自动更新。</div>
+      <div class="bag-tools">
+      <input type="search" class="input bag-search" placeholder="搜索材料：中文 / 日文 / 拼音首字母" autocomplete="off" aria-label="搜索材料">
+      <button type="button" class="bag-only" aria-pressed="false">只看已有库存</button>
+    </div>
       <div id="invFull" class="bag-items" style="padding:0;"></div>
     </div>
   </section>
@@ -242,6 +277,10 @@
     <b>背包材料</b>
     <button class="icon-btn" id="bagClose">✕ 关闭</button>
   </div>
+  <div class="bag-tools">
+  <input type="search" class="input bag-search" placeholder="搜索材料：中文 / 日文 / 拼音首字母" autocomplete="off" aria-label="搜索材料">
+  <button type="button" class="bag-only" aria-pressed="false">只看已有库存</button>
+</div>
   <div class="bag-items" id="invDrawer"></div>
   <div class="muted small" style="text-align:center;padding:4px 0 10px;">填现有数量 · 合成物优先抵扣 · 改完即存</div>
 </aside>
@@ -255,17 +294,27 @@
 </nav>
 
 <div id="toast"></div>
+<div id="dlgMask" class="dlg-mask">
+  <div class="dlg" role="alertdialog" aria-modal="true" aria-labelledby="dlgTitle" aria-describedby="dlgBody">
+    <div class="dlg-title" id="dlgTitle"></div>
+    <div class="dlg-body" id="dlgBody"></div>
+    <div class="dlg-btns">
+      <button type="button" class="btn btn-soft" id="dlgCancel">取消</button>
+      <button type="button" class="btn btn-primary" id="dlgOk">确定</button>
+    </div>
+  </div>
+</div>
 <!-- ===== 更新日志弹窗 ===== -->
 <div id="clMask" class="cl-mask">
   <div class="cl-panel">
     <div class="cl-head">
-      <span class="cl-title">更新日志</span>
+      <span class="cl-title" id="clTitle">更新日志</span>
       <button class="cl-close" id="clClose">✕</button>
     </div>
     <div class="cl-body" id="clBody">
       <!-- 内容由 JS 填充 -->
     </div>
-    <div class="cl-foot">
+    <div class="cl-foot" id="clFoot">
       <a href="https://github.com/Haruhito-shio/touken-puzzle-tool/blob/main/CHANGELOG.md"
          target="_blank" rel="noopener"
          class="footer-link">查看完整历史 →</a>
@@ -303,9 +352,42 @@ var stages = data.stages || [];
 })();
 var plans = loadJSON("touken_plans", []);
 var inventory = loadJSON("touken_inventory", {});
+/* 读到的存储数据先清洗：格式不对（被手动改坏、旧版本残留）的条目丢掉，避免整页渲染失败 */
+(function sanitizeStore(){
+  var inv={};
+  if(inventory && typeof inventory==="object" && !Array.isArray(inventory)){
+    Object.keys(inventory).forEach(function(k){
+      var v=Number(inventory[k]);
+      if(isFinite(v) && v>0) inv[k]=Math.floor(v);
+    });
+  }
+  inventory=inv;
+  if(!Array.isArray(plans)) plans=[];
+  plans=plans.filter(function(p){
+    if(!(p && typeof p==="object" && typeof p.sword==="string")) return false;
+    p.currentLevel=Number(p.currentLevel); p.targetLevel=Number(p.targetLevel);
+    return isFinite(p.currentLevel) && isFinite(p.targetLevel);
+  });
+  try{ if(!localStorage.getItem("touken_schema")) localStorage.setItem("touken_schema","1"); }catch(e){}
+})();
 
-var checked = null;        // null=全部勾选；数组=临时勾选的刀剑
-var lastCalc = null;
+/* 每条计划有自己的编号 id：同一把刀可以同时规划多个形态。旧数据没有 id → 启动时自动补上 */
+var _idSeq = 0;
+function newPlanId(){ return "p"+Date.now().toString(36)+(++_idSeq).toString(36)+Math.random().toString(36).slice(2,5); }
+(function migratePlanIds(){
+  if(!Array.isArray(plans)){ plans=[]; return; }
+  var changed=false, seen={}, before=plans.length;
+  plans=plans.filter(function(p){ return p && typeof p==="object" && typeof p.sword==="string"; });
+  if(plans.length!==before) changed=true;
+  plans.forEach(function(p){ if(!p.id || seen[p.id]){ p.id=newPlanId(); changed=true; } seen[p.id]=1; });
+  if(changed) saveJSON("touken_plans",plans);
+})();
+/* 请求浏览器把本站数据标为「持久」，降低被自动清理的风险（浏览器可能拒绝，不影响使用） */
+try{ if(navigator.storage && navigator.storage.persist){ var _pp=navigator.storage.persist(); if(_pp && _pp.catch) _pp.catch(function(){}); } }catch(e){}
+
+var checked = null;        // null=全部勾选；数组=已勾选的计划 id
+var lastCalc = null;       // 最近一次计算结果（含 mode / count）
+var calcMode = null;       // "all"=全部计划；"sel"=勾选的计划；null=还没算过。之后改计划/勾选/背包都按这个范围自动重算
 var gapSort = "gap";   // "gap" = 缺口降序；"pct" = 完成度升序
 var srcSelected = [];
 var currentView = "home";
@@ -317,9 +399,40 @@ function $(id){ return document.getElementById(id); }
 function loadJSON(k,d){ try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;} }
 function saveJSON(k,v){ try{localStorage.setItem(k,JSON.stringify(v));}catch(e){} }
 function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
-function toast(msg){
-  var t=$("toast"); t.textContent=msg; t.classList.add("show");
-  clearTimeout(toast._t); toast._t=setTimeout(function(){t.classList.remove("show");},2200);
+/* act（可选）= {label, fn}：toast 上带一个按钮（如「撤销」），显示时间延长到 6 秒 */
+function toast(msg, act){
+  var t=$("toast"); t.textContent=msg; t.classList.remove("has-act");
+  if(act && act.fn){
+    var b=document.createElement("button"); b.type="button"; b.className="toast-act"; b.textContent=act.label||"撤销";
+    b.addEventListener("click",function(){
+      clearTimeout(toast._t); t.classList.remove("show"); t.classList.remove("has-act");
+      act.fn();
+    });
+    t.appendChild(b); t.classList.add("has-act");
+  }
+  t.classList.add("show");
+  clearTimeout(toast._t); toast._t=setTimeout(function(){t.classList.remove("show");}, act?6000:2200);
+}
+/* 确认弹窗（与页面风格一致）。opt={title,body(HTML),ok,cancel}；点确定才执行 onOk */
+function askConfirm(opt,onOk){
+  var mask=$("dlgMask"), ok=$("dlgOk"), cancel=$("dlgCancel"), prev=document.activeElement;
+  $("dlgTitle").textContent=opt.title||"请确认";
+  $("dlgBody").innerHTML=opt.body||"";
+  ok.textContent=opt.ok||"确定"; cancel.textContent=opt.cancel||"取消";
+  mask.style.display="flex"; cancel.focus();
+  function close(){
+    mask.style.display="none"; ok.onclick=cancel.onclick=mask.onclick=null;
+    document.removeEventListener("keydown",onKey,true);
+    try{ if(prev && prev.focus) prev.focus(); }catch(e){}
+  }
+  function onKey(e){
+    if(e.key==="Escape"){ e.preventDefault(); e.stopPropagation(); close(); }
+    else if(e.key==="Tab"){ e.preventDefault(); (document.activeElement===ok?cancel:ok).focus(); }
+  }
+  document.addEventListener("keydown",onKey,true);
+  cancel.onclick=close;
+  ok.onclick=function(){ close(); if(onOk) onOk(); };
+  mask.onclick=function(e){ if(e.target===mask) close(); };
 }
 /* 材料显示名：中日文一致只显示一个（水）；不一致显示 日文|中文（丸太|木材） */
 function mm(name){
@@ -356,23 +469,72 @@ function variantsOf(sword){
 /* 这把刀是否有多套突破数据（普/彩，或同稀有度多个异名） */
 function hasVariants(sword){ return variantsOf(sword).length>1; }
 /* 标签组（Chips）：一个形态一个标签，点选即选中；隐藏域 #raritySel 存当前选中的 key */
-function variantChipsHTML(vs,curKey){
+function variantChipsHTML(vs,curKey,planned){
+  planned=planned||{};
   return vs.map(function(v){
-    var on=(v.key===curKey);
-    return '<button type="button" class="var-chip'+(on?" on":"")+'" role="radio" aria-checked="'+on+'" data-vkey="'+esc(v.key)+'" data-r="'+esc(v.rarity)+'">'+esc(v.label)+'</button>';
+    var on=(v.key===curKey), done=!!planned[v.key];
+    return '<button type="button" class="var-chip'+(on?" on":"")+(done?" planned":"")+'" role="radio" aria-checked="'+on+'" data-vkey="'+esc(v.key)+'" data-r="'+esc(v.rarity)+'">'+esc(v.label)+(done?'<span class="vc-mark">已规划</span>':'')+'</button>';
   }).join("");
+}
+/* 这把刀已经规划了哪些形态 → {形态键:1}；exceptId = 不算这条计划自己 */
+function plannedKeysOf(sword,exceptId){
+  var m={};
+  plans.forEach(function(p){ if(p.sword===sword && p.id!==exceptId) m[planVariantKey(p)]=1; });
+  return m;
+}
+/* 添加区当前选中的形态键（没选刀 → null） */
+function pickedVariantKey(){
+  if(!selectedSword) return null;
+  var vs=variantsOf(selectedSword); if(!vs.length) return null;
+  if(vs.length>1){
+    var pv=parseVariantKey($("raritySel").value||vs[0].key);
+    return variantKey(pv.rarity, resolveForm(selectedSword,pv.rarity,pv.form));
+  }
+  return vs[0].key;
+}
+/* 按钮文字：选中的形态已有计划 → 「更新计划」（会改那一条），否则「加入计划」（新增一条） */
+function syncAddBtn(){
+  var btn=$("btnAdd"); if(!btn) return;
+  var k=pickedVariantKey();
+  btn.textContent=(k && plannedKeysOf(selectedSword)[k]) ? "更新计划" : "加入计划";
+  renderAddStageBtns();   // 选项随选中的刀/形态刷新
+}
+/* 添加区当前选中的「刀 + 形态」（没选刀 → null） */
+function addVariantParts(){
+  var k=pickedVariantKey(); if(!k) return null;
+  var pv=parseVariantKey(k);
+  return { sword:selectedSword, rarity:pv.rarity, form:pv.form };
+}
+/* 刷新添加区的「当前等级上限 / 目标」按钮；值不在这把刀的阶段节点上时回到默认 */
+function renderAddStageBtns(){
+  var vp=addVariantParts();
+  var nodes=vp ? stageNodes(vp.sword,vp.rarity,vp.form) : allStageNodes();
+  [["cur","curLevel","curBtn"],["tar","tarLevel","tarBtn"]].forEach(function(x){
+    var inp=$(x[1]), btn=$(x[2]); if(!inp||!btn) return;
+    var v=parseInt(inp.value,10), d=stageShown(v,nodes,x[0]);
+    if(nodes.length && (isNaN(v) || d.custom || (x[0]==="tar" && v<=nodes[0]))){
+      v = x[0]==="cur" ? nodes[0] : (nodes.indexOf(30)>=0 ? 30 : nodes[nodes.length-1]);
+      d=stageShown(v,nodes,x[0]);
+    }
+    if(nodes.length) inp.value=d.shown;
+    btn.textContent=isNaN(d.shown) ? "选择" : String(d.shown);
+  });
 }
 /* 添加区的「形态与异名」：只有这把刀有多套时才出现；已在计划里的刀默认选中它当前的那套 */
 function setVarUI(show, sword){
   var row=$("varRow"), hid=$("raritySel"), box=$("varChips");
   if(!row||!hid||!box) return;
   if(show && sword){
-    var vs=variantsOf(sword), plan=plans.find(function(p){ return p.sword===sword; });
-    var curKey=plan ? variantKey(plan.rarity||"普", resolveForm(sword,plan.rarity||"普",plan.form)) : (vs[0]&&vs[0].key);
+    /* 默认选「还没规划的」第一个形态（已有「普」就默认「彩」）；全都规划过了才落到已有的第一条，点加入就是更新它 */
+    var vs=variantsOf(sword), planned=plannedKeysOf(sword);
+    var free=vs.filter(function(v){ return !planned[v.key]; })[0];
+    var plan=plans.find(function(p){ return p.sword===sword; });
+    var curKey=free ? free.key : (plan ? planVariantKey(plan) : (vs[0]&&vs[0].key));
     hid.value=curKey||"";
-    box.innerHTML=variantChipsHTML(vs,curKey);
+    box.innerHTML=variantChipsHTML(vs,curKey,planned);
   }
   row.style.display=show ? "block" : "none";
+  syncAddBtn();
 }
 $("varChips").addEventListener("click",function(e){
   var b=e.target.closest(".var-chip"); if(!b) return;
@@ -380,37 +542,55 @@ $("varChips").addEventListener("click",function(e){
   $("varChips").querySelectorAll(".var-chip").forEach(function(c){
     var on=(c===b); c.classList.toggle("on",on); c.setAttribute("aria-checked",on);
   });
+  syncAddBtn();
 });
 /* 切换某把刀的形态（计划卡徽章弹出面板里选） */
-function applyVariant(sword,key){
-  var plan=plans.find(function(p){return p.sword===sword;});
+function applyVariant(id,key){
+  var plan=plans.find(function(p){return p.id===id;});
   if(!plan) return;
   var pv=parseVariantKey(key);
+  var nk=variantKey(pv.rarity, resolveForm(plan.sword,pv.rarity,pv.form));
+  var clash=plans.some(function(p){ return p.id!==id && p.sword===plan.sword && planVariantKey(p)===nk; });
+  if(clash){ toast("「"+plan.sword+"」已经有「"+variantLabel(pv.rarity,pv.form)+"」的计划了，请直接修改那一条"); return; }
   plan.rarity=pv.rarity; if(pv.form) plan.form=pv.form; else delete plan.form;
-  saveJSON("touken_plans",plans);
-  toast("已切换 "+sword+" → "+variantLabel(pv.rarity,pv.form)+"（需求不同）");
-  renderPlans(); renderHome();
+  toast("已切换 "+plan.sword+" → "+variantLabel(pv.rarity,pv.form)+"（需求不同）");
+  plansChanged();
 }
-function closeVarPop(){ document.querySelectorAll(".var-pop").forEach(function(n){ n.remove(); }); }
-function openVarPop(btn,sword){
-  closeVarPop();
-  var plan=plans.find(function(p){return p.sword===sword;});
-  if(!plan) return;
-  var vs=variantsOf(sword), curKey=variantKey(plan.rarity||"普", resolveForm(sword,plan.rarity||"普",plan.form));
-  var pop=document.createElement("div"); pop.className="var-pop";
-  pop.innerHTML='<div class="var-pop-title">选择「'+esc(sword)+'」的形态</div><div class="var-chips" role="radiogroup">'+variantChipsHTML(vs,curKey)+'</div>';
-  document.body.appendChild(pop);
+/* 弹窗定位：默认在按钮下方；下方放不下（靠近屏幕底部或被底部导航挡住）而上方放得下时，改为向上弹出 */
+function placePop(pop,btn){
   var r=btn.getBoundingClientRect(), sx=window.pageXOffset, sy=window.pageYOffset;
   var left=Math.max(12, Math.min(r.left+sx, sx+document.documentElement.clientWidth-pop.offsetWidth-12));
-  pop.style.left=left+"px"; pop.style.top=(r.bottom+sy+8)+"px";
+  var nav=document.querySelector(".bottom-nav"), navTop=nav ? nav.getBoundingClientRect().top : window.innerHeight;
+  var floor=Math.min(window.innerHeight, navTop>0 ? navTop : window.innerHeight);   // 下方可用区域的底边
+  var h=pop.offsetHeight, gap=8;
+  var up = (r.bottom+gap+h > floor) && (r.top-gap-h >= 0);
+  pop.style.left=left+"px";
+  pop.style.top=(up ? (r.top+sy-gap-h) : (r.bottom+sy+gap))+"px";
+}
+function closeVarPop(){ document.querySelectorAll(".var-pop").forEach(function(n){ n.remove(); }); }
+function openVarPop(btn,id){
+  closeVarPop();
+  var plan=plans.find(function(p){return p.id===id;});
+  if(!plan) return;
+  var sword=plan.sword;
+  var vs=variantsOf(sword), curKey=variantKey(plan.rarity||"普", resolveForm(sword,plan.rarity||"普",plan.form));
+  var pop=document.createElement("div"); pop.className="var-pop";
+  pop.innerHTML='<div class="var-pop-title">选择「'+esc(sword)+'」的形态</div><div class="var-chips" role="radiogroup">'+variantChipsHTML(vs,curKey,plannedKeysOf(sword,id))+'</div>';
+  document.body.appendChild(pop);
+  placePop(pop,btn);
   pop.addEventListener("click",function(e){
     var c=e.target.closest(".var-chip"); if(!c) return;
-    closeVarPop(); applyVariant(sword,c.getAttribute("data-vkey"));
+    closeVarPop(); applyVariant(id,c.getAttribute("data-vkey"));
   });
 }
 document.addEventListener("click",function(e){
-  if(!e.target.closest(".var-pop") && !e.target.closest("[data-var-edit]")) closeVarPop();
+  if(!e.target.closest(".var-pop") && !e.target.closest("[data-var-edit]") && !e.target.closest(".stage-btn")) closeVarPop();
 });
+/* 一条计划的「形态键」：用来判断同一把刀的两条计划是不是同一个形态 */
+function planVariantKey(p){
+  var r=p.rarity||"普";
+  return variantKey(r, resolveForm(p.sword,r,p.form));
+}
 /* 计划里没记 form（旧计划）或 form 已不存在 → 落到该稀有度的第一套 */
 function resolveForm(sword,rarity,form){
   var vs=variantsOf(sword).filter(function(v){ return v.rarity===rarity; });
@@ -420,19 +600,100 @@ function resolveForm(sword,rarity,form){
 }
 
 /* ================================================================
-   「当前等级上限」实时反馈 + 帮助弹层
+   「当前等级上限 / 目标」阶段选择 + 提示
    ================================================================ */
 
-/* 分析：根据上限值，找该刀的所有突破段，判断哪些已完成 */
-function analyzeCap(sword, rarity, cap, form){
-  var rf = resolveForm(sword, rarity, form);
-  var steps = breakthroughs.filter(function(b){
-    return b.sword===sword && b.rarity===rarity && (b.form||"")===rf;
-  }).sort(function(a,b){ return a.fromStage-b.fromStage; });
-  if(steps.length===0) return null;
-  var done = steps.filter(function(s){ return s.toStage<=cap; });
-  var next = steps.find(function(s){ return s.fromStage>=cap; });
-  return { steps:steps, done:done, next:next, cap:cap };
+/* ---------- 阶段选择：当前等级上限 / 目标，都从这把刀的阶段节点里选 ---------- */
+/* 某把刀某个形态的全部阶段节点，如 [10,20,30,35]（由突破数据自动得出，不写死） */
+function stageNodes(sword,rarity,form){
+  var rf=resolveForm(sword,rarity,form), seen={};
+  breakthroughs.forEach(function(b){
+    if(b.sword===sword && b.rarity===rarity && (b.form||"")===rf){ seen[b.fromStage]=1; seen[b.toStage]=1; }
+  });
+  return Object.keys(seen).map(Number).sort(function(a,b){ return a-b; });
+}
+var _allNodes=null;
+function allStageNodes(){
+  if(_allNodes) return _allNodes;
+  var seen={};
+  breakthroughs.forEach(function(b){ seen[b.fromStage]=1; seen[b.toStage]=1; });
+  _allNodes=Object.keys(seen).map(Number).sort(function(a,b){ return a-b; });
+  return _allNodes;
+}
+/* 存着的数值 → 界面上显示哪个节点。
+   当前上限 ≤ 最小节点 = 「未突破」(效果和填 1 一样)；≥ 最大节点 = 已满；目标 ≥ 最大节点 = 最大。
+   其余不在节点上的数值（如 15、33）标为自定义，提示玩家重新选择，不悄悄改数据。 */
+function stageShown(val,nodes,kind){
+  if(isNaN(val) || !nodes.length) return { shown:val, custom:false };
+  var lo=nodes[0], hi=nodes[nodes.length-1];
+  if(kind==="cur"){
+    if(val<=lo) return { shown:lo, custom:false };
+    if(val>=hi) return { shown:hi, custom:false };
+  } else if(val>=hi) return { shown:hi, custom:false };
+  return { shown:val, custom: nodes.indexOf(val)<0 || (kind==="tar" && val===lo) };
+}
+function stageBtnHTML(kind,val,nodes,attrs){
+  var d=stageShown(val,nodes,kind);
+  return '<button type="button" class="var-badge stage-btn'+(d.custom?" custom":"")+'" data-stage="'+kind+'" '+attrs+
+    ' aria-haspopup="true" aria-label="'+(kind==="cur"?"当前等级上限":"目标")+'">'+esc(d.shown)+
+    (d.custom?'<span class="vc-mark">自定义</span>':'')+'</button>';
+}
+function stageOptLabel(n,nodes,kind){
+  return String(n);
+}
+/* 点按钮弹出选择面板（和形态弹窗同款：半透明白底 + 标签） */
+function stageCtx(btn){
+  var kind=btn.getAttribute("data-stage"), id=btn.getAttribute("data-id");
+  if(id){
+    var plan=plans.find(function(p){ return p.id===id; });
+    if(!plan) return null;
+    return { kind:kind, nodes:stageNodes(plan.sword,plan.rarity||"普",plan.form),
+             val:(kind==="cur"?plan.currentLevel:plan.targetLevel),
+             pick:function(n){ setPlanLevel(id,kind,n); } };
+  }
+  var vp=addVariantParts(), inp=$(kind==="cur"?"curLevel":"tarLevel");
+  return { kind:kind, nodes:(vp?stageNodes(vp.sword,vp.rarity,vp.form):allStageNodes()),
+           val:parseInt(inp.value,10),
+           pick:function(n){ inp.value=n; renderAddStageBtns(); } };
+}
+function openStagePop(btn){
+  var owner=btn.getAttribute("data-stage")+"|"+(btn.getAttribute("data-id")||"add");
+  var old=document.querySelector(".var-pop"), same=old && old.getAttribute("data-owner")===owner;
+  closeVarPop();
+  if(same) return;   // 再点同一个按钮 = 收起
+  var ctx=stageCtx(btn);
+  if(!ctx || !ctx.nodes.length){ toast("这把刀没有突破数据"); return; }
+  var opts=(ctx.kind==="cur") ? ctx.nodes : ctx.nodes.slice(1);
+  var shown=stageShown(ctx.val,ctx.nodes,ctx.kind);
+  var pop=document.createElement("div"); pop.className="var-pop"; pop.setAttribute("data-owner",owner);
+  pop.innerHTML='<div class="var-pop-title">'+(ctx.kind==="cur"?"当前等级上限（游戏里显示的上限）":"目标等级上限")+'</div>'+
+    '<div class="var-chips" role="radiogroup">'+opts.map(function(n){
+      var on=(!shown.custom && n===shown.shown);
+      return '<button type="button" class="var-chip'+(on?" on":"")+'" role="radio" aria-checked="'+on+'" data-sval="'+n+'">'+esc(stageOptLabel(n,ctx.nodes,ctx.kind))+'</button>';
+    }).join("")+'</div>';
+  document.body.appendChild(pop);
+  placePop(pop,btn);
+  pop.addEventListener("click",function(e){
+    var c=e.target.closest(".var-chip"); if(!c) return;
+    closeVarPop(); ctx.pick(parseInt(c.getAttribute("data-sval"),10));
+  });
+}
+document.addEventListener("click",function(e){
+  var b=e.target.closest(".stage-btn"); if(b) openStagePop(b);
+});
+function setPlanLevel(id,kind,val){
+  var plan=plans.find(function(p){ return p.id===id; });
+  if(!plan) return;
+  if(kind==="cur") plan.currentLevel=val; else plan.targetLevel=val;
+  toast("已保存 "+plan.sword+"：上限 "+plan.currentLevel+" → 目标 "+plan.targetLevel+(planStepsInfo(plan).warn?"（没有需要突破的段）":""));
+  plansChanged();
+}
+/* 这条计划实际要突破哪几段（计划行里显示，也说明材料为什么是这么多） */
+function planStepsInfo(p){
+  var steps=selectBreakthroughs(p.sword,p.rarity||"普",p.currentLevel,p.targetLevel,p.form)
+    .slice().sort(function(a,b){ return a.fromStage-b.fromStage; });
+  if(steps.length===0) return { warn:true, txt:"没有需要突破的段（目标不高于当前上限）" };
+  return { warn:false, txt:"要突破："+steps.map(function(s){ return s.fromStage+"→"+s.toStage; }).join("、")+"（共 "+steps.length+" 段）" };
 }
 
 /* 找出 cap 到 tar 范围内，needs 为空的突破段（只针对该刀） */
@@ -453,76 +714,24 @@ function capFeedbackText(sword, rarity, cap, tar, form){
   return "数据缺失：" + list;
 }
 
-/* 判断是否需要"警告"（用户可能填了面板等级而非上限） */
-function capFeedbackWarn(sword, rarity, cap, form){
-  var a = analyzeCap(sword, rarity, cap, form);
-  if(!a || !a.next) return false;
-  return a.next.fromStage < cap && cap < a.next.toStage;
-}
-
-
-/* 更新突破计划每行的反馈（只在有缺数据时显示） */
+/* 更新突破计划每行的提示：不在节点上的自定义值 / 数据缺失 */
 function updatePlanRowFeedback(){
   document.querySelectorAll("[data-cap-feedback]").forEach(function(box){
-    var sword = box.getAttribute("data-cap-feedback");
-    var plan = plans.find(function(p){ return p.sword===sword; });
+    var cid = box.getAttribute("data-cap-feedback");
+    var plan = plans.find(function(p){ return p.id===cid; });
     if(!plan){ box.style.display="none"; return; }
-    var txt = capFeedbackText(plan.sword, plan.rarity||"普", plan.currentLevel, plan.targetLevel, plan.form);
-    if(!txt){ box.style.display="none"; return; }
+    var rr = plan.rarity||"普", nodes = stageNodes(plan.sword, rr, plan.form), msgs = [];
+    if(nodes.length){
+      if(stageShown(plan.currentLevel,nodes,"cur").custom) msgs.push("当前上限 "+plan.currentLevel+" 不是标准阶段（"+nodes.join("/")+"），请重新选择");
+      if(stageShown(plan.targetLevel,nodes,"tar").custom) msgs.push("目标 "+plan.targetLevel+" 不是标准阶段，不足一整段的部分不会计算，请重新选择");
+    }
+    var txt = capFeedbackText(plan.sword, rr, plan.currentLevel, plan.targetLevel, plan.form);
+    if(txt) msgs.push(txt);
+    if(msgs.length===0){ box.style.display="none"; return; }
     box.className = "cap-feedback warn";
-    box.innerHTML = '<span class="fb-warn">⚠</span> ' + esc(txt);
+    box.innerHTML = msgs.map(function(m){ return '<span class="fb-warn">⚠</span> ' + esc(m); }).join("<br>");
     box.style.display = "block";
   });
-}
-
-/* 只更新某一行（用于输入时实时刷新，不重绘整个列表，避免失焦） */
-function updateRowFeedbackLive(sword){
-  var box = document.querySelector('[data-cap-feedback="'+sword+'"]');
-  if(!box) return;
-  var plan = plans.find(function(p){ return p.sword===sword; });
-  if(!plan){ box.style.display="none"; return; }
-  /* 用输入框当前值，而不是 plan 里已保存的值（因为还没保存） */
-  var curEl = document.querySelector('[data-f="cur"][data-sword="'+sword+'"]');
-  var tarEl = document.querySelector('[data-f="tar"][data-sword="'+sword+'"]');
-  var cur = curEl ? parseInt(curEl.value,10) : plan.currentLevel;
-  var tar = tarEl ? parseInt(tarEl.value,10) : plan.targetLevel;
-  if(isNaN(cur) || isNaN(tar)){ box.style.display="none"; return; }
-  var txt = capFeedbackText(sword, plan.rarity||"普", cur, tar, plan.form);
-  if(!txt){ box.style.display="none"; return; }
-  box.className = "cap-feedback warn";
-  box.innerHTML = '<span class="fb-warn">⚠</span> ' + esc(txt);
-  box.style.display = "block";
-}
-
-/* 简短提示（用于突破计划列表） */
-function capHelpHTMLShort(){
-  return '<div style="line-height:1.7;">填游戏里显示的<b>等级上限</b>，不是面板等级。</div>';
-}
-
-/* 点"？"时执行：在对应位置展开说明 */
-/* 点"？"时：在它旁边飘一个小胶囊，再点关闭 */
-function showCapHelp(ev, target){
-  var sword = target.replace(/^row-/,"");
-  var icon = ev.currentTarget;
-
-  /* 如果这个图标已经开着胶囊 → 再点就关掉 */
-  var old = document.querySelector(".cap-pop[data-for='"+sword+"']");
-  if(old){ old.remove(); return; }
-
-  /* 关掉其它所有已开的胶囊 */
-  document.querySelectorAll(".cap-pop").forEach(function(p){ p.remove(); });
-
-  /* 建胶囊 */
-  var pop = document.createElement("div");
-  pop.className = "cap-pop";
-  pop.setAttribute("data-for", sword);
-  pop.innerHTML = '填角色的<b>当前lv上限</b>，不是面板等级。';
-
-  /* 放到 body 上（漂浮），定位到图标下方 */
-  document.body.appendChild(pop);
-  var r = icon.getBoundingClientRect();
-  pop.style.left = (r.left + window.scrollX) + "px";
-  pop.style.top  = (r.bottom + window.scrollY + 6) + "px";
 }
 
 /* 点击别处 → 关闭所有胶囊（突破计划行的 ？ 和合成查询的合成物胶囊都关） */
@@ -548,55 +757,15 @@ function selectBreakthroughs(sword,rarity,cur,tar,form){
 function craftingInputs(product){
   var m={}; recipes.forEach(function(r){ if(r.product===product) m[r.ingredient]=(m[r.ingredient]||0)+r.quantity; }); return m;
 }
-function expandMaterial(name,qty,result,path){
-  var inputs=craftingInputs(name), keys=Object.keys(inputs);
-  if(keys.length===0){ result[name]=(result[name]||0)+qty; return; }
-  if(path.indexOf(name)>=0){ throw new Error("检测到合成配方循环："+path.concat([name]).join(" → ")+"，请检查公共游戏数据。"); }
-  var next=path.concat([name]);
-  keys.forEach(function(ing){ expandMaterial(ing,qty*inputs[ing],result,next); });
-}
 /* 小判：合成某材料 qty 个所需的小判（含中间合成物的合成费）；基础材料为 0 */
 function coinOf(name,qty,path){
   var inputs=craftingInputs(name), keys=Object.keys(inputs);
   if(keys.length===0) return 0;
-  if(path.indexOf(name)>=0) return 0;   // 循环由 expandMaterial 报错，这里只防死循环
+  if(path.indexOf(name)>=0) return 0;   // 循环由 computeAll 里的展开报错，这里只防死循环
   var total=qty*((materials[name]&&materials[name].coin)||0), next=path.concat([name]);
   keys.forEach(function(ing){ total+=coinOf(ing,qty*inputs[ing],next); });
   return total;
 }
-function coinForPlans(chars){
-  var total=0;
-  chars.forEach(function(p){
-    selectBreakthroughs(p.sword,p.rarity||"普",p.currentLevel,p.targetLevel,p.form).forEach(function(st){
-      Object.keys(st.needs).forEach(function(mat){ total+=coinOf(mat,st.needs[mat],[]); });
-    });
-  });
-  return total;
-}
-function computePlans(chars){
-  var baseTotal={};
-  chars.forEach(function(p){
-    var steps=selectBreakthroughs(p.sword,p.rarity||"普",p.currentLevel,p.targetLevel,p.form);
-    var charTotal={};
-    steps.forEach(function(st){
-      Object.keys(st.needs).forEach(function(mat){
-        var tmp={}; expandMaterial(mat,st.needs[mat],tmp,[]);
-        Object.keys(tmp).forEach(function(b){ charTotal[b]=(charTotal[b]||0)+tmp[b]; });
-      });
-    });
-    Object.keys(charTotal).forEach(function(b){ baseTotal[b]=(baseTotal[b]||0)+charTotal[b]; });
-  });
-  return baseTotal;
-}
-function computeShortage(baseTotal){
-  var list=[];
-  Object.keys(baseTotal).forEach(function(mat){
-    var need=baseTotal[mat], inv=inventory[mat]||0, gap=need-inv;
-    list.push({mat:mat,need:need,inventory:inv,shortage:Math.max(0,gap)});
-  });
-  return list;
-}
-
 /* ================================================================
    核心计算：方案A —— 合成物库存只抵同名需求，不够的才展开
    - 顶层需求 → 逐层展开：
@@ -623,6 +792,7 @@ function computeAll(chars, inv){
   var coin = 0;          // 只算实际需要合成的量
   var warnings = [];
   var semiUsed = {};     // 已用掉库存合成物 {mat: 个数}
+  var crafts = {};       // 实际需要合成的合成物 {mat: 个数}
 
   // 库存工作副本：展开过程中会消耗同名合成物库存
   var invPool = {};
@@ -656,6 +826,7 @@ function computeAll(chars, inv){
     }
     var remain = qty - use;
     if(remain <= 0) return;   // 库存够，不展开、不花小判
+    crafts[mat] = (crafts[mat] || 0) + remain;
     coin += remain * ((m && m.coin) || 0);
     var next = path.concat([mat]);
     keys.forEach(function(ing){
@@ -676,18 +847,42 @@ function computeAll(chars, inv){
     list.push({ mat: mat, need: need, inventory: have, shortage: gap });
   });
 
-  return { list: list, coin: coin, warnings: warnings, semiUsed: semiUsed };
+  return { list: list, coin: coin, warnings: warnings, semiUsed: semiUsed, crafts: crafts };
+}
+/* 每种材料的缺口数（算过缺口才有），用来给关卡排序：同样覆盖几种时，覆盖缺口更多的排前面 */
+function srcWeights(){
+  var w={};
+  if(lastCalc && lastCalc.shortage) lastCalc.shortage.forEach(function(x){ if(x.shortage>0) w[x.mat]=x.shortage; });
+  return w;
 }
 function findStagesForMaterials(targetMats){
-  var res=[];
-  stages.forEach(function(st){
+  var res=[], w=srcWeights();
+  stages.forEach(function(st,idx){
     var covered=targetMats.filter(function(m){return st.materials.indexOf(m)>=0;});
     if(covered.length>0){
-      res.push({stage:st.stage,covered:covered,coveredCount:covered.length,targetCount:targetMats.length});
+      var wt=0; covered.forEach(function(m){ wt+=(w[m]||0); });
+      res.push({stage:st.stage,covered:covered,coveredCount:covered.length,targetCount:targetMats.length,weight:wt,idx:idx});
     }
   });
-  res.sort(function(a,b){return b.coveredCount-a.coveredCount;});
+  res.sort(function(a,b){ return b.coveredCount-a.coveredCount || b.weight-a.weight || a.idx-b.idx; });
   return res;
+}
+/* 推荐路线：每一步挑「还没覆盖的材料里掉得最多」的关卡，直到能覆盖的都覆盖 */
+function srcRoutePlan(list,targetMats){
+  var left=targetMats.slice(), route=[], pool=list.slice();
+  while(left.length && pool.length){
+    var best=null, bn=0;
+    pool.forEach(function(s){
+      var n=s.covered.filter(function(m){ return left.indexOf(m)>=0; }).length;
+      if(n>bn || (n===bn && n>0 && best && s.weight>best.weight)){ best=s; bn=n; }
+    });
+    if(!best || bn===0) break;
+    var adds=best.covered.filter(function(m){ return left.indexOf(m)>=0; });
+    route.push({stage:best.stage,adds:adds});
+    left=left.filter(function(m){ return adds.indexOf(m)<0; });
+    pool=pool.filter(function(s){ return s!==best; });
+  }
+  return route;
 }
 
 /* 方案B：突破阶段粒度统计（只读，不改数据）
@@ -724,45 +919,74 @@ function showView(v){
 document.querySelectorAll(".bottom-nav button").forEach(function(b){
   b.addEventListener("click",function(){
     var v=b.getAttribute("data-view");
-    if(v==="source") openSource([]); // 直接导航来源页 = 纯手动，清空标签
-    else showView(v);
+    showView(v);   /* 来源页保留上次选的材料，可用「清空」重来 */
   });
 });
 document.querySelectorAll(".entry-card").forEach(function(c){
   c.addEventListener("click",function(){
     var v=c.getAttribute("data-go");
-    if(v==="source") openSource([]);
-    else showView(v);
+    showView(v);
   });
 });
 
 /* ================================================================
    背包抽屉 / 完整背包
    ================================================================ */
+var bagQuery = "", bagOnlyHave = false;
 function renderInvList(id){
   var box=$(id); box.innerHTML="";
-  /* 所有材料（基础 + 合成物），按中文名字典序 */
-    var all = Object.keys(materials).sort(function(a,b){
-    var ma = materials[a], mb = materials[b];
-    var ta = (ma && ma.type) || "base";
-    var tb = (mb && mb.type) || "base";
-    /* 基础在前，合成物在后 */
+  var kw = bagQuery.trim();
+  /* 所有材料（基础 + 合成物），基础在前，合成物在后，同类按中文名排序 */
+  var all = Object.keys(materials).sort(function(a,b){
+    var ta = (materials[a] && materials[a].type) || "base";
+    var tb = (materials[b] && materials[b].type) || "base";
     if(ta !== tb) return ta === "base" ? -1 : 1;
-    /* 同类型内按中文名拼音 */
     return a.localeCompare(b, "zh");
+  }).filter(function(name){
+    if(bagOnlyHave && !(inventory[name] > 0)) return false;
+    return !kw || matchKw("bag", name, kw);
   });
+  if(all.length===0){
+    var e=document.createElement("div"); e.className="bag-empty";
+    e.textContent = bagOnlyHave && !kw ? "背包里还没有库存" : "没有匹配的材料";
+    box.appendChild(e); return;
+  }
   all.forEach(function(name){
     var m = materials[name];
     var isSemi = m && m.type === "crafted";
     var d = document.createElement("div");
     d.className = "bag-item" + (isSemi ? " bag-item-semi" : "");
-    d.innerHTML = '<span>' + esc(mm(name))
+    var n = esc(mm(name));
+    d.innerHTML = '<span class="bi-name">' + n
                 + (isSemi ? ' <span class="bag-semi-tag">合成物</span>' : '')
                 + '</span>'
-                + '<input type="number" class="input num" min="0" data-inv="' + esc(name) + '" value="' + (inventory[name] || 0) + '">';
+                + '<span class="bi-ctl">'
+                + '<button type="button" class="bi-step" data-step="-1" aria-label="减少' + n + '">−</button>'
+                + '<input type="number" inputmode="numeric" class="input num" min="0" data-inv="' + esc(name) + '" value="' + (inventory[name] || 0) + '" aria-label="' + n + '库存">'
+                + '<button type="button" class="bi-step" data-step="1" aria-label="增加' + n + '">+</button>'
+                + '</span>';
     box.appendChild(d);
   });
 }
+function renderBagLists(){
+  renderInvList("invFull");
+  if($("bagDrawer").style.display==="flex") renderInvList("invDrawer");
+}
+/* 搜索 / 只看已有库存：背包抽屉和完整背包页共用同一份状态 */
+document.addEventListener("input",function(e){
+  if(!e.target.classList || !e.target.classList.contains("bag-search")) return;
+  bagQuery=e.target.value;
+  document.querySelectorAll(".bag-search").forEach(function(i){ if(i!==e.target) i.value=bagQuery; });
+  renderBagLists();
+});
+document.addEventListener("click",function(e){
+  var b=e.target.closest(".bag-only"); if(!b) return;
+  bagOnlyHave=!bagOnlyHave;
+  document.querySelectorAll(".bag-only").forEach(function(x){
+    x.classList.toggle("on",bagOnlyHave); x.setAttribute("aria-pressed",bagOnlyHave?"true":"false");
+  });
+  renderBagLists();
+});
 function openBag(){ renderInvList("invDrawer"); $("bagMask").style.display="block"; $("bagDrawer").style.display="flex"; }
 function closeBag(){ $("bagMask").style.display="none"; $("bagDrawer").style.display="none"; }
 $("bagBtn").addEventListener("click",openBag);
@@ -798,25 +1022,36 @@ $("bagBtn").addEventListener("click", function(e){
 });
 $("bagClose").addEventListener("click",closeBag);
 $("bagMask").addEventListener("click",closeBag);
-function onInvChange(e){
-  var name=e.target.getAttribute("data-inv"); if(!name) return;
-  var v=parseInt(e.target.value,10);
+function commitInv(input){
+  var name=input.getAttribute("data-inv"); if(!name) return;
+  var v=parseInt(input.value,10);
   inventory[name]=(isNaN(v)||v<0)?0:v;
+  input.value=inventory[name];
   saveJSON("touken_inventory",inventory);
   toast("已存背包："+mm(name)+" × "+inventory[name]);
   /* 已算过 → 用新库存重算 */
-  if(lastCalc && lastCalc.chars){
-    try{
-      var r = computeAll(lastCalc.chars, inventory);
-      lastCalc.coin = r.coin;
-      lastCalc.shortage = r.list;
-      lastCalc.mats = r.list.filter(function(x){return x.shortage>0;}).map(function(x){return x.mat;});
-      lastCalc.semiUsed = r.semiUsed;
-      lastCalc.warnings = r.warnings;
-      renderSummaryFromLast();
-    }catch(err){ /* 忽略 */ }
-  }
+  refreshCalc();
 }
+function onInvChange(e){ commitInv(e.target); }
+/* ＋ / − 按钮：每次加减 1，立即保存 */
+function onInvClick(e){
+  var b=e.target.closest(".bi-step"); if(!b) return;
+  var input=b.parentNode.querySelector("input[data-inv]"); if(!input) return;
+  var v=parseInt(input.value,10); if(isNaN(v)) v=0;
+  input.value=Math.max(0, v+parseInt(b.getAttribute("data-step"),10));
+  commitInv(input);
+}
+/* 点进数量框自动全选，直接输入新数字；回车 = 确认 */
+function onInvFocus(e){ if(e.target.matches && e.target.matches("input[data-inv]")) setTimeout(function(){ try{ e.target.select(); }catch(_){} },0); }
+function onInvKey(e){
+  if(e.key==="Enter" && e.target.matches && e.target.matches("input[data-inv]") && !e.isComposing){ e.preventDefault(); e.target.blur(); }
+}
+["invDrawer","invFull"].forEach(function(id){
+  var el=$(id);
+  el.addEventListener("click",onInvClick);
+  el.addEventListener("focusin",onInvFocus);
+  el.addEventListener("keydown",onInvKey);
+});
 $("invDrawer").addEventListener("change",onInvChange);
 $("invFull").addEventListener("change",onInvChange);
 
@@ -824,6 +1059,7 @@ $("invFull").addEventListener("change",onInvChange);
    首页：突破阶段统计 + 今日运势
    ================================================================ */
 function renderHome(){
+  renderBackupStatus();
   var s=stageStats();
   $("stageStats").innerHTML='<div class="stat-grid">'+
     '<div class="stat t-total"><b>'+s.total+'</b><span>总突破阶段</span></div>'+
@@ -1650,7 +1886,7 @@ var hiddenEvents = [
     "text": "你看到八丁念佛摊开一张巨大的地图，正在用手指比比划划，嘴里还念念有词。\n你走近一看，发现那不是行军地图，而是一张画满了各种美食和景点的观光地图。他用红色的笔，圈出了好几个地方，旁边还标注着“看起来很好吃！”、“这里一定要去！”。\n他看到你，立刻兴奋地指着地图上的一个点说：「主！你看你看！下次远征，我们去这里怎么样？这里有好吃的荞麦面哦！」\n他金色的眼睛里，闪烁着比任何战功都更耀眼的光芒。"
   }
 ];
-var fortuneN=0;   // 当前行数：换一换只允许在上一次的基础上 ±1（限制在 4~6），不会突然从 6 行变 3 行
+var FORTUNE_LINES=5;   // 运势条数固定，换一换不会忽多忽少
 function randOf(a){ return a[Math.floor(Math.random()*a.length)]; }
 function shuffled(a){ var b=a.slice(); for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)); var t=b[i]; b[i]=b[j]; b[j]=t;} return b; }
 function twoSwords(pool){
@@ -1658,10 +1894,7 @@ function twoSwords(pool){
   return [a, rest.length?randOf(rest):a];
 }
 function genFortune(){
-  var n;
-  if(fortuneN===0) n=4+Math.floor(Math.random()*3);
-  else n=Math.max(4,Math.min(6,fortuneN+Math.floor(Math.random()*3)-1));
-  fortuneN=n;
+  var n=FORTUNE_LINES;
 
   /* 洗牌角色池，一次展示内不重复 */
   var pool = shuffled(characters.length ? characters.slice() : ["审神者"]);
@@ -1761,12 +1994,13 @@ function genFortuneEvent(){
       '<div class="f-event f-event-hidden">' +
         '<div class="f-event-title">【今日事件 · 特别 · ' + esc(ev.sword) + '】</div>' +
         '<div class="f-event-text">' + esc(ev.text).replace(/\n/g, '<br>') + '</div>' +
+        '<div class="f-close-hint">点空白处收起</div>' +
       '</div>';
     return;
   }
 
   /* 普通事件（原逻辑不变） */
-  var swords=plans.map(function(p){return p.sword;});
+  var swords=plans.map(function(p){return p.sword;}).filter(function(n,i,a){ return a.indexOf(n)===i; });
   if(swords.length<2) swords=characters.slice();
   if(swords.length<2) swords=["本丸的刀剑男士们","审神者"];
   var idx; do{ idx=Math.floor(Math.random()*fortuneEventTemplates.length); }while(idx===lastEventIdx && fortuneEventTemplates.length>1);
@@ -1777,53 +2011,119 @@ function genFortuneEvent(){
   if(pool.length<2) pool=["本丸的刀剑男士们","审神者"];
   var sw=twoSwords(pool);
   var text=fortuneEventTemplates[idx](sw[0],sw[1])+randOf(fortuneEventEndings);
-  $("fortuneEvent").innerHTML='<div class="f-event">【今日本丸事件】'+esc(text)+'</div>';
+  $("fortuneEvent").innerHTML='<div class="f-event">【今日本丸事件】'+esc(text)+'<div class="f-close-hint">点空白处收起</div></div>';
 }
+/* 点页面空白处收起「今日本丸事件」；点「查看详情」仍然是换一件新事件 */
+document.addEventListener("click",function(e){
+  var box=$("fortuneEvent");
+  if(!box || !box.firstChild) return;
+  if(e.target.closest("#btnFortuneEvent") || e.target.closest("#fortuneEvent")) return;
+  box.innerHTML="";
+});
 $("btnFortune").addEventListener("click",genFortune);
 $("btnFortuneEvent").addEventListener("click",genFortuneEvent);
 
 /* ================================================================
    数据备份（首页就地导入导出，不跳转）
    ================================================================ */
+function pad2(n){ return (n<10?"0":"")+n; }
+/* 首页「上次备份」提示：从未备份 / 超过 14 天且有数据时，高亮提醒 */
+function renderBackupStatus(){
+  var el=$("backupStatus"); if(!el) return;
+  var has=plans.length>0 || Object.keys(inventory).length>0;
+  var ts=null; try{ ts=localStorage.getItem("touken_last_backup"); }catch(e){}
+  var days=null;
+  if(ts){
+    var t=Date.parse(ts);
+    if(!isNaN(t)){
+      var a=new Date(t); a.setHours(0,0,0,0);
+      var b=new Date(); b.setHours(0,0,0,0);
+      days=Math.max(0,Math.round((b-a)/86400000));
+    }
+  }
+  if(days===null && !has){ el.style.display="none"; return; }
+  var txt, warn=false;
+  if(days===null){ txt="上次备份：还没有备份过，建议现在导出一份。"; warn=true; }
+  else if(days===0) txt="上次备份：今天";
+  else if(days===1) txt="上次备份：昨天";
+  else txt="上次备份：" + days + " 天前";
+  if(days!==null && days>14 && has){ txt+="，建议再导出一份。"; warn=true; }
+  el.textContent=txt;
+  el.className="backup-status"+(warn?" warn":"");
+  el.style.display="block";
+}
 function exportData(){
   var d=new Date();
-  var payload={ plans:plans, inventory:inventory, exportedAt:new Date().toISOString() };
+  var payload={ schemaVersion:1, plans:plans, inventory:inventory, exportedAt:d.toISOString() };
   var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
   var a=document.createElement("a");
   a.href=URL.createObjectURL(blob);
-  a.download="刀乱材料工具备份_"+d.getFullYear()+(d.getMonth()+1)+d.getDate()+".json";
+  a.download="刀乱材料工具备份_"+d.getFullYear()+pad2(d.getMonth()+1)+pad2(d.getDate())+".json";
   document.body.appendChild(a); a.click(); a.remove();
   URL.revokeObjectURL(a.href);
+  try{ localStorage.setItem("touken_last_backup", d.toISOString()); }catch(e){}
+  renderBackupStatus();
   toast("✓ 已导出备份");
+}
+/* 解析并校验备份文件；不改动当前数据 */
+function parseBackup(text){
+  var d=JSON.parse(text);
+  if(!d || !Array.isArray(d.plans)) throw new Error("备份文件格式不对（缺少突破计划）");
+  var seen={}, usedIds={}, skipped=0, list=[];
+  d.plans.forEach(function(p){
+    if(!(p && typeof p.sword==="string" && characters.indexOf(p.sword)>=0 &&
+         typeof p.currentLevel==="number" && typeof p.targetLevel==="number")){ skipped++; return; }
+    /* 旧备份没有稀有度字段，默认补「普」 */
+    var q={ sword:p.sword, rarity:p.rarity||"普", currentLevel:p.currentLevel, targetLevel:p.targetLevel };
+    if(typeof p.form==="string" && p.form) q.form=p.form;
+    var k=q.sword+"|"+planVariantKey(q);
+    if(seen[k]){ skipped++; return; }   // 同一把刀同一形态只留一条
+    seen[k]=1;
+    q.id=(typeof p.id==="string" && p.id && !usedIds[p.id]) ? p.id : newPlanId();
+    usedIds[q.id]=1;
+    list.push(q);
+  });
+  var inv={};
+  if(d.inventory && typeof d.inventory==="object"){
+    Object.keys(d.inventory).forEach(function(k){
+      if(materials[k] && typeof d.inventory[k]==="number" && d.inventory[k]>0) inv[k]=d.inventory[k];
+    });
+  }
+  return { plans:list, inventory:inv, skipped:skipped, exportedAt:(typeof d.exportedAt==="string"?d.exportedAt:"") };
+}
+function applyImport(b){
+  /* 覆盖前先留存一份当前数据（内存里用于「撤销导入」，同时写进本机存储兜底） */
+  var snap={ plans:JSON.parse(JSON.stringify(plans)), inventory:JSON.parse(JSON.stringify(inventory)) };
+  saveJSON("touken_prev_snapshot",{ savedAt:new Date().toISOString(), plans:snap.plans, inventory:snap.inventory });
+  plans=b.plans; inventory=b.inventory; checked=null;
+  saveJSON("touken_plans",plans); saveJSON("touken_inventory",inventory);
+  refreshCalc(); renderPlans(); renderHome();
+  toast("✓ 导入成功："+plans.length+" 条计划", { label:"撤销导入", fn:function(){
+    plans=snap.plans; inventory=snap.inventory; checked=null;
+    saveJSON("touken_plans",plans); saveJSON("touken_inventory",inventory);
+    refreshCalc(); renderPlans(); renderHome();
+    toast("已恢复到导入前的数据");
+  }});
 }
 function importData(file){
   var reader=new FileReader();
   reader.onload=function(){
-    try{
-      var d=JSON.parse(reader.result);
-      if(!Array.isArray(d.plans)) throw new Error("备份文件格式不对（缺少突破计划）");
-      var validPlans=d.plans.filter(function(p){
-        return p && typeof p.sword==="string" && characters.indexOf(p.sword)>=0 &&
-               typeof p.currentLevel==="number" && typeof p.targetLevel==="number";
-      }).map(function(p){
-        /* 旧备份没有稀有度字段，默认补「普」 */
-        if(!p.rarity) p.rarity="普";
-        if(typeof p.form!=="string" || !p.form) delete p.form;
-        return p;
-      });
-      var inv={};
-      if(d.inventory && typeof d.inventory==="object"){
-        Object.keys(d.inventory).forEach(function(k){
-          if(materials[k] && typeof d.inventory[k]==="number" && d.inventory[k]>0) inv[k]=d.inventory[k];
-        });
-      }
-      plans=validPlans; inventory=inv;
-      saveJSON("touken_plans",plans); saveJSON("touken_inventory",inventory);
-      lastCalc=null; checked=null;
-      renderPlans(); renderSummaryFromLast(); renderHome();
-      toast("✓ 导入成功："+plans.length+" 条计划");
-    }catch(e){ toast("导入失败："+e.message); }
+    var b;
+    try{ b=parseBackup(reader.result); }catch(e){ toast("导入失败："+e.message); return; }
+    var invN=Object.keys(b.inventory).length, curInvN=Object.keys(inventory).length;
+    var when=b.exportedAt ? b.exportedAt.slice(0,10) : "";
+    var body='<div class="dlg-row"><b>备份文件</b>：'+b.plans.length+' 条计划、'+invN+' 项背包库存'+(when?'（导出于 '+esc(when)+'）':'')+'</div>'+
+      '<div class="dlg-row"><b>当前数据</b>：'+plans.length+' 条计划、'+curInvN+' 项背包库存</div>';
+    if(b.plans.length===0 && invN===0 && (plans.length>0 || curInvN>0)){
+      body+='<div class="dlg-row dlg-warn">这个备份里没有任何有效数据，导入会<b>清空</b>当前的计划和背包。</div>';
+    } else {
+      body+='<div class="dlg-row dlg-warn">导入后，当前数据会被备份文件<b>覆盖</b>。</div>';
+    }
+    body+='<div class="dlg-row muted">覆盖前会自动留存当前数据，导入后可点「撤销导入」恢复。</div>';
+    if(b.skipped>0) body+='<div class="dlg-row muted">另有 '+b.skipped+' 条计划无效或重复，已忽略。</div>';
+    askConfirm({ title:"导入备份？", body:body, ok:"覆盖并导入", cancel:"取消" }, function(){ applyImport(b); });
   };
+  reader.onerror=function(){ toast("导入失败：文件读取出错"); };
   reader.readAsText(file);
 }
 $("btnExport").addEventListener("click",exportData);
@@ -1837,69 +2137,93 @@ $("importFile").addEventListener("change",function(e){
    突破计划页
    ================================================================ */
 function renderPlans(){
+  syncAddBtn();
   var list=$("planList"), empty=$("planEmpty");
   list.innerHTML="";
   if(plans.length===0){
-    empty.style.display="block"; $("selCount").textContent="已选择 0 / 0 把刀剑";
+    empty.style.display="block"; $("selCount").textContent="已选择 0 / 0 条计划";
     $("btnAll").disabled=true; $("btnSel").disabled=true; return;
   }
   empty.style.display="none"; $("btnAll").disabled=false;
-  var sel=plans.filter(function(p){ return checked===null || checked.indexOf(p.sword)>=0; });
+  var sel=plans.filter(isPlanChecked);
   plans.forEach(function(p){
-    var isSel=(checked===null)||(checked.indexOf(p.sword)>=0);
+    var isSel=isPlanChecked(p);
     var d=document.createElement("div"); d.className="plan-row";
     var vs=variantsOf(p.sword), rr=p.rarity||"普", rf=resolveForm(p.sword,rr,p.form), badge="";
     if(vs.length>1){
-      badge='<button type="button" class="var-badge" data-r="'+esc(rr)+'" data-var-edit="'+esc(p.sword)+'" aria-label="切换形态">'+esc(variantLabel(rr,rf))+'</button>';
+      badge='<button type="button" class="var-badge" data-r="'+esc(rr)+'" data-var-edit="'+esc(p.id)+'" aria-label="切换形态">'+esc(variantLabel(rr,rf))+'</button>';
     } else if(rf || rr!=="普"){
       badge='<span class="var-badge" data-r="'+esc(rr)+'">'+esc(variantLabel(rr,rf))+'</span>';
     }
+    var nodes=stageNodes(p.sword,rr,p.form), st=planStepsInfo(p), idAttr='data-id="'+esc(p.id)+'"';
     d.innerHTML =
-  '<input type="checkbox" class="check" '+(isSel?"checked":"")+' data-sword="'+esc(p.sword)+'">'+
+  '<input type="checkbox" class="check" '+(isSel?"checked":"")+' data-id="'+esc(p.id)+'">'+
   '<span class="plan-name">'+esc(p.sword)+'</span>'+
-  '<button class="icon-btn" data-del="'+esc(p.sword)+'" aria-label="删除">✕</button>'+
+  '<button class="icon-btn" data-del="'+esc(p.id)+'" aria-label="删除">✕</button>'+
   '<div class="plan-sub">'+badge+
     '<div class="lv-row">'+
-      '<span class="lv-t">Lv</span>'+
-      '<input type="number" class="input num" min="1" data-f="cur" data-sword="'+esc(p.sword)+'" value="'+p.currentLevel+'">'+
-      '<span class="help-icon" onclick="showCapHelp(event, \'row-'+esc(p.sword)+'\')">？</span>'+
+      '<span class="lv-t">上限</span>'+stageBtnHTML("cur",p.currentLevel,nodes,idAttr)+
       '<span class="lv-arrow" aria-hidden="true"></span>'+
-      '<span class="lv-t">Lv</span>'+
-      '<input type="number" class="input num" min="1" data-f="tar" data-sword="'+esc(p.sword)+'" value="'+p.targetLevel+'">'+
+      '<span class="lv-t">目标</span>'+stageBtnHTML("tar",p.targetLevel,nodes,idAttr)+
     '</div>'+
   '</div>'+
-  '<div class="cap-feedback" data-cap-feedback="'+esc(p.sword)+'"></div>';
+  '<div class="plan-steps'+(st.warn?" warn":"")+'">'+esc(st.txt)+'</div>'+
+  '<div class="cap-feedback" data-cap-feedback="'+esc(p.id)+'"></div>';
+  if(!(showSteps || st.warn)) d.classList.add("no-steps");   /* 默认收起「要突破」；没有可突破的段时的提醒始终显示 */
   list.appendChild(d);
   });
-  $("selCount").textContent="已选择 "+sel.length+" / "+plans.length+" 把刀剑";
+  $("selCount").textContent="已选择 "+sel.length+" / "+plans.length+" 条计划";
   $("btnSel").disabled=(sel.length===0);
   updatePlanRowFeedback();
 }
+/* 「突破段」开关：显示 / 隐藏每条计划里的「要突破：10→20…」，选择会记住 */
+var showSteps=false;
+try{ showSteps = localStorage.getItem("touken_show_steps")==="1"; }catch(_){}
+function applyStepsToggle(){
+  var b=$("btnSteps"); if(b){ b.classList.toggle("on",showSteps); b.setAttribute("aria-pressed",showSteps?"true":"false"); }
+  document.querySelectorAll("#planList .plan-row").forEach(function(r){
+    var st=r.querySelector(".plan-steps");
+    r.classList.toggle("no-steps", !(showSteps || (st && st.classList.contains("warn"))));
+  });
+}
+$("btnSteps").addEventListener("click",function(){
+  showSteps=!showSteps;
+  try{ localStorage.setItem("touken_show_steps",showSteps?"1":"0"); }catch(_){}
+  applyStepsToggle();
+});
+applyStepsToggle();
+var sumView="mat", onlyGap=false, whoOpen={}, swordMode="base", sumBasis="kind";
+try{ if(localStorage.getItem("touken_sum_basis")==="qty") sumBasis="qty"; }catch(_){}
 function renderSummaryFromLast(){
   var empty=$("sumEmpty"), body=$("sumBody");
   if(!lastCalc){ empty.style.display="block"; body.style.display="none"; return; }
   empty.style.display="none"; body.style.display="block";
   var list=lastCalc.shortage.slice();
-  if(gapSort === "pct"){
-    /* 完成度升序（越没准备越靠前）；need=0 的排到最后 */
-    list.sort(function(a,b){
-      var ra = a.need > 0 ? a.inventory/a.need : 2;
-      var rb = b.need > 0 ? b.inventory/b.need : 2;
-      if(ra !== rb) return ra - rb;
-      return b.shortage - a.shortage;
-    });
-  } else {
-    /* 缺口降序（默认） */
-    list.sort(function(a,b){ return b.shortage - a.shortage; });
-  }
+  var sc=$("sScope");
+  if(sc) sc.textContent = lastCalc.mode==="sel"
+    ? "统计范围：已勾选的 "+lastCalc.count+" 条计划（勾选变化时自动更新）"
+    : "统计范围：全部 "+lastCalc.count+" 条计划";
+  /* 两种统计口径：按材料种类（默认）/ 按基础材料总数（把各材料个数加起来）。主卡片显示选中的一种，另一种放在下面的「附加统计」 */
+  var M=list.length, N=list.filter(function(it){ return it.shortage<=0; }).length, K=M-N;
   var tNeed=0,tHave=0,tGap=0;
   list.forEach(function(it){ tNeed+=it.need; tHave+=Math.min(it.inventory,it.need); tGap+=it.shortage; });
-  $("sNeed").textContent=tNeed; $("sHave").textContent=tHave; $("sGap").textContent=tGap;
-  var pct=tNeed>0?Math.round(tHave/tNeed*100):100;
-  $("sPct").textContent=pct+"%"; $("sBar").style.width=pct+"%";
-  $("sBarWrap").className="bar"+(tGap>0?" warn":"");
+  var pctQ=tNeed>0?Math.round(tHave/tNeed*100):100, pctK=M>0?Math.round(N/M*100):100;
+  var kind = sumBasis==="kind";
+  $("sumBody").setAttribute("data-basis",sumBasis);
+  document.querySelectorAll("[data-basis].on, .seg-mini button").forEach(function(b){
+    if(!b.hasAttribute("data-basis")) return;
+    var on=b.getAttribute("data-basis")===sumBasis; b.classList.toggle("on",on); b.setAttribute("aria-pressed",on?"true":"false");
+  });
+  $("sNeedL").textContent=kind?"需求材料":"总需求"; $("sHaveL").textContent=kind?"已备齐":"已有"; $("sGapL").textContent=kind?"仍缺":"缺口";
+  $("sNeed").textContent=kind?M:tNeed; $("sHave").textContent=kind?N:tHave; $("sGap").textContent=kind?K:tGap;
+  $("sPct").textContent=kind?("已备齐 "+N+" / "+M+" 种"):(pctQ+"%");
+  $("sBar").style.width=(kind?pctK:pctQ)+"%";
+  $("sBarWrap").className="bar"+(K>0?" warn":"");
+  $("sumFoot").innerHTML='<span class="sf-tag">附加统计</span>'+(kind
+    ? '基础材料总数 · 需求 '+tNeed+' · 已有 '+tHave+' · 缺口 '+tGap+'（备齐 '+pctQ+'%）'
+    : '按材料种类 · 需求 '+M+' 种 · 已备齐 '+N+' 种 · 仍缺 '+K+' 种');
   $("sCoinNote").textContent="所需小判总数：约 "+(lastCalc.coin||0)+"（合成合成物所需）";
-    /* 合成物抵扣 / 无配方警告 提示 */
+  /* 合成物抵扣 / 无配方警告 提示 */
   var extraTips = [];
   if(lastCalc.semiUsed && Object.keys(lastCalc.semiUsed).length > 0){
     var usedText = Object.keys(lastCalc.semiUsed).map(function(k){
@@ -1920,46 +2244,250 @@ function renderSummaryFromLast(){
       extraBox.style.display = "none";
     }
   }
+  /* 视图切换 */
+  document.querySelectorAll(".seg-btn").forEach(function(b){
+    var on=b.getAttribute("data-sumview")===sumView;
+    b.classList.toggle("on",on); b.setAttribute("aria-selected",on?"true":"false");
+  });
+  $("viewMat").style.display=sumView==="mat"?"":"none";
+  $("viewSword").style.display=sumView==="sword"?"":"none";
+  $("viewCraft").style.display=sumView==="craft"?"":"none";
+  if(sumView==="mat") renderMatView(list,K);
+  else if(sumView==="sword") renderSwordView(list);
+  else renderCraftView();
+  var nCraft=Object.keys(lastCalc.crafts||{}).length;
+  var showCopy = sumView==="mat" ? K>0 : (sumView==="sword" ? true : nCraft>0);
+  $("btnCopyGap").style.display=showCopy?"":"none";
+  $("btnCopyGap").textContent = sumView==="sword" ? "复制刀剑需求" : (sumView==="craft" ? "复制合成清单" : "复制缺口清单");
+  $("btnGapSource").style.display=K>0?"":"none";
+  $("sumActions").style.display=(showCopy||K>0)?"flex":"none";
+}
+function renderMatView(list,K){
+  if(gapSort === "pct"){
+    /* 完成度升序（越没准备越靠前）；need=0 的排到最后 */
+    list.sort(function(a,b){
+      var ra = a.need > 0 ? a.inventory/a.need : 2;
+      var rb = b.need > 0 ? b.inventory/b.need : 2;
+      if(ra !== rb) return ra - rb;
+      return b.shortage - a.shortage;
+    });
+  } else {
+    list.sort(function(a,b){ return b.shortage - a.shortage; });   /* 缺口降序（默认） */
+  }
+  $("btnOnlyGap").classList.toggle("on",onlyGap);
+  $("btnOnlyGap").setAttribute("aria-pressed",onlyGap?"true":"false");
+  if(onlyGap) list=list.filter(function(it){ return it.shortage>0; });
+  $("gapEmpty").style.display=K===0?"block":"none";
+  var pp=null;
   var gl=$("gapList"); gl.innerHTML="";
-  var hasGap=false;
   list.forEach(function(it){
     var pctM=it.need>0?Math.round(Math.min(it.inventory,it.need)/it.need*100):100;
+    var open=!!whoOpen[it.mat];
     var d=document.createElement("div"); d.className="mat-card";
-    d.innerHTML='<div class="row" style="justify-content:space-between;"><span class="m-name">'+esc(mm(it.mat))+'</span><span class="small muted">'+pctM+'%</span></div>'+
+    var h='<div class="row" style="justify-content:space-between;"><span class="m-name">'+esc(mm(it.mat))+'</span><span class="small muted">'+pctM+'%</span></div>'+
       '<div class="bar'+(it.shortage>0?' warn':'')+'"><i style="width:'+pctM+'%"></i></div>'+
-      '<div class="mat-stats"><span class="chip need">需求 '+it.need+'</span><span class="chip have">拥有 '+it.inventory+'</span><span class="chip gap">'+(it.shortage>0?"缺口 "+it.shortage:"已备齐")+'</span></div>';
+      '<div class="mat-stats"><span class="chip need">需求 '+it.need+'</span><span class="chip have">拥有 '+it.inventory+'</span><span class="chip gap">'+(it.shortage>0?"缺口 "+it.shortage:"已备齐")+'</span>'+
+      '<button type="button" class="who-btn" data-who="'+esc(it.mat)+'" aria-expanded="'+(open?"true":"false")+'">谁需要 '+(open?"▾":"▸")+'</button></div>';
+    if(open){
+      if(!pp) pp=calcPerPlan();
+      var rows=pp.filter(function(x){ return x.need[it.mat]>0; }).sort(function(a,b){ return b.need[it.mat]-a.need[it.mat]; });
+      h+='<div class="who-box">'+rows.map(function(x){
+        return '<div class="who-row"><span>'+esc(planLabelText(x.plan))+'</span><b>'+x.need[it.mat]+'</b></div>';
+      }).join("")+
+      (lastCalc.semiUsed && Object.keys(lastCalc.semiUsed).length ? '<div class="who-note">各刀数量为未扣库存合成物的原始需求</div>' : '')+'</div>';
+    }
+    d.innerHTML=h;
     gl.appendChild(d);
-    if(it.shortage>0) hasGap=true;
   });
-  $("gapEmpty").style.display=hasGap?"none":"block";
-  $("btnGapSource").style.display=hasGap?"block":"none";
 }
+/* 按刀剑：每把刀要什么。基础材料 = 合成物展开后；直接材料 = 突破表里原样写的（不展开）。黄/绿按「所有计划合计」是否仍缺 */
+function swordViewData(list){
+  var pp=calcPerPlan(), direct=swordMode==="direct", gap={}, tot={};
+  if(direct){
+    pp.forEach(function(x){ Object.keys(x.direct).forEach(function(m){ tot[m]=(tot[m]||0)+x.direct[m]; }); });
+    Object.keys(tot).forEach(function(m){ gap[m]=Math.max(0,tot[m]-(inventory[m]||0)); });
+  } else list.forEach(function(it){ gap[it.mat]=it.shortage; });
+  return pp.map(function(x){
+    var need=direct?x.direct:x.need;
+    var mats=Object.keys(need).sort(function(a,b){ return need[b]-need[a]; });
+    return { plan:x.plan, need:need, mats:mats };
+  }).map(function(r){ r.gap=gap; return r; });
+}
+function renderSwordView(list){
+  var box=$("viewSword"), direct=swordMode==="direct";
+  var data=swordViewData(list);
+  var h='<div class="mat-tools"><div class="seg-mini" role="group" aria-label="材料范围">'+
+    '<button type="button" class="'+(direct?'':'on')+'" data-swmode="base" aria-pressed="'+(direct?'false':'true')+'">全部基础材料</button>'+
+    '<button type="button" class="'+(direct?'on':'')+'" data-swmode="direct" aria-pressed="'+(direct?'true':'false')+'">直接材料</button></div></div>'+
+    '<div class="view-hint">'+(direct?'突破表里直接写的材料，合成物不拆开。':'合成物已拆成基础材料。')+' <span class="chip gap">黄</span> 所有计划合计仍缺　<span class="chip have">绿</span> 已备齐</div>';
+  data.forEach(function(r){
+    var info=planStepsInfo(r.plan);
+    h+='<div class="mat-card sword-card"><div class="row" style="justify-content:space-between;"><span class="m-name">'+esc(planLabelText(r.plan))+'</span>'+
+      '<span class="small muted">'+r.mats.length+' 种材料</span></div>'+
+      '<div class="small muted sc-steps">'+esc(info.txt)+'</div>'+
+      (r.mats.length ? '<div class="mat-stats">'+r.mats.map(function(m){
+        var g=r.gap[m]||0;
+        return '<span class="chip '+(g>0?'gap':'have')+'"'+(g>0?' title="所有计划合计还缺 '+g+'"':'')+'>'+esc(mm(m))+' × '+r.need[m]+'</span>';
+      }).join("")+'</div>' : '<div class="small muted" style="margin-top:6px;">没有需要的材料</div>')+'</div>';
+  });
+  box.innerHTML=h;
+}
+function renderCraftView(){
+  var box=$("viewCraft"), cr=lastCalc.crafts||{};
+  var names=Object.keys(cr);
+  if(names.length===0){
+    box.innerHTML='<div class="empty"><div class="big">不需要合成</div>按当前库存，没有要合成的材料</div>'; return;
+  }
+  var h='<div class="view-hint">按当前库存，这些合成物需要自己合成</div>';
+  names.forEach(function(n){
+    var inputs=craftingInputs(n), q=cr[n];
+    var fee=q*((materials[n]&&materials[n].coin)||0);
+    h+='<div class="mat-card"><div class="row" style="justify-content:space-between;"><span class="m-name">'+esc(mm(n))+' × '+q+'</span>'+
+      '<span class="small muted">小判 '+fee+'</span></div>'+
+      '<div class="mat-stats">'+Object.keys(inputs).map(function(i){
+        return '<span class="chip need">'+esc(mm(i))+' × '+(inputs[i]*q)+'</span>';
+      }).join("")+'</div></div>';
+  });
+  box.innerHTML=h;
+}
+/* 视图切换 / 仅看缺口 / 谁需要它 */
+document.addEventListener("click",function(e){
+  var t=e.target.closest(".seg-btn");
+  if(t){ var v=t.getAttribute("data-sumview"); if(v!==sumView){ sumView=v; renderSummaryFromLast(); } return; }
+  var bb=e.target.closest(".basis-row [data-basis]");
+  if(bb){ sumBasis=bb.getAttribute("data-basis"); try{ localStorage.setItem("touken_sum_basis",sumBasis); }catch(_){} renderSummaryFromLast(); return; }
+  var sm=e.target.closest("[data-swmode]");
+  if(sm){ swordMode=sm.getAttribute("data-swmode"); renderSummaryFromLast(); return; }
+  if(e.target.closest("#btnOnlyGap")){ onlyGap=!onlyGap; renderSummaryFromLast(); return; }
+  var w=e.target.closest(".who-btn");
+  if(w){ var m=w.getAttribute("data-who"); whoOpen[m]=!whoOpen[m]; renderSummaryFromLast(); }
+});
+/* 复制（纯文字，方便发给同事 / 贴到笔记）：内容跟着当前视图走 */
+function scopeText(){ return (lastCalc.mode==="sel"?"已勾选的 ":"全部 ")+lastCalc.count+" 条计划"; }
+function gapListText(){
+  var rows=lastCalc.shortage.filter(function(x){ return x.shortage>0; }).sort(function(a,b){ return b.shortage-a.shortage; });
+  var t="刀剑乱舞材料缺口（"+scopeText()+"）\n";
+  rows.forEach(function(x){ t+=x.mat+" 缺 "+x.shortage+"（需 "+x.need+" / 有 "+x.inventory+"）\n"; });
+  if(lastCalc.coin>0) t+="合成所需小判：约 "+lastCalc.coin+"\n";
+  return t.replace(/\n$/,"");
+}
+function swordListText(){
+  var data=swordViewData(lastCalc.shortage), direct=swordMode==="direct";
+  var t="刀剑乱舞材料需求｜按刀剑·"+(direct?"直接材料（合成物不拆开）":"基础材料")+"（"+scopeText()+"）\n";
+  data.forEach(function(r){
+    t+="\n【"+planLabelText(r.plan)+"】"+planStepsInfo(r.plan).txt+"\n";
+    if(!r.mats.length) t+="没有需要的材料\n";
+    r.mats.forEach(function(m){
+      var g=r.gap[m]||0;
+      t+=m+" 需 "+r.need[m]+(g>0?"（合计缺 "+g+"）":"（已备齐）")+"\n";
+    });
+  });
+  return t.replace(/\n$/,"");
+}
+function craftListText(){
+  var cr=lastCalc.crafts||{}, t="刀剑乱舞合成清单（按当前库存，"+scopeText()+"）\n";
+  Object.keys(cr).forEach(function(n){
+    var inputs=craftingInputs(n), q=cr[n], fee=q*((materials[n]&&materials[n].coin)||0);
+    t+=n+" × "+q+"：配料 "+Object.keys(inputs).map(function(i){ return i+" × "+(inputs[i]*q); }).join("、")+"；小判 "+fee+"\n";
+  });
+  if(lastCalc.coin>0) t+="合成所需小判合计：约 "+lastCalc.coin+"\n";
+  return t.replace(/\n$/,"");
+}
+$("btnCopyGap").addEventListener("click",function(){
+  if(!lastCalc){ toast("请先计算缺口"); return; }
+  var text, msg;
+  if(sumView==="sword"){ text=swordListText(); msg="已复制每把刀的材料需求"; }
+  else if(sumView==="craft"){
+    if(!Object.keys(lastCalc.crafts||{}).length){ toast("当前不需要合成"); return; }
+    text=craftListText(); msg="已复制合成清单";
+  } else {
+    var n=lastCalc.shortage.filter(function(x){ return x.shortage>0; }).length;
+    if(n===0){ toast("当前没有缺口可复制"); return; }
+    text=gapListText(); msg="已复制 "+n+" 种缺口材料";
+  }
+  function done(){ toast(msg); }
+  function fallback(){
+    var ta=document.createElement("textarea"); ta.value=text; ta.setAttribute("readonly","");
+    ta.style.cssText="position:fixed;left:-9999px;top:0;opacity:0;";
+    document.body.appendChild(ta); ta.select();
+    var ok=false; try{ ok=document.execCommand("copy"); }catch(_){}
+    ta.remove();
+    if(ok) done(); else toast("复制失败，请手动选择文字复制");
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done,fallback);
+  else fallback();
+});
 /* 同步排序按钮高亮 */
   document.querySelectorAll(".sort-btn").forEach(function(b){
     b.classList.toggle("on", b.getAttribute("data-sort") === gapSort);
   });
 
+/* 计算范围：all = 全部计划；sel = 当前勾选的计划 */
+function isPlanChecked(p){ return checked===null || checked.indexOf(p.id)>=0; }
+function calcSet(mode){ return mode==="sel" ? plans.filter(isPlanChecked) : plans.slice(); }
+function buildCalc(mode){
+  var chars=calcSet(mode);
+  if(chars.length===0) return null;
+  var r=computeAll(chars, inventory);
+  return {
+    mode: mode, count: chars.length,
+    coin: r.coin,
+    shortage: r.list,
+    mats: r.list.filter(function(x){return x.shortage>0;}).map(function(x){return x.mat;}),
+    semiUsed: r.semiUsed,
+    crafts: r.crafts,
+    chars: chars,
+    warnings: r.warnings
+  };
+}
+/* 每条计划自己的材料需求（不扣库存，用来回答「谁需要它」「这把刀要什么」）；用到时才算，算完缓存在 lastCalc 上 */
+function calcPerPlan(){
+  if(!lastCalc) return [];
+  if(!lastCalc._pp){
+    lastCalc._pp=lastCalc.chars.map(function(p){
+      var r=computeAll([p],{});
+      var need={}; r.list.forEach(function(x){ need[x.mat]=x.need; });
+      var direct={};   /* 直接材料：突破各段表里写的原样需求，合成物不展开 */
+      selectBreakthroughs(p.sword,p.rarity||"普",p.currentLevel,p.targetLevel,p.form).forEach(function(st){
+        Object.keys(st.needs).forEach(function(m){ direct[m]=(direct[m]||0)+st.needs[m]; });
+      });
+      return { plan:p, need:need, direct:direct };
+    });
+  }
+  return lastCalc._pp;
+}
+function planLabelText(p){
+  var rr=p.rarity||"普", rf=resolveForm(p.sword,rr,p.form);
+  return (rr!=="普"||rf) ? p.sword+"（"+variantLabel(rr,rf)+"）" : p.sword;
+}
 /* 计算：只在本页算缺口并渲染，不跳转 */
-function runCalc(chars,label){
+function runCalc(mode,label){
   try{
-    var r = computeAll(chars, inventory);
-    lastCalc = {
-      chars: chars,
-      coin: r.coin,
-      shortage: r.list,
-      mats: r.list.filter(function(x){return x.shortage>0;}).map(function(x){return x.mat;}),
-      semiUsed: r.semiUsed,
-      warnings: r.warnings
-    };
+    var c=buildCalc(mode);
+    if(!c){ toast(mode==="sel" ? "请至少勾选一条计划" : "还没有突破计划"); return; }
+    calcMode=mode; lastCalc=c;
     renderSummaryFromLast();
     toast(label);
   }catch(err){ toast(err.message); console.error(err); }
 }
-$("btnAll").addEventListener("click",function(){ runCalc(plans,"✓ 已完成全部计划计算，缺口见下方"); });
+/* 自动重算：算过之后，计划 / 勾选 / 背包 任何一项变了都按上次的范围重新算，缺口始终和当前数据一致 */
+function refreshCalc(){
+  if(!calcMode) return;
+  try{ lastCalc=buildCalc(calcMode); }
+  catch(err){ console.error(err); toast(err.message); return; }
+  renderSummaryFromLast();
+}
+/* 计划列表发生变化后的统一收尾：保存 → 重算 → 重绘 */
+function plansChanged(){
+  saveJSON("touken_plans",plans);
+  refreshCalc();
+  renderPlans(); renderHome();
+}
+$("btnAll").addEventListener("click",function(){ runCalc("all","✓ 已完成全部计划计算，缺口见下方"); });
 $("btnSel").addEventListener("click",function(){
-  var sel=plans.filter(function(p){ return checked===null||checked.indexOf(p.sword)>=0; });
-  if(sel.length===0){ toast("请至少勾选一个刀剑角色"); return; }
-  runCalc(sel,"✓ 已根据 "+sel.length+" 把刀剑计算缺口，缺口见下方");
+  var n=plans.filter(isPlanChecked).length;
+  if(n===0){ toast("请至少勾选一条计划"); return; }
+  runCalc("sel","✓ 已根据 "+n+" 条计划计算缺口，缺口见下方");
 });
 /* 只有缺口面板下的这个按钮才跳转来源页 */
 $("btnGapSource").addEventListener("click",function(){
@@ -1985,55 +2513,41 @@ $("btnAdd").addEventListener("click",function(){
   var sword=selectedSword||$("swordSearch").value.trim();
   if(characters.indexOf(sword)<0){ toast("请从下拉列表里选一把存在的刀剑"); return; }
   var cur=parseInt($("curLevel").value,10), tar=parseInt($("tarLevel").value,10);
-  if(isNaN(cur)||isNaN(tar)||cur<1||tar<1){ toast("等级请输入 1 以上的数字"); return; }
-  if(tar<cur){ toast("目标等级不能小于当前等级"); return; }
+  if(isNaN(cur)||isNaN(tar)){ toast("请先选择当前等级上限和目标"); return; }
   var rarity="普", form="", vs=variantsOf(sword);
   if(vs.length>1){
-    var ex=plans.find(function(p){return p.sword===sword;});
-    var vkey = selectedSword===sword ? $("raritySel").value
-             : (ex ? variantKey(ex.rarity||"普", resolveForm(sword,ex.rarity||"普",ex.form)) : vs[0].key);
+    var vkey = selectedSword===sword ? $("raritySel").value : vs[0].key;
     var pv=parseVariantKey(vkey); rarity=pv.rarity; form=pv.form;
   }
   else if(vs.length===1){ rarity=vs[0].rarity; form=vs[0].form; }
   var vlabel=variantLabel(rarity,form);
-  var f=plans.find(function(p){return p.sword===sword;});
-  if(f){ f.currentLevel=cur; f.targetLevel=tar; f.rarity=rarity; if(form) f.form=form; else delete f.form; toast("已更新 "+sword+"（"+vlabel+"）"); }
+  var vk=variantKey(rarity, resolveForm(sword,rarity,form));
+  /* 没有需要突破的段：允许添加，但提示 */
+  var tail=selectBreakthroughs(sword,rarity,cur,tar,form).length===0 ? "（提示：按这个设置没有需要突破的段，请检查上限和目标）" : "";
+  /* 同一把刀 + 同一形态 = 同一条计划（更新等级）；形态不同 = 另加一条 */
+  var f=plans.find(function(p){ return p.sword===sword && planVariantKey(p)===vk; });
+  if(f){ f.currentLevel=cur; f.targetLevel=tar; toast("已更新 "+sword+"（"+vlabel+"）"+tail); }
   else{
-    var np={sword:sword,rarity:rarity,currentLevel:cur,targetLevel:tar}; if(form) np.form=form;
-    plans.push(np); toast("已加入计划："+sword+"（"+vlabel+"） Lv"+cur+" → "+tar);
+    var np={id:newPlanId(),sword:sword,rarity:rarity,currentLevel:cur,targetLevel:tar}; if(form) np.form=form;
+    var last=-1; plans.forEach(function(p,i){ if(p.sword===sword) last=i; });
+    if(last>=0) plans.splice(last+1,0,np); else plans.push(np);   // 同一把刀的计划相邻排列
+    if(checked!==null) checked.push(np.id);                        // 新加的计划默认勾选
+    toast("已加入计划："+sword+"（"+vlabel+"） 上限 "+cur+" → 目标 "+tar+tail);
   }
-  saveJSON("touken_plans",plans);
   selectedSword=null; $("swordSearch").value="";
   setVarUI(false);
-  renderPlans(); renderHome();
+  plansChanged();
 });
-/* 实时刷新：输入时立刻更新该行的缺数据提示（不保存，不重绘） */
-$("planList").addEventListener("input", function(e){
-  var sword = e.target.getAttribute("data-sword");
-  if(!sword) return;
-  var f = e.target.getAttribute("data-f");
-  if(f === "cur" || f === "tar"){
-    updateRowFeedbackLive(sword);
-  }
-});
-
-/* 计划列表事件：勾选 / 改等级 / 改稀有度 / 删除 */
+renderAddStageBtns();
+/* 计划列表事件：勾选 / 删除（删除可撤销）；改上限、目标、形态走各自的弹窗 */
 $("planList").addEventListener("change",function(e){
-  var sword=e.target.getAttribute("data-sword");
+  var id=e.target.getAttribute("data-id");
   if(e.target.type==="checkbox"){
-    if(checked===null) checked=plans.map(function(p){return p.sword;});
-    if(e.target.checked){ if(checked.indexOf(sword)<0) checked.push(sword); }
-    else checked=checked.filter(function(s){return s!==sword;});
+    if(checked===null) checked=plans.map(function(p){return p.id;});
+    if(e.target.checked){ if(checked.indexOf(id)<0) checked.push(id); }
+    else checked=checked.filter(function(s){return s!==id;});
     renderPlans();
-  } else if(e.target.getAttribute("data-f")){
-    var f=e.target.getAttribute("data-f"), plan=plans.find(function(p){return p.sword===sword;});
-    var v=parseInt(e.target.value,10);
-    if(!plan||isNaN(v)||v<1) return;
-    if(f==="cur") plan.currentLevel=v;
-    if(f==="tar") plan.targetLevel=v;
-    saveJSON("touken_plans",plans);
-    toast("已保存 "+sword+"：Lv"+plan.currentLevel+" → "+plan.targetLevel);
-    renderHome();
+    if(calcMode==="sel") refreshCalc();   // 勾选计算模式：结果跟着勾选走
   }
 });
 $("planList").addEventListener("click",function(e){
@@ -2041,24 +2555,33 @@ $("planList").addEventListener("click",function(e){
   if(ve){ openVarPop(ve, ve.getAttribute("data-var-edit")); return; }
   var del=e.target.getAttribute("data-del");
   if(del){
-    plans=plans.filter(function(p){return p.sword!==del;});
-    if(checked&&checked!==null) checked=checked.filter(function(s){return s!==del;});
-    saveJSON("touken_plans",plans);
-    toast("已删除 "+del);
-    renderPlans(); renderHome();
+    var idx=plans.findIndex(function(p){return p.id===del;});
+    if(idx<0) return;
+    var removed=plans[idx], wasIn=(checked!==null && checked.indexOf(del)>=0);
+    var rl=variantLabel(removed.rarity||"普", resolveForm(removed.sword,removed.rarity||"普",removed.form));
+    plans.splice(idx,1);
+    if(checked!==null) checked=checked.filter(function(s){return s!==del;});
+    plansChanged();
+    toast("已删除 "+removed.sword+"（"+rl+"）",{ label:"撤销", fn:function(){
+      if(plans.some(function(p){return p.id===removed.id;})) return;
+      plans.splice(Math.min(idx,plans.length),0,removed);
+      if(wasIn && checked!==null) checked.push(removed.id);
+      plansChanged();
+      toast("已恢复 "+removed.sword+"（"+rl+"）");
+    }});
   }
 });
 
 /* ================================================================
    材料来源页（自动带入 + 手动选择，共用一套标签/查询）
    ================================================================ */
+var srcRouteOpen=false;
 function openSource(mats){
   if(mats && mats.length){
     srcSelected=mats.filter(function(m){ return materials[m] && materials[m].type==="base"; });
     var dropped=mats.length-srcSelected.length;
     if(dropped>0) toast("已过滤 "+dropped+" 个非原材料/无效材料");
-  } else {
-    srcSelected=[];
+    srcRouteOpen=false;
   }
   showView("source");
 }
@@ -2070,18 +2593,25 @@ function renderSource(){
     box.appendChild(d);
   });
   $("srcCount").textContent="已选择 "+srcSelected.length+" 种材料";
-  $("btnSrc").disabled=srcSelected.length===0;
-  $("srcResultCard").style.display="none";
+  $("btnSrcClear").disabled=srcSelected.length===0;
+  renderSrcResult();
 }
-$("srcTags").addEventListener("click",function(e){
-  var rm=e.target.getAttribute("data-rm");
-  if(rm){ srcSelected=srcSelected.filter(function(s){return s!==rm;}); renderSource(); }
-});
-$("btnSrc").addEventListener("click",function(){
-  if(srcSelected.length===0){ toast("请至少选择一种材料"); return; }
+/* 选材料后自动出结果，不用再点查询 */
+function renderSrcResult(){
+  var card=$("srcResultCard"), box=$("srcResult");
+  if(srcSelected.length===0){ card.style.display="none"; return; }
+  card.style.display="block"; box.innerHTML="";
   var list=findStagesForMaterials(srcSelected);
-  var box=$("srcResult"); box.innerHTML="";
-  $("srcResultCard").style.display="block";
+  var route=srcSelected.length>=2 ? srcRoutePlan(list,srcSelected) : [];
+  var showRoute = route.length>=2;
+  $("btnRoute").style.display=showRoute?"":"none";
+  var rb=$("srcRoute");
+  if(showRoute && srcRouteOpen){
+    rb.style.display="block";
+    rb.innerHTML=route.map(function(r){ return '<b>'+esc(r.stage)+'</b>（'+r.adds.map(function(m){return esc(mm(m));}).join("、")+'）'; }).join(' → ');
+  } else { rb.style.display="none"; rb.innerHTML=""; }
+  $("btnRoute").setAttribute("aria-expanded",showRoute&&srcRouteOpen?"true":"false");
+  $("btnRoute").textContent=srcRouteOpen?"推荐路线 ▾":"推荐路线 ▸";
   if(list.length===0){
     box.innerHTML='<div class="empty"><div class="big">没有找到覆盖这些材料的关卡</div>试试换几种材料，或检查公共关卡数据</div>';
     return;
@@ -2095,8 +2625,17 @@ $("btnSrc").addEventListener("click",function(){
       '<div class="cov-bar"><i style="width:'+barPct+'%"></i></div><div class="cov-list">'+cov+'</div>';
     box.appendChild(d);
   });
-  toast("✓ 已查询 "+srcSelected.length+" 种材料的关卡来源");
+}
+$("srcTags").addEventListener("click",function(e){
+  var rm=e.target.getAttribute("data-rm");
+  if(rm){ srcSelected=srcSelected.filter(function(s){return s!==rm;}); renderSource(); }
 });
+$("btnSrcClear").addEventListener("click",function(){
+  if(!srcSelected.length) return;
+  srcSelected=[]; srcRouteOpen=false; renderSource();
+  var el=$("srcSuggest"); if(el && el.style.display==="grid") openSuggest("srcSearch",false);
+});
+$("btnRoute").addEventListener("click",function(){ srcRouteOpen=!srcRouteOpen; renderSrcResult(); });
 
 /* ================================================================
    合成查询页
@@ -2290,19 +2829,65 @@ var SUG = {
   srcSearch:  { box:"srcSuggest",   multi:true,  list:baseNames,                        label:mm,                          sel:function(x){return srcSelected.indexOf(x)>=0;} },   /* 只允许原材料 */
   synSearch:  { box:"synSuggest",   multi:true,  list:craftedNames,                     label:mm,                          sel:function(x){return synSelected.indexOf(x)>=0;} }
 };
+/* 拼音表：每项 "首字母 全拼"，多音字可再追加一组（空格分隔，成对） */
+var PY = {"太郎太刀":"tltd tailangtaidao","次郎太刀":"cltd cilangtaidao","石切丸":"sqw shiqiewan","萤丸":"yw yingwan","三日月宗近":"sryzj sanriyuezongjin","小狐丸":"xhw xiaohuwan","一期一振":"yqyz yiqiyizhen","烛台切光忠":"ztqgz zhutaiqieguangzhong","大包平":"dbp dabaoping","莺丸":"yw yingwan","鹤丸国永":"hwgy hewanguoyong","狮子王":"szw shiziwang","江雪左文字":"jxzwz jiangxuezuowenzi","笹贯":"zg zhuguan tg tiguan","山伏国广":"sfgg shanfuguoguang","歌仙兼定":"gxjd gexianjianding","宗三左文字":"zszwz zongsanzuowenzi","压切长谷部":"yqcgb yaqiechanggubu","加州清光":"jzqg jiazhouqingguang","大和守安定":"dhsad daheshouanding","和泉守兼定":"hqsjd hequanshoujianding","陆奥守吉行":"lasjx luaoshoujixing","丰前江":"fqj fengqianjiang","山姥切国广":"slqgg shanlaoqieguoguang smqgg shanmuqieguoguang","大俱利伽罗":"djljl dajulijialuo","同田贯正国":"ttgzg tongtianguanzhengguo","蜂须贺虎彻":"fxhhc fengxuhehuche","鸣狐":"mh minghu","笑面青江":"xmqj xiaomianqingjiang","鲶尾藤四郎":"nwtsl nianweitengsilang","骨喰藤四郎":"gctsl gucantengsilang","堀川国广":"kcgg kuchuanguoguang","乱藤四郎":"ltsl luantengsilang","小夜左文字":"xyzwz xiaoyezuowenzi","爱染国俊":"argj airanguojun","今剑":"jj jinjian","平野藤四郎":"pytsl pingyetengsilang","厚藤四郎":"htsl houtengsilang","前田藤四郎":"qttsl qiantiantengsilang","秋田藤四郎":"qttsl qiutiantengsilang","五虎退":"wht wuhutui","药研藤四郎":"yytsl yaoyantengsilang","御手杵":"ysc yushouchu","蜻蛉切":"qlq qinglingqie","岩融":"yr yanrong","粘土":"nt niantu","打火石":"dhs dahuoshi","木材":"mc mucai","兽牙":"sy shouya","铁":"t tie","鳞片":"lp linpian","大米":"dm dami","盐":"y yan","大豆":"dd dadou","树枝":"sz shuzhi","御影石":"yys yuyingshi","花":"h hua","水":"s shui","蓬松的毛":"psdm pengsongdemao","珊瑚":"sh shanhu","叶子":"yz yezi","桃子":"tz taozi","鬼的角":"gdj guidejiao","蚌":"b bang","手旗":"sq shouqi","虎皮":"hp hupi","骰子":"tz touzi","蟹钳":"xq xieqian","海带":"hd haidai","麦":"m mai","油":"y you","螺丝":"ls luosi","蜡烛":"lz lazhu","带骨肉":"dgr daigurou","鱼":"y yu","蛋":"d dan","发绳":"fs fasheng","羽衣":"yy yuyi","茶碗":"cw chawan","围棋":"wq weiqi","双色牡丹饼":"ssmdb shuangsemudanbing","算盘":"sp suanpan","太刀的心得":"tddxd taidaodexinde","花札":"hz huazha","团子":"tz tuanzi","锄头":"ct chutou","打刀的心得":"dddxd dadaodexinde","碗":"w wan","花蜜":"hm huami","锤子":"cz chuizi","纸":"z zhi","笔":"b bi","大太刀的心得":"dtddxd dataidaodexinde","臼与杵":"jyc jiuyuchu","书写道具":"sxdj shuxiedaoju","薙刀的心得":"tddxd tidaodexinde","天妇罗":"tfl tianfuluo","枪的心得":"qdxd qiangdexinde","双六":"sl shuangliu","味增汤":"wzt weizengtang","短刀的心得":"dddxd duandaodexinde","味增":"wz weizeng","胁差的心得":"xcdxd xiechadexinde","面包":"mb mianbao","黄色颜料":"hsyl huangseyanliao","红色颜料":"hsyl hongseyanliao","蓝色颜料":"lsyl lanseyanliao"};
+/* 转换工具生成的拼音表（game-data.js 里的 pinyin）优先于上面内置的；新增的刀剑 / 材料靠它支持拼音搜索 */
+(function(){ var gp=data.pinyin; if(gp && typeof gp==="object") Object.keys(gp).forEach(function(k){ if(typeof gp[k]==="string") PY[k]=gp[k]; }); })();
+/* 数据文件（game-data.js）里带了 pinyin 字段就以它为准：表格新增的刀剑 / 材料不用再改页面；没有这个字段时用上面内置的这份 */
+if(data.pinyin){ Object.keys(data.pinyin).forEach(function(k){ PY[k]=data.pinyin[k]; }); }
+function pyHit(name,kw){
+  var k=kw.toLowerCase().replace(/\s+/g,"");
+  if(!/^[a-z]+$/.test(k) || !PY[name]) return false;
+  var t=PY[name].split(" ");
+  for(var i=0;i<t.length;i++){
+    var at=t[i].indexOf(k);
+    if(i%2===0 ? (k.length===1 ? at===0 : at>=0) : (k.length>=2 && at>=0)) return true;   /* 单个字母只认首字母开头 */
+  }
+  return false;
+}
 function matchKw(inputId,x,kw){
   if(x.indexOf(kw)>=0) return true;
   if(inputId!=="swordSearch"){ var m=materials[x]; if(m && ((m.ja||"").indexOf(kw)>=0 || (m.zh||"").indexOf(kw)>=0)) return true; }
-  return false;
+  return pyHit(x,kw);
+}
+/* 刀种筛选（只在选刀下拉里）：选完刀自动恢复「全部」 */
+var swordTypeFilter="", sugShowAll={};
+function swordTypeOf(n){ return (data.swordTypes||{})[n]||""; }
+function swordTypeList(){
+  var pref=["短刀","胁差","打刀","太刀","大太刀","枪","薙刀"], seen={}, out=[];
+  Object.keys(data.swordTypes||{}).forEach(function(k){ seen[data.swordTypes[k]]=1; });
+  pref.forEach(function(t){ if(seen[t]){ out.push(t); delete seen[t]; } });
+  return out.concat(Object.keys(seen));
+}
+function buildTypeBar(inputId){
+  var nav=document.createElement("nav"); nav.className="sg-head"; nav.setAttribute("aria-label","按刀种筛选");
+  [""].concat(swordTypeList()).forEach(function(t){
+    var b=document.createElement("button"); b.type="button";
+    b.className="sg-chip"+(swordTypeFilter===t?" on":""); b.textContent=t||"全部";
+    b.addEventListener("click",function(e){
+      e.stopPropagation();   /* 列表重绘后按钮已脱离页面，不让「点空白处」逻辑误关下拉 */
+      swordTypeFilter=t; openSuggest(inputId, !!sugShowAll[inputId]);
+    });
+    nav.appendChild(b);
+  });
+  return nav;
 }
 /* showAll=true：忽略输入框里的文字，列出全部（单选已选中后再点开就是这种情况，不用再删字） */
 function openSuggest(inputId,showAll){
   var c=SUG[inputId], input=$(inputId), box=$(c.box);
+  var isSword=inputId==="swordSearch";
+  sugShowAll[inputId]=!!showAll;
   var kw=showAll?"":input.value.trim();
   var list=c.list();
   var hits=kw ? list.filter(function(x){ return matchKw(inputId,x,kw); }) : list;
+  if(isSword && swordTypeFilter) hits=hits.filter(function(x){ return swordTypeOf(x)===swordTypeFilter; });
   box.innerHTML="";
-  if(hits.length===0){ box.style.display="none"; suggestState[c.box]=false; return; }
+  if(hits.length===0 && !(isSword && swordTypeFilter)){ box.style.display="none"; suggestState[c.box]=false; return; }
+  if(isSword) box.appendChild(buildTypeBar(inputId));
+  if(hits.length===0){
+    var none=document.createElement("p"); none.className="sg-none"; none.textContent="这个刀种下没有符合的刀剑";
+    box.appendChild(none);
+  }
   hits.slice(0,200).forEach(function(x){
     var d=document.createElement("div");
     d.textContent=(c.sel(x)?"✓ ":"")+c.label(x);
@@ -2330,6 +2915,58 @@ function bindSuggestInput(inputId){
     }
     openSuggest(inputId,false);
   });
+  /* 键盘：↑↓←→ 按格子的实际位置移动高亮，回车选中（没高亮时选第一个）；输入法组字中的回车不算 */
+  $(inputId).addEventListener("keydown",function(e){
+    if(e.isComposing || e.keyCode===229) return;
+    var k=e.key;
+    if(k!=="ArrowDown" && k!=="ArrowUp" && k!=="ArrowLeft" && k!=="ArrowRight" && k!=="Enter") return;
+    var box=$(c.box), input=$(inputId);
+    var horiz = k==="ArrowLeft" || k==="ArrowRight";
+    if(!suggestState[c.box]){
+      if(k==="Enter" || horiz) return;   /* 左右键在没有高亮时留给输入框移动光标 */
+      e.preventDefault();
+      openSuggest(inputId, inputId==="swordSearch" && selectedSword && input.value===selectedSword);
+      return;
+    }
+    var cells=Array.prototype.slice.call(box.querySelectorAll(":scope>div"));
+    if(!cells.length) return;
+    var cur=-1; cells.forEach(function(x,i){ if(x.classList.contains("kb")) cur=i; });
+    if(k==="Enter"){
+      if(cur<0 && !(input.value.trim() && !(inputId==="swordSearch" && input.value===selectedSword))) return;
+      e.preventDefault();
+      cells[cur<0?0:cur].click();
+      return;
+    }
+    if(horiz && cur<0) return;
+    e.preventDefault();
+    var nx=cur;
+    if(cur<0){ nx = k==="ArrowDown" ? 0 : cells.length-1; }
+    else if(k==="ArrowLeft"){ nx=Math.max(0,cur-1); }
+    else if(k==="ArrowRight"){ nx=Math.min(cells.length-1,cur+1); }
+    else {
+      /* 上/下：找相邻一行里横向位置最接近的那个 */
+      var me=cells[cur], top=me.offsetTop, cx=me.offsetLeft+me.offsetWidth/2, rowTop=null;
+      cells.forEach(function(x){
+        if(k==="ArrowDown" ? x.offsetTop>top+2 : x.offsetTop<top-2){
+          if(rowTop===null || (k==="ArrowDown" ? x.offsetTop<rowTop : x.offsetTop>rowTop)) rowTop=x.offsetTop;
+        }
+      });
+      if(rowTop!==null){
+        var best=1e9;
+        cells.forEach(function(x,i){
+          if(Math.abs(x.offsetTop-rowTop)<=2){
+            var dx=Math.abs(x.offsetLeft+x.offsetWidth/2-cx);
+            if(dx<best){ best=dx; nx=i; }
+          }
+        });
+      }
+    }
+    if(nx!==cur){
+      if(cur>=0) cells[cur].classList.remove("kb");
+      cells[nx].classList.add("kb");
+      cells[nx].scrollIntoView({block:"nearest"});
+    }
+  });
 }
 bindSuggestInput("swordSearch");
 bindSuggestInput("srcSearch");
@@ -2344,6 +2981,7 @@ function onPickSuggest(inputId,name,el){
       selectedSword=name; $(inputId).value=name;
       setVarUI(hasVariants(name), name);
     }
+    swordTypeFilter="";
     closeSuggest(SUG[inputId].box);   // 单选：选完就关
     return;
   }
@@ -2371,13 +3009,30 @@ document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeAllSu
    ================================================================ */
 var CHANGELOG_DATA = [
   {
-    ver: "数据更新",
-    date: "2026-11-16",
+    ver: "大优化与数据更新",
+    date: "2026-11-17",
     items: {
-      "新增": [
+      "数据更新": [
         "活动「巡游地狱」药研藤四郎（彩·天火焚心之业火）与战装束的大包平、丰前江、笹贯的突破材料数据。",
         "异名以表格里的写法为准因此出现中日文两种写法是正常的，此外战装束的普卡没备注均显示为（普）。",
         "你问为什么不统一？那是因为纯懒。嘛，等之后心血来潮再说吧。"
+      ],
+      "新增": [
+        "同一把刀可以同时规划多个形态，每个形态是独立的一条计划，已规划的形态会有标记。",
+        "计算缺口后，再改计划、勾选或背包，结果会自动更新，不用重新点计算。",
+        "结果可切换三种看法：材料缺口（点「谁需要」看哪几把刀要）、按刀剑（可看直接材料或基础材料）、合成清单；复制按钮会按当前看法复制成文字。",
+        "材料总览可切换统计口径：按材料种类，或按基础材料总数。",
+        "背包新增搜索（中文 / 日文 / 拼音首字母）、只看已有库存、＋ / － 加减。选刀和选材料的下拉也支持拼音，选刀可按刀种筛选，并能用方向键加回车选择。",
+        "材料来源页选好材料后自动列出关卡，选多种材料时可点「推荐路线」。",
+        "删除计划可撤销；导入备份前会确认，导入后可撤销；首页提示上次备份时间。",
+        "突破计划新增「突破段」小开关显示 / 隐藏，默认收起。",
+        "打开页面时会自动弹出最新一条更新日志，看过之后不再弹。"
+      ],
+      "优化": [
+        "当前等级上限和目标改为下拉选择，靠近屏幕底部时向上弹出。",
+        "进度条变细，换成更清爽的新样式；形态卡片更紧凑。",
+        "今日运势「换一换」条数固定，不再忽多忽少；「今日本丸事件」可点空白处收起。",
+        "适配手机底部横条和浏览器地址栏高度；本机数据读取更稳，数据损坏不会再导致整页打不开。"
       ]
     }
   },
@@ -2473,11 +3128,11 @@ var CHANGELOG_DATA = [
   }
 ];
 
-function renderChangelog(){
+function renderChangelog(onlyLatest){
   var box = $("clBody");
   if(!box) return;
   var html = "";
-  CHANGELOG_DATA.forEach(function(v){
+  (onlyLatest ? CHANGELOG_DATA.slice(0,1) : CHANGELOG_DATA).forEach(function(v){
     html += '<div class="cl-ver">';
     html += '<h3>' + esc(v.ver) + (v.date ? '<span class="cl-ver-meta">· ' + esc(v.date) + '</span>' : '') + '</h3>';
     Object.keys(v.items).forEach(function(cat){
@@ -2490,11 +3145,14 @@ function renderChangelog(){
     });
     html += '</div>';
   });
+  if(onlyLatest && CHANGELOG_DATA.length>1) html += '<button type="button" class="cl-all" id="clAll">查看全部更新日志</button>';
   box.innerHTML = html;
+  $("clTitle").textContent = onlyLatest ? "最新更新" : "更新日志";
+  $("clFoot").style.display = onlyLatest ? "none" : "";   /* 自动弹出时不放「查看完整历史」外链，只留下面的「查看全部更新日志」 */
 }
 
-function openChangelog(){
-  renderChangelog();
+function openChangelog(onlyLatest){
+  renderChangelog(onlyLatest===true);
   var mask = $("clMask");
   if(mask) mask.classList.add("on");
 }
@@ -2508,6 +3166,18 @@ $("changelogLink").addEventListener("click", function(e){
   openChangelog();
 });
 $("clClose").addEventListener("click", closeChangelog);
+$("clBody").addEventListener("click", function(e){
+  if(e.target.id==="clAll"){ renderChangelog(false); $("clBody").scrollTop=0; }
+});
+/* 打开页面时：最新一条更新日志没看过 → 自动弹出一次；关闭（✕ / 点空白 / Esc）随时可以，之后不再弹，直到有新的一条 */
+(function autoChangelog(){
+  var latest=CHANGELOG_DATA[0]; if(!latest) return;
+  var key=(latest.ver||"")+"|"+(latest.date||"");
+  var seen=null; try{ seen=localStorage.getItem("touken_cl_seen"); }catch(_){}
+  if(seen===key) return;
+  try{ localStorage.setItem("touken_cl_seen",key); }catch(_){}
+  setTimeout(function(){ openChangelog(true); },500);
+})();
 $("clMask").addEventListener("click", function(e){
   /* 点遮罩（非面板）才关 */
   if(e.target === $("clMask")) closeChangelog();

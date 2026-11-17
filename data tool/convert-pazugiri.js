@@ -12,7 +12,7 @@
  *
  *  怎么用（只需要做一次的事）：
  *    1. 电脑上装 Node.js（免费，nodejs.org 下载 LTS 版，一路下一步）
- *    2. 在这个文件夹里打开终端，运行一次：  npm install xlsx
+ *    2. 在这个文件夹里打开终端，运行一次：  npm install xlsx pinyin-pro
  *    3. 把新版 xlsx + 当前在用的旧 game-data.js 放到脚本同目录
  *    4. 每次表格更新后，运行：             node convert-pazugiri.js
  *    5. 打开 convert-report.md 看转换警告，再打开 update-diff-report.md 看数据差异
@@ -84,6 +84,15 @@ const CONFIG = {
 
   /* 游戏货币，识别出来后单独记录成“合成花费”，不参与材料缺口计算 */
   coinName: "小判",
+
+  /* 【新增】网页搜索用的拼音（刀剑 / 材料名的拼音首字母和全拼，写进 game-data.js 的 pinyin 字段）。
+   * 需要先装一次拼音库：npm install pinyin-pro（没装也不会报错，只是这次不生成拼音，网页里新增的名字就搜不了拼音）。
+   * pinyinOverrides：自动拼音读错的名字（多音字）在这里手动指定，写法：  名字: ["读音1", "读音2"]，
+   * 读音里每个字的拼音用空格隔开；写两个读音 = 两种读法都能搜到。 */
+  pinyinOverrides: {
+    "笹贯": ["zhu guan", "ti guan"],
+    "山姥切国广": ["shan lao qie guo guang", "shan mu qie guo guang"],
+  },
 
   /* 旧数据：根目录的 game-data.js */
   oldGameDataFile: path.join(rootDir, "game-data.js"),
@@ -473,6 +482,51 @@ Object.keys(products).forEach(function(cn){
 });
 
 /* =====================================================================
+ * 第 5.5 步：生成拼音表（网页里用拼音首字母 / 全拼搜刀剑和材料）
+ * 每项写成 "首字母 全拼"，有多种读法就依次追加，例如 "slqgg shanlaoqieguoguang smqgg shanmuqieguoguang"
+ * ===================================================================== */
+const pinyinMap = {};
+const pinyinPoly = [];     // 含多音字的名字（给报告用，提醒人工核对）
+let pinyinReady = false;
+(function buildPinyin(){
+  let pp;
+  try { pp = require("pinyin-pro"); }
+  catch(e){
+    warnings.push("【拼音】没装拼音库 pinyin-pro，这次没有生成拼音（网页里拼音搜索只对旧名字有效）。在 data tool 里运行一次：npm install pinyin-pro");
+    return;
+  }
+  pinyinReady = true;
+  const opt = { toneType:"none", type:"array" };
+  const names = chars.concat(Object.keys(materials));
+  const seen = {};
+  names.forEach(function(name){
+    if(seen[name]) return; seen[name]=1;
+    const readings = [];
+    const ov = CONFIG.pinyinOverrides && CONFIG.pinyinOverrides[name];
+    if(ov){
+      (Array.isArray(ov)?ov:[ov]).forEach(function(r){ readings.push(String(r).trim().split(/\s+/)); });
+    } else {
+      let syl;
+      try { syl = pp.pinyin(name, opt); } catch(e){ return; }
+      /* 只收带汉字的名字：全是假名/英文的材料不生成（网页里直接按原文搜） */
+      if(!/[\u4e00-\u9fff]/.test(name)) return;
+      syl = syl.map(function(x){ return String(x).toLowerCase().replace(/[^a-z0-9]/g,""); }).filter(Boolean);
+      if(!syl.length) return;
+      readings.push(syl);
+      try {
+        const poly = pp.polyphonic(name, opt);
+        if(poly.some(function(a){ return a.length>1; })) pinyinPoly.push(name+" → "+syl.join(" "));
+      } catch(e){}
+    }
+    const parts=[];
+    readings.forEach(function(syl){
+      parts.push(syl.map(function(x){return x.charAt(0);}).join(""), syl.join(""));
+    });
+    pinyinMap[name]=parts.join(" ");
+  });
+})();
+
+/* =====================================================================
  * 第 6 步：写出 game-data-output.js
  * ===================================================================== */
 const dataObj = {
@@ -487,6 +541,7 @@ const dataObj = {
   coinCosts: coinCosts,
   stages: stages,
 };
+if(pinyinReady) dataObj.pinyin = pinyinMap;      // 没装拼音库就不写这个字段，网页自动退回到内置的拼音表
 const jsHead =
 "/*\n"+
 " * 刀剑乱舞材料规划工具 —— 公共游戏数据（由 convert-pazugiri.js 自动生成）\n"+
@@ -796,6 +851,15 @@ if(stageSkipRows.length){
   stageSkipRows.forEach(function(s){ report.push("- "+s); });
   report.push("");
 }
+if(pinyinReady){
+  report.push("### 拼音（网页拼音搜索用）");
+  report.push("");
+  report.push("共生成 "+Object.keys(pinyinMap).length+" 个名字的拼音。下面这些名字里有多音字，脚本选了读音，请扫一眼有没有读错；读错的话在 CONFIG.pinyinOverrides 里手动指定后重新跑一次：");
+  report.push("");
+  if(pinyinPoly.length) pinyinPoly.forEach(function(x){ report.push("- "+x); });
+  else report.push("- 无多音字");
+  report.push("");
+}
 report.push("## 三、人工检查点（建议逐条确认）");
 report.push("");
 report.push("- [ ] 材料数量：基础材料是否都能在关卡掉落里找到（除了颜料这类未填写来源的）");
@@ -804,6 +868,7 @@ report.push("- [ ] 合成递归：茶碗 → 碗(お椀) → 粘土+打火石，
 report.push("- [ ] 突破筛选：5→35 应算 10→20、20→30、30→35 三段（起点>当前 且 起点<目标）");
 report.push("- [ ] 有多套形态的刀（见上面「形态组合块」那行）：每套的「异名」都填了，网页下拉里显示成「普 · 勇気百寸」，选不同套后需求应不同");
 report.push("- [ ] 关卡掉落是「有没有」清单，不是掉率；关卡 x/n 只表示覆盖几种材料");
+report.push("- [ ] 拼音：新增的刀剑 / 材料，在网页搜索框里输入拼音首字母能搜到；多音字名字见上面「拼音」小节");
 report.push("");
 report.push("---");
 report.push("");
